@@ -73,7 +73,9 @@ describe("DashboardPage", () => {
   it("shows the score, reasons, live usage and hardware", async () => {
     render(<DashboardPage />);
 
-    expect(await screen.findByText("85")).toBeTruthy();
+    expect(await screen.findByRole("img", { name: "Health score 85 out of 100" })).toBeTruthy();
+    expect(screen.getByText("Your PC is in great shape")).toBeTruthy();
+    expect(screen.getByText("1 thing could use a look.")).toBeTruthy();
     expect(screen.getByText("Free space")).toBeTruthy();
     expect(screen.getByText(": Check this")).toBeTruthy();
     expect(await screen.findByText("12%")).toBeTruthy();
@@ -95,7 +97,7 @@ describe("DashboardPage", () => {
     api.reportSave.mockResolvedValueOnce({ saved: false });
     api.reportSave.mockResolvedValueOnce({ saved: true, path: "C:\\report.txt" });
     render(<DashboardPage />);
-    await screen.findByText("85");
+    await screen.findByRole("img", { name: /Health score/ });
 
     await user.click(screen.getByRole("button", { name: "Save report" }));
     expect(screen.queryByText(/Saved to/)).toBeNull();
@@ -107,11 +109,21 @@ describe("DashboardPage", () => {
   it("can check again", async () => {
     const user = userEvent.setup();
     render(<DashboardPage />);
-    await screen.findByText("85");
+    await screen.findByRole("img", { name: /Health score/ });
 
     await user.click(screen.getByRole("button", { name: "Check again" }));
 
     await waitFor(() => expect(api.healthCheck).toHaveBeenCalledTimes(2));
+  });
+
+  it("opens a page from a quick action", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    render(<DashboardPage onNavigate={onNavigate} />);
+
+    await user.click(screen.getByRole("button", { name: /Boost a game/ }));
+
+    expect(onNavigate).toHaveBeenCalledWith("gaming");
   });
 });
 

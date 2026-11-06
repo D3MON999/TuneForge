@@ -73,17 +73,12 @@ export function CleanupPage() {
 
       {categories?.map((item) => (
         <label key={item.id} className="flex min-h-11 cursor-pointer items-start gap-3 rounded-md border border-border bg-card p-3">
-          <input
-            type="checkbox"
-            checked={selected.has(item.id)}
-            onChange={() => toggle(item.id)}
-            className="mt-0.5 size-5 shrink-0"
-          />
+          <input type="checkbox" checked={selected.has(item.id)} onChange={() => toggle(item.id)} />
+          <span className="shrink-0 tabular-nums text-muted-foreground">{formatBytes(item.bytes)}</span>
           <span className="min-w-0 flex-1">
             <span className="font-medium">{item.title}</span>
             <span className="block text-sm text-muted-foreground">{item.note}</span>
           </span>
-          <span className="shrink-0 text-muted-foreground">{formatBytes(item.bytes)}</span>
         </label>
       ))}
 

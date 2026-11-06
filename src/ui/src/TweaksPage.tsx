@@ -1,4 +1,18 @@
-import { Search } from "lucide-react";
+import {
+  AppWindow,
+  Bot,
+  EyeOff,
+  FolderOpen,
+  Gamepad2,
+  Globe,
+  type LucideIcon,
+  Palette,
+  PanelBottom,
+  RefreshCw,
+  Search,
+  SlidersHorizontal,
+  SquareMenu,
+} from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type Tweak } from "./bridge";
 import { ReviewDialog } from "./ReviewDialog";
@@ -15,6 +29,19 @@ export const categoryLabels: Record<string, string> = {
   update: "Windows Update",
   browser: "Browsers",
   gaming: "Gaming",
+};
+
+const categoryIcons: Record<string, LucideIcon> = {
+  privacy: EyeOff,
+  ai: Bot,
+  windows: AppWindow,
+  taskbar: PanelBottom,
+  "start-search": SquareMenu,
+  explorer: FolderOpen,
+  appearance: Palette,
+  update: RefreshCw,
+  browser: Globe,
+  gaming: Gamepad2,
 };
 
 const groupLabels: Record<string, string> = {
@@ -68,7 +95,7 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
       <div className="flex flex-wrap items-center gap-3">
         <label className="relative min-w-64 flex-1">
           <span className="sr-only">Search tweaks</span>
-          <Search aria-hidden="true" className="absolute top-3 left-3 size-5 text-muted-foreground" />
+          <Search aria-hidden="true" className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
             value={query}
@@ -78,13 +105,13 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
           />
         </label>
         {showPresets && (
-          <div role="group" aria-label="Presets" className="flex gap-2">
+          <div role="group" aria-label="Presets" className="flex gap-0.5 rounded-md bg-muted p-[3px]">
             {presetOrder.map((preset) => (
               <button
                 key={preset}
                 type="button"
                 onClick={() => setSelected(presetSelection(preset, inPageOrAll(tweaks, categories)))}
-                className="min-h-11 cursor-pointer rounded-md border border-border bg-card px-3 font-medium transition-colors duration-200 hover:bg-muted"
+                className="min-h-8 cursor-pointer rounded-md px-3.5 font-medium text-muted-foreground hover:bg-card hover:text-foreground"
               >
                 {presetLabels[preset]}
               </button>
@@ -98,8 +125,8 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
         .filter((section) => section.items.length > 0)
         .map((section) => (
           <section key={section.category} className="mt-6">
-            <h2 className="text-lg font-semibold">{categoryLabels[section.category]}</h2>
-            <div className="mt-2 flex flex-col gap-2">
+            <h2 className="font-semibold text-muted-foreground">{categoryLabels[section.category]}</h2>
+            <div className="tweak-list mt-2 flex flex-col gap-1.5">
               {section.items.filter((tweak) => !tweak.group).map((tweak) => (
                 <TweakRow
                   key={tweak.id}
@@ -124,7 +151,7 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
       {visible.length === 0 && <p className="mt-6 text-muted-foreground">No tweaks match your search.</p>}
 
       {selected.size > 0 && (
-        <div className="fixed right-8 bottom-6 flex items-center gap-3 rounded-lg border border-border bg-card p-3 shadow-lg">
+        <div className="fixed right-8 bottom-6 z-10 flex items-center gap-3 rounded-lg border border-track bg-card py-2.5 pr-3 pl-5 shadow-2xl shadow-black/60">
           <p>{selected.size} selected</p>
           <button
             type="button"
@@ -166,25 +193,29 @@ function inPageOrAll(tweaks: Tweak[], categories: string[]): Tweak[] {
 function Badges({ tweak }: { tweak: Tweak }) {
   return (
     <>
-      {tweak.state === "applied" && <span className="rounded bg-muted px-2 text-sm">Applied</span>}
-      {tweak.risk === "medium" && <span className="rounded border border-border px-2 text-sm">Medium risk</span>}
+      {tweak.state === "applied" && <span className="text-sm text-success">Applied</span>}
+      {tweak.risk === "medium" && <span className="text-sm text-warning">Medium risk</span>}
     </>
   );
 }
 
 function TweakRow({ tweak, checked, onToggle }: { tweak: Tweak; checked: boolean; onToggle: () => void }) {
   const applied = tweak.state === "applied";
+  const Icon = categoryIcons[tweak.category] ?? SlidersHorizontal;
   return (
     <label
-      className={`flex min-h-11 items-start gap-3 rounded-md border border-border bg-card p-3 ${applied ? "" : "cursor-pointer"}`}
+      className={`flex min-h-14 gap-3 rounded-lg border border-border bg-card px-4 py-2.5 ${applied ? "" : "cursor-pointer"}`}
     >
-      <input type="checkbox" checked={checked} disabled={applied} onChange={onToggle} className="mt-0.5 size-5 shrink-0" />
-      <span className="min-w-0">
-        <span className="flex flex-wrap items-center gap-2">
-          <span className="font-medium">{tweak.title}</span>
-          <Badges tweak={tweak} />
+      <input type="checkbox" checked={checked || applied} disabled={applied} onChange={onToggle} />
+      <span className="flex min-w-0 items-center gap-3.5">
+        <Icon aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
+        <span className="min-w-0">
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="font-medium">{tweak.title}</span>
+            <Badges tweak={tweak} />
+          </span>
+          {tweak.impact && <span className="block text-sm text-muted-foreground">{tweak.impact}</span>}
         </span>
-        {tweak.impact && <span className="block text-sm text-muted-foreground">{tweak.impact}</span>}
       </span>
     </label>
   );
@@ -199,7 +230,7 @@ interface ChoiceGroupProps {
 
 function ChoiceGroup({ group, options, selected, onChange }: ChoiceGroupProps) {
   return (
-    <fieldset className="rounded-md border border-border bg-card p-3">
+    <fieldset className="rounded-lg border border-border bg-card px-4 pt-1 pb-2">
       <legend className="px-1 font-medium">{groupLabels[group] ?? group}</legend>
       {options.map((tweak) => {
         const applied = tweak.state === "applied";
@@ -207,10 +238,9 @@ function ChoiceGroup({ group, options, selected, onChange }: ChoiceGroupProps) {
           <label key={tweak.id} className={`flex min-h-11 items-center gap-3 ${applied ? "" : "cursor-pointer"}`}>
             <input
               type="checkbox"
-              checked={selected.has(tweak.id)}
+              checked={selected.has(tweak.id) || applied}
               disabled={applied}
               onChange={() => onChange(tweak)}
-              className="size-5 shrink-0"
             />
             <span className="flex flex-wrap items-center gap-2">
               {tweak.title}

@@ -1,13 +1,13 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant dark (&:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *));
 
 @theme inline {
-  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-sidebar: var(--sidebar);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
@@ -17,36 +17,145 @@
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
   --color-ring: var(--ring);
+  --color-track: var(--track);
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-card);
+  --text-sm: 12.5px;
+  --text-sm--line-height: 1.45;
 }
 
+/* Obsidian is the default: black surfaces, white as the accent, and colour only for meaning. */
 :root {
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  color-scheme: dark;
+  --background: #000000;
+  --sidebar: #050505;
+  --card: #0b0b0b;
+  --raise: #141414;
+  --muted: #181818;
+  --muted-foreground: #9a9a9a;
+  --foreground: #f2f2f2;
+  --border: #1f1f1f;
+  --track: #2a2a2a;
+  --primary: #ffffff;
+  --on-primary: #000000;
+  --success: #2ebd85;
+  --warning: #ffb020;
+  --destructive: #f6465d;
+  --ring: #ffffff;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --hero-bg: radial-gradient(ellipse 70% 130% at 18% 0%, #ffffff17, transparent 70%), #0b0b0b;
+  --hero-fg: #f2f2f2;
+  --hero-sub: #a8a8a8;
+  --hero-accent: #ffffff;
+  --hero-on: #000000;
+  --hero-track: #2a2a2a;
+  --hero-line: #1f1f1f;
+}
+
+[data-theme="fluent"] {
+  --background: #202020;
+  --sidebar: #1b1b1b;
+  --card: #2b2b2b;
+  --raise: #323232;
+  --muted: #383838;
+  --muted-foreground: #c5c5c5;
+  --foreground: #ffffff;
+  --border: #3a3a3a;
+  --track: #4a4a4a;
+  --primary: #5eead4;
+  --on-primary: #04211d;
+  --success: #6ccb5f;
+  --warning: #fcd34d;
+  --destructive: #ff8a80;
+  --ring: #5eead4;
+  --radius-card: 8px;
+  --radius-control: 6px;
+  --hero-bg: #2b2b2b;
+  --hero-fg: #ffffff;
+  --hero-sub: #c5c5c5;
+  --hero-accent: #5eead4;
+  --hero-on: #04211d;
+  --hero-track: #4a4a4a;
+  --hero-line: #3a3a3a;
+}
+
+[data-theme="hero"] {
+  --background: #1a1b26;
+  --sidebar: #16171f;
+  --card: #222430;
+  --raise: #2b2d3b;
+  --muted: #30323f;
+  --muted-foreground: #b9bbcc;
+  --foreground: #f5f5fa;
+  --border: #33354380;
+  --track: #3f4152;
+  --primary: #a78bfa;
+  --on-primary: #160e2e;
+  --success: #6ee7b7;
+  --warning: #fbbf24;
+  --destructive: #fda4af;
+  --ring: #a78bfa;
+  --hero-bg: linear-gradient(120deg, #4c1d95, #7c3aed 45%, #db2777);
+  --hero-fg: #ffffff;
+  --hero-sub: #f0e7ff;
+  --hero-accent: #ffffff;
+  --hero-on: #4c1d95;
+  --hero-track: #ffffff40;
+  --hero-line: transparent;
+}
+
+[data-theme="forge"] {
+  --background: #141211;
+  --sidebar: #100e0d;
+  --card: #1f1c1a;
+  --raise: #2a2522;
+  --muted: #2d2825;
+  --muted-foreground: #bdb3aa;
+  --foreground: #f7f3ef;
+  --border: #2e2926;
+  --track: #3a3431;
+  --primary: #fb923c;
+  --on-primary: #2a1203;
+  --success: #a3e635;
+  --warning: #fbbf24;
+  --destructive: #fca5a5;
+  --ring: #fb923c;
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --hero-bg: radial-gradient(ellipse 60% 140% at 15% 0%, #fb923c33, transparent 70%), #1f1c1a;
+  --hero-fg: #f7f3ef;
+  --hero-sub: #bdb3aa;
+  --hero-accent: #fb923c;
+  --hero-on: #2a1203;
+  --hero-track: #3a3431;
+  --hero-line: #2e2926;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --background: #f3f4f6;
+  --sidebar: #ebedf0;
   --card: #ffffff;
-  --muted: #e9eff8;
-  --muted-foreground: #475569;
-  --border: #e2e8f0;
-  --primary: #2563eb;
+  --raise: #ffffff;
+  --muted: #e6e8ec;
+  --muted-foreground: #5c5f66;
+  --foreground: #1b1b1f;
+  --border: #e2e4e9;
+  --track: #d5d8de;
+  --primary: #111111;
   --on-primary: #ffffff;
   --success: #15803d;
   --warning: #b45309;
   --destructive: #dc2626;
-  --ring: #2563eb;
-}
-
-[data-theme="dark"] {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --card: #1e293b;
-  --muted: #334155;
-  --muted-foreground: #cbd5e1;
-  --border: #334155;
-  --primary: #60a5fa;
-  --on-primary: #0f172a;
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --destructive: #f87171;
-  --ring: #93c5fd;
+  --ring: #111111;
+  --hero-bg: #ffffff;
+  --hero-fg: #1b1b1f;
+  --hero-sub: #5c5f66;
+  --hero-accent: #111111;
+  --hero-on: #ffffff;
+  --hero-track: #d5d8de;
+  --hero-line: #e2e4e9;
 }
 
 html,
@@ -59,13 +168,161 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
 }
 
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+/* Sized for a mouse on a desktop. Rows keep enough height to click comfortably. */
+.min-h-11 {
+  min-height: 36px;
+}
+
+button,
+a {
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    opacity 150ms;
+}
+
+button:not(:disabled):hover {
+  filter: brightness(1.1);
+}
+
+/* The banner carries its own colours, so anything inside it can stay on theme. */
+.hero {
+  --primary: var(--hero-accent);
+  --on-primary: var(--hero-on);
+  --foreground: var(--hero-fg);
+  --muted-foreground: var(--hero-sub);
+  --track: var(--hero-track);
+  --border: var(--hero-line);
+  background: var(--hero-bg);
+  border: 1px solid var(--hero-line);
+  border-radius: var(--radius-card);
+  color: var(--hero-fg);
+}
+
+.nav-item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--primary);
+}
+
+/* Every on/off choice in the app is a switch, with its label on the left. */
+input[type="checkbox"] {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    border-color 150ms;
+}
+
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  transition:
+    transform 150ms,
+    background-color 150ms;
+}
+
+input[type="checkbox"]:checked {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+input[type="checkbox"]:checked::after {
+  background: var(--on-primary);
+  transform: translateX(20px);
+}
+
+input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+label:has(> input[type="checkbox"]) {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+label:has(> input[type="checkbox"]) > span:not(.shrink-0) {
+  flex: 1;
+}
+
+[role="tablist"] {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-control);
+  background: var(--muted);
+}
+
+[role="tab"] {
+  min-height: 32px;
+  padding-inline: 14px;
+  border: 0;
+  border-radius: calc(var(--radius-control) - 2px);
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+[role="tab"][aria-selected="true"] {
+  background: var(--card);
+  color: var(--foreground);
+}
+
+/* The Forge theme uses its wider cards for a two-column tweak list. */
+[data-theme="forge"] .tweak-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+[data-theme="forge"] .tweak-list fieldset {
+  grid-column: 1 / -1;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--background);
+  border-radius: 5px;
+  background: var(--track);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -78,6 +78,7 @@ public partial class MainWindow : Window
         _tray.Apply(ReadSettings().Choices);
 
         InitializeComponent();
+        Web.DefaultBackgroundColor = System.Drawing.Color.Black;
         Loaded += async (_, _) => await StartWebAsync();
         Closing += (_, e) =>
         {

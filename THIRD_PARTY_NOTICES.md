@@ -10,7 +10,6 @@ TuneForge is private software. It uses these components under their own licences
 | Vite, Vitest, TypeScript | Build and test tools | MIT, Apache-2.0 |
 | Tailwind CSS | Styling | MIT |
 | Lucide | Icons | ISC |
-| Inter (Fontsource) | Typeface | SIL OFL 1.1 |
 | xUnit | Test tool | Apache-2.0 |
 | Microsoft.Data.Sqlite | Change journal | MIT |
 | SQLitePCLRaw, SQLite | Change journal | Apache-2.0, public domain |
