@@ -20,6 +20,8 @@ Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run t
 
 `tests/sandbox/run-apps-in-sandbox.ps1` removes a real built-in app and runs winget install, update and uninstall. Headless Sandbox has no logged-in user, so run it from a scheduled task under a throwaway local admin. It sets up winget itself and needs internet. The Store source doesn't work in Sandbox, so reinstalling from the Store has to be tested on a real PC.
 
+`tests/sandbox/run-network-in-sandbox.ps1` changes DNS for real and checks restore and automatic. Run it with `wsb exec -r System`.
+
 ## Layout
 
 | Folder | Purpose |
