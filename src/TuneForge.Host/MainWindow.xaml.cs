@@ -22,6 +22,15 @@ public partial class MainWindow : Window
     private readonly FeatureService _features;
     private readonly BuiltInAppService _builtIn;
     private readonly WingetClient _winget;
+    private readonly WindowsProcessRunner _runner = new();
+    private readonly LiveMonitor _live;
+    private readonly HealthService _health;
+    private readonly IStorageReader _storage = new WindowsStorageReader();
+    private readonly EventService _events = new(new WindowsEventSource());
+    private readonly NetworkTools _network = new(new WindowsNetworkProbe());
+    private readonly WindowsDnsAdapters _dns = new();
+    private WindowState _stateBeforeFullScreen;
+    private WindowStyle _styleBeforeFullScreen;
 
     public MainWindow()
     {
@@ -32,10 +41,12 @@ public partial class MainWindow : Window
         _cleanup = new CleanupService(CleanupService.Standard(paths), new WindowsRecycleBin());
         _startup = new StartupService(registry, paths);
         _services = new ServiceManager(registry, new WindowsServiceSource());
-        var runner = new WindowsProcessRunner();
-        _features = new FeatureService(runner, new WmiFeatureStateReader());
-        _builtIn = new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn());
-        _winget = new WingetClient(runner, AppCatalogs.LoadSoftware());
+        _features = new FeatureService(_runner, new WmiFeatureStateReader());
+        _builtIn = new BuiltInAppService(_runner, AppCatalogs.LoadBuiltIn());
+        _winget = new WingetClient(_runner, AppCatalogs.LoadSoftware());
+        var probe = new WindowsLiveProbe(_runner);
+        _live = new LiveMonitor(probe);
+        _health = new HealthService(_storage, _events, _startup, _cleanup, probe);
 
         InitializeComponent();
         Loaded += async (_, _) => await StartWebAsync();
@@ -71,6 +82,7 @@ public partial class MainWindow : Window
         };
         core.NewWindowRequested += (_, e) => e.Handled = true;
         core.WebMessageReceived += OnWebMessage;
+        core.ContainsFullScreenElementChanged += (_, _) => SetFullScreen(core.ContainsFullScreenElement);
         core.Navigate($"{AppOrigin}/index.html");
     }
 
@@ -148,6 +160,20 @@ public partial class MainWindow : Window
         "programs.list" => await Task.Run(_winget.ListInstalled),
         "programs.update" => await Task.Run(() => _winget.Update(Read<AppIdRequest>(payload).Id)),
         "programs.uninstall" => await Task.Run(() => _winget.Uninstall(Read<AppIdRequest>(payload).Id)),
+        "system.summary" => await Task.Run(SystemInfoReader.Read),
+        "monitor.live" => await Task.Run(_live.Sample),
+        "health.check" => await Task.Run(_health.Check),
+        "storage.read" => await Task.Run(_storage.Read),
+        "events.errors" => await Task.Run(() => EventService.Group(_events.RecentErrors())),
+        "events.read" => await Task.Run(() => _events.Read(Read<EventLogRequest>(payload))),
+        "report.save" => await SaveReportAsync(),
+        "network.ping" => await Task.Run(() => _network.Ping(Read<ProbeRequest>(payload))),
+        "network.tcping" => await Task.Run(() => _network.TcpPing(Read<ProbeRequest>(payload))),
+        "network.trace" => await Task.Run(() => _network.Trace(Read<ProbeRequest>(payload))),
+        "dns.status" => await Task.Run(ReadDnsStatus),
+        "dns.benchmark" => await Task.Run(() => _network.BenchmarkDns(_dns.ReadCurrent())),
+        "dns.set" => await _engine.SetDnsAsync(Read<DnsSetRequest>(payload)),
+        "dns.flush" => await Task.Run(FlushDns),
         _ => throw new EngineException("Unknown operation."),
     };
 
@@ -164,6 +190,52 @@ public partial class MainWindow : Window
             fromEngine.FreedBytes + mine.FreedBytes,
             fromEngine.Files + mine.Files,
             fromEngine.Skipped + mine.Skipped);
+    }
+
+    /// <summary>The report is only written where the person chooses, and never leaves the PC.</summary>
+    private async Task<ReportResult> SaveReportAsync()
+    {
+        var report = await Task.Run(_health.BuildReport);
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            FileName = $"TuneForge report {DateTime.Now:yyyy-MM-dd}.txt",
+            DefaultExt = ".txt",
+            Filter = "Text file|*.txt",
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+        };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return new ReportResult(false, null);
+        }
+
+        await File.WriteAllTextAsync(dialog.FileName, report);
+        return new ReportResult(true, dialog.FileName);
+    }
+
+    private DnsStatus ReadDnsStatus() =>
+        new(_dns.ReadCurrent(), DnsPresets.All, new FileDnsBackup(JournalLocation.DnsBackupPath).Exists);
+
+    private OperationResult FlushDns() =>
+        _runner.Run("ipconfig.exe", ["/flushdns"], TimeSpan.FromMinutes(1)) == 0
+            ? new OperationResult(true, "The DNS cache was cleared.")
+            : new OperationResult(false, "Windows couldn't clear the DNS cache.");
+
+    /// <summary>The monitor test covers the whole screen, including the taskbar.</summary>
+    private void SetFullScreen(bool on)
+    {
+        if (on)
+        {
+            _stateBeforeFullScreen = WindowState;
+            _styleBeforeFullScreen = WindowStyle;
+            WindowStyle = WindowStyle.None;
+            WindowState = WindowState.Normal;
+            WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            WindowStyle = _styleBeforeFullScreen;
+            WindowState = _stateBeforeFullScreen;
+        }
     }
 
     /// <summary>Runs in this process, so the refresh reaches the user's own Explorer windows.</summary>

@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Security.Principal;
+using System.Text.Json;
 using TuneForge.Contracts;
 using TuneForge.Engine.Core;
 using TuneForge.Engine.Core.Catalog;
@@ -22,8 +23,20 @@ const string Usage = """
       tuneforge-cli software install <id>
       tuneforge-cli programs list
       tuneforge-cli programs update|uninstall <id>
+      tuneforge-cli system
+      tuneforge-cli live
+      tuneforge-cli health
+      tuneforge-cli report <file>
+      tuneforge-cli errors
+      tuneforge-cli ping <host>
+      tuneforge-cli tcping <host> <port>
+      tuneforge-cli trace <host>
+      tuneforge-cli dns status
+      tuneforge-cli dns benchmark
+      tuneforge-cli dns set <provider>|automatic|previous
+      tuneforge-cli dns custom <primary> [secondary]
 
-    apply, undo, feature, repair, builtin remove and admin cleanup categories need an administrator terminal.
+    apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
 
 using var identity = WindowsIdentity.GetCurrent();
@@ -36,6 +49,17 @@ var cleanup = new CleanupService(CleanupService.Standard(UserPaths.For(identity.
 var features = new FeatureService(runner, new WmiFeatureStateReader());
 var builtIn = new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn());
 var winget = new WingetClient(runner, AppCatalogs.LoadSoftware());
+var liveProbe = new WindowsLiveProbe(runner);
+var events = new EventService(new WindowsEventSource());
+var health = new HealthService(
+    new WindowsStorageReader(),
+    events,
+    new StartupService(registry, UserPaths.For(identity.User!)),
+    cleanup,
+    liveProbe);
+var network = new NetworkTools(new WindowsNetworkProbe());
+var dnsAdapters = new WindowsDnsAdapters();
+var jsonOptions = new JsonSerializerOptions(RpcProtocol.Json) { WriteIndented = true };
 
 try
 {
@@ -58,6 +82,20 @@ try
         "programs" when args.Length == 2 && args[1] == "list" => ListPrograms(),
         "programs" when args.Length == 3 && args[1] == "update" => ChangeProgram(winget.Update, args[2]),
         "programs" when args.Length == 3 && args[1] == "uninstall" => ChangeProgram(winget.Uninstall, args[2]),
+        "system" => Show(SystemInfoReader.Read()),
+        "live" => Live(),
+        "health" => Show(health.Check()),
+        "report" when args.Length == 2 => SaveReport(args[1]),
+        "errors" => Show(EventService.Group(events.RecentErrors()).Take(20)),
+        "ping" when args.Length == 2 => Show(network.Ping(new ProbeRequest(args[1]))),
+        "tcping" when args.Length == 3 && int.TryParse(args[2], out var port) => Show(network.TcpPing(new ProbeRequest(args[1], port))),
+        "trace" when args.Length == 2 => Show(network.Trace(new ProbeRequest(args[1]))),
+        "dns" when args.Length == 2 && args[1] == "status" => Show(dnsAdapters.ReadCurrent()),
+        "dns" when args.Length == 2 && args[1] == "benchmark" => Show(network.BenchmarkDns(dnsAdapters.ReadCurrent())),
+        "dns" when args.Length == 3 && args[1] == "set" => Admin(() => SetDns(
+            args[2] is "automatic" or "previous" ? new DnsSetRequest(args[2]) : new DnsSetRequest("preset", args[2]))),
+        "dns" when args.Length >= 3 && args[1] == "custom" => Admin(() => SetDns(
+            new DnsSetRequest("custom", null, args[2], args.ElementAtOrDefault(3)))),
         _ => Help(),
     };
 }
@@ -71,6 +109,33 @@ int Report(OperationResult result)
 {
     Console.WriteLine(result.Message);
     return result.Ok ? 0 : 1;
+}
+
+int Show<T>(T value)
+{
+    Console.WriteLine(JsonSerializer.Serialize(value, jsonOptions));
+    return 0;
+}
+
+int Live()
+{
+    var monitor = new LiveMonitor(liveProbe);
+    monitor.Sample();
+    Thread.Sleep(2000);
+    return Show(monitor.Sample());
+}
+
+int SaveReport(string path)
+{
+    File.WriteAllText(path, health.BuildReport());
+    Console.WriteLine($"Saved {path}");
+    return 0;
+}
+
+int SetDns(DnsSetRequest request)
+{
+    JournalLocation.EnsureProtected();
+    return Report(new DnsService(runner, dnsAdapters, new FileDnsBackup(JournalLocation.DnsBackupPath)).Set(request));
 }
 
 int ListBuiltIn()

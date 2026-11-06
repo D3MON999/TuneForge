@@ -16,6 +16,7 @@ public static class RpcMethods
     public const string FeatureSet = "feature.set";
     public const string Repair = "repair.run";
     public const string BuiltInRemove = "builtin.remove";
+    public const string DnsSet = "dns.set";
 }
 
 public static class RpcErrorCodes

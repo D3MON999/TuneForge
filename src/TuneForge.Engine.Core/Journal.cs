@@ -32,6 +32,8 @@ public static class JournalLocation
 
     public static string DatabasePath => Path.Combine(Folder, "journal.db");
 
+    public static string DnsBackupPath => Path.Combine(Folder, "dns-backup.json");
+
     /// <summary>Creates the folder with admin-only write access. Call only from the elevated engine.</summary>
     public static void EnsureProtected()
     {

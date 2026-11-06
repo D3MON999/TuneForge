@@ -9,4 +9,5 @@ public sealed record SystemOperations(
     ServiceManager Services,
     FeatureService Features,
     RepairService Repair,
-    BuiltInAppService BuiltIn);
+    BuiltInAppService BuiltIn,
+    DnsService Dns);

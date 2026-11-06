@@ -15,8 +15,11 @@ import {
 import { useEffect, useState } from "react";
 import { AppsPage } from "./AppsPage";
 import { CleanupPage } from "./CleanupPage";
+import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
 import { HistoryPage } from "./HistoryPage";
+import { MonitorPage } from "./MonitorPage";
+import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
 import { applyTheme, loadTheme, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
@@ -95,8 +98,9 @@ export function App() {
       <main className="flex-1 overflow-y-auto p-8">
         <h1 className="text-2xl font-semibold tracking-tight">{page.label}</h1>
         <div className="mt-6 max-w-3xl">
-          {page.id === "dashboard" && <EngineCard />}
+          {page.id === "dashboard" && <DashboardPage />}
           {page.id === "settings" && (
+            <div className="flex flex-col gap-6">
             <div className="rounded-lg border border-border bg-card p-6">
               <label htmlFor="theme" className="block font-medium">
                 Theme
@@ -114,15 +118,16 @@ export function App() {
                 ))}
               </select>
             </div>
+            <EngineCard />
+            </div>
           )}
           {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
           {page.id === "history" && <HistoryPage />}
           {page.id === "cleanup" && <CleanupPage />}
           {page.id === "apps" && <AppsPage />}
           {page.id === "repair" && <RepairPage />}
-          {["network", "monitor"].includes(page.id) && (
-            <p className="text-muted-foreground">This page isn't built yet.</p>
-          )}
+          {page.id === "network" && <NetworkPage />}
+          {page.id === "monitor" && <MonitorPage />}
         </div>
       </main>
     </div>
