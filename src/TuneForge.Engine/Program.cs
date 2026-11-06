@@ -32,7 +32,8 @@ var system = new SystemOperations(
     new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings()),
     new SecurityService(runner),
     new BandwidthLimits(runner),
-    new BiosRestart(runner));
+    new BiosRestart(runner),
+    new FrameCapture(new WindowsDetachedStarter(), Path.Combine(AppContext.BaseDirectory, "tools", "PresentMon.exe"), JournalLocation.FrameCapturePath));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

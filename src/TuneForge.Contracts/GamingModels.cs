@@ -34,6 +34,21 @@ public sealed record GameProfileRequest(string GameId, GameBoosts Boosts);
 /// <summary>Written before a boost starts, so a crash can still put everything back.</summary>
 public sealed record ActiveBoost(string GameId, string Title, string? PreviousPlan, bool ChangedPlan, bool ChangedToasts, int? PreviousToasts);
 
+public sealed record FpsRequest(string Process, int? Seconds = null);
+
+public sealed record BenchmarkRequest(string GameId, string Label);
+
+public sealed record GameRequest(string GameId);
+
+public sealed record BenchmarkRecord(
+    string GameId,
+    string Title,
+    string Label,
+    string TimeUtc,
+    double AverageFps,
+    double OnePercentLowFps,
+    int Frames);
+
 public sealed record PowerPlan(string Id, string Name, bool Active);
 
 public sealed record PowerPlanRequest(string Id);

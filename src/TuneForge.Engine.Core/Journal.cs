@@ -36,6 +36,8 @@ public static class JournalLocation
 
     public static string AdvancedStatePath => Path.Combine(Folder, "advanced.json");
 
+    public static string FrameCapturePath => Path.Combine(Folder, "frames.csv");
+
     /// <summary>Creates the folder with admin-only write access. Call only from the elevated engine.</summary>
     public static void EnsureProtected()
     {

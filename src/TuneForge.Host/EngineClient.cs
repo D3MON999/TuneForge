@@ -68,6 +68,9 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> CancelBiosRestartAsync() =>
         RunAsync<OperationResult>(RpcMethods.BiosCancel, null, TimeSpan.FromMinutes(1));
 
+    public Task<OperationResult> StartFramesAsync(FpsRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.FpsStart, request, TimeSpan.FromSeconds(30));
+
     /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
     private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {

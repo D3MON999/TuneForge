@@ -24,6 +24,10 @@ vi.mock("./bridge", () => ({
     gamesVerify: vi.fn(),
     biosRestart: vi.fn(),
     biosCancel: vi.fn(),
+    benchmarkList: vi.fn(),
+    benchmarkRun: vi.fn(),
+    overlayStart: vi.fn(),
+    overlayStop: vi.fn(),
   },
 }));
 
@@ -59,6 +63,7 @@ beforeEach(() => {
   api.displayRead.mockResolvedValue({ name: "2560 x 1440", currentHz: 60, bestHz: 165 });
   api.powerParking.mockResolvedValue({ minimumCoresPercent: 10 });
   api.turboGet.mockResolvedValue(false);
+  api.benchmarkList.mockResolvedValue([]);
 });
 
 afterEach(cleanup);
@@ -144,6 +149,43 @@ describe("GamingPage", () => {
     expect(await screen.findByRole("button", { name: "Cancel restart" })).toBeTruthy();
   });
 
+  it("compares before and after benchmarks", async () => {
+    const run = (label: string, averageFps: number, onePercentLowFps: number) => ({
+      gameId: "a", title: "Solo Game", label, timeUtc: "2026-11-07T10:00:00Z", averageFps, onePercentLowFps, frames: 6000,
+    });
+    api.benchmarkList.mockResolvedValue([run("Before", 100, 50), run("After", 110, 60)]);
+    api.benchmarkRun.mockResolvedValue({ ok: false, message: "Start Solo Game first, then run the benchmark.", restartNeeded: false });
+    const user = userEvent.setup();
+    render(<GamingPage />);
+
+    expect(await screen.findByText("+10.0%")).toBeTruthy();
+    expect(screen.getByText("+20.0%")).toBeTruthy();
+
+    await user.selectOptions(screen.getByLabelText("Benchmark type"), "After");
+    await user.click(screen.getByRole("button", { name: "Run benchmark" }));
+
+    expect(api.benchmarkRun).toHaveBeenCalledWith("a", "After");
+    expect(await screen.findByText(/Start Solo Game first/)).toBeTruthy();
+  });
+
+  it("offers the overlay only for games without anti-cheat", async () => {
+    const user = userEvent.setup();
+    api.overlayStart.mockResolvedValue({ ok: true, message: "FPS is showing.", restartNeeded: false });
+    api.overlayStop.mockResolvedValue({ ok: true, message: "Hidden.", restartNeeded: false });
+    render(<GamingPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Boosts for Online Game" }));
+    expect(screen.getByText(/Off for this game, because it uses BattlEye/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /FPS for Online Game/ })).toBeNull();
+
+    await user.click(screen.getByRole("button", { name: "Boosts for Solo Game" }));
+    await user.click(screen.getByRole("button", { name: "Show FPS for Solo Game" }));
+    expect(api.overlayStart).toHaveBeenCalledWith("a");
+
+    await user.click(await screen.findByRole("button", { name: "Hide FPS for Solo Game" }));
+    expect(api.overlayStop).toHaveBeenCalled();
+  });
+
   it("repairs a Steam game", async () => {
     const user = userEvent.setup();
     api.gamesVerify.mockResolvedValue({ ok: true, message: "Checking.", restartNeeded: false });
@@ -174,7 +216,7 @@ describe("GamingPage", () => {
 
     await user.click(screen.getByRole("tab", { name: "Anti-cheat" }));
     expect(screen.getByText(/haven't been tested against each anti-cheat/)).toBeTruthy();
-    expect(screen.getByText("Skipped")).toBeTruthy();
+    expect(screen.getAllByText("Skipped")).toHaveLength(2);
 
     await user.click(screen.getByRole("tab", { name: "Tweaks" }));
     expect(screen.getByText("Gaming tweaks")).toBeTruthy();
