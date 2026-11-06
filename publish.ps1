@@ -25,6 +25,7 @@ function Invoke-Git {
 if (& $git -C $root status --porcelain) { throw 'Commit or discard your changes first.' }
 
 # Uses the sign-in Git already saved. It's only sent to GitHub and is never shown or stored here.
+$OutputEncoding = New-Object Text.UTF8Encoding($false)
 $saved = "protocol=https", "host=github.com", "" | & $git credential fill
 $token = ($saved | Where-Object { $_ -like 'password=*' }) -replace '^password=', ''
 if (-not $token) { throw 'Git has no GitHub sign-in. Push once to sign in, then try again.' }
