@@ -48,7 +48,6 @@ const string Usage = """
       tuneforge-cli limit <program.exe> <mbps>
       tuneforge-cli limit-remove <program.exe>
       tuneforge-cli limits
-      tuneforge-cli frames <process.exe> <seconds>
 
     apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
@@ -123,7 +122,6 @@ try
         "limit" when args.Length == 3 && long.TryParse(args[2], out var mbps) => Admin(() => Report(new BandwidthLimits(runner).Set(new BandwidthRule(args[1], mbps)))),
         "limit-remove" when args.Length == 2 => Admin(() => Report(new BandwidthLimits(runner).Remove(args[1]))),
         "limits" => Show(new BandwidthLimits(runner).List()),
-        "frames" when args.Length == 3 && int.TryParse(args[2], out var seconds) => Admin(() => Frames(args[1], seconds)),
         _ => Help(),
     };
 }
@@ -204,29 +202,6 @@ AdvancedService Advanced()
     }
 
     return new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings());
-}
-
-int Frames(string process, int seconds)
-{
-    JournalLocation.EnsureProtected();
-    var tool = Path.Combine(AppContext.BaseDirectory, "tools", "PresentMon.exe");
-    var started = new FrameCapture(new WindowsDetachedStarter(), tool, JournalLocation.FrameCapturePath).Start(new FpsRequest(process, seconds));
-    if (!started.Ok)
-    {
-        return Report(started);
-    }
-
-    Thread.Sleep((seconds + 3) * 1000);
-    if (!File.Exists(JournalLocation.FrameCapturePath))
-    {
-        Console.Error.WriteLine("No frames were recorded.");
-        return 1;
-    }
-
-    var lines = File.ReadLines(JournalLocation.FrameCapturePath).ToList();
-    Console.WriteLine($"lines {lines.Count}");
-    Console.WriteLine(lines.FirstOrDefault());
-    return Show(FrameStats.Summarize(FrameStats.ReadTimes(lines)));
 }
 
 int Speed()

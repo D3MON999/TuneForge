@@ -418,16 +418,6 @@ export interface GpuHealth {
   performance: string;
 }
 
-export interface BenchmarkRecord {
-  gameId: string;
-  title: string;
-  label: string;
-  timeUtc: string;
-  averageFps: number;
-  onePercentLowFps: number;
-  frames: number;
-}
-
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -569,10 +559,6 @@ export class Bridge {
   turboSet = (enabled: boolean) => this.call<boolean>("turbo.set", { enabled });
   gamesVerify = (gameId: string) => this.call<OperationResult>("games.verify", { gameId });
   crashOpen = () => this.call<OperationResult>("crash.open");
-  benchmarkList = () => this.call<BenchmarkRecord[]>("benchmark.list");
-  benchmarkRun = (gameId: string, label: string) => this.call<OperationResult>("benchmark.run", { gameId, label });
-  overlayStart = (gameId: string) => this.call<OperationResult>("overlay.start", { gameId });
-  overlayStop = () => this.call<OperationResult>("overlay.stop");
   updateCheck = () => this.call<UpdateStatus>("update.check");
   updateInstall = () => this.call<OperationResult>("update.install");
 }

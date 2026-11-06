@@ -23,7 +23,6 @@ public static class RpcMethods
     public const string BandwidthRemove = "bandwidth.remove";
     public const string BiosRestart = "bios.restart";
     public const string BiosCancel = "bios.cancel";
-    public const string FpsStart = "fps.start";
 }
 
 public static class RpcErrorCodes

@@ -14,5 +14,4 @@ public sealed record SystemOperations(
     AdvancedService Advanced,
     SecurityService Security,
     BandwidthLimits Bandwidth,
-    BiosRestart Bios,
-    FrameCapture Frames);
+    BiosRestart Bios);

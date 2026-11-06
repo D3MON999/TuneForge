@@ -40,9 +40,6 @@ public partial class MainWindow : Window
     private readonly GameScanner _gameScanner;
     private readonly WindowsRunningApps _apps = new();
     private readonly ProcessService _processes = new();
-    private const int BenchmarkSeconds = 60;
-    private readonly BenchmarkHistory _benchmarks = new(new SettingsStore(SettingsStore.DefaultPath));
-    private FpsOverlay? _overlay;
     private readonly WindowsDisplayModes _display = new();
     private readonly CloudflareSpeedProbe _speed = new();
     private readonly ConnectionScanner _connections = new(new WindowsProcessRunner());
@@ -312,10 +309,6 @@ public partial class MainWindow : Window
         "turbo.set" => await Task.Run(() => SetTurbo(Read<TurboRequest>(payload).Enabled)),
         "games.verify" => VerifySteamGame(Read<SteamVerifyRequest>(payload).GameId),
         "crash.open" => OpenCrashFolder(),
-        "benchmark.list" => _benchmarks.List(),
-        "benchmark.run" => await RunBenchmarkAsync(Read<BenchmarkRequest>(payload)),
-        "overlay.start" => await StartOverlayAsync(Read<GameRequest>(payload).GameId),
-        "overlay.stop" => StopOverlay(),
         "update.check" => await Task.Run(_updates.Check),
         "update.install" => await InstallUpdateAsync(),
         _ => throw new EngineException("Unknown operation."),
@@ -364,84 +357,6 @@ public partial class MainWindow : Window
 
         _ = Dispatcher.BeginInvoke(ExitApp);
         return new OperationResult(true, "Installing the update.");
-    }
-
-    private GameEntry FindGame(string id) =>
-        _games.FirstOrDefault(item => item.Id == id) ?? throw new CatalogRequestException("Unknown game.");
-
-    /// <summary>The game's own running process, or null if it isn't open.</summary>
-    private string? RunningProcess(GameEntry game)
-    {
-        var running = _apps.ProcessNames();
-        return game.ProcessNames.FirstOrDefault(running.Contains) is { } name ? $"{name}.exe" : null;
-    }
-
-    private async Task<OperationResult> RunBenchmarkAsync(BenchmarkRequest request)
-    {
-        var game = FindGame(request.GameId);
-        if (RunningProcess(game) is not { } process)
-        {
-            return new OperationResult(false, $"Start {game.Title} first, then run the benchmark.");
-        }
-
-        var started = await _engine.StartFramesAsync(new FpsRequest(process, BenchmarkSeconds));
-        if (!started.Ok)
-        {
-            return started;
-        }
-
-        await Task.Delay(TimeSpan.FromSeconds(BenchmarkSeconds + 3));
-        var summary = await Task.Run(() =>
-        {
-            try
-            {
-                return FrameStats.Summarize(FrameStats.ReadTimes(File.ReadLines(JournalLocation.FrameCapturePath)));
-            }
-            catch (IOException)
-            {
-                return null;
-            }
-        });
-        if (summary is null)
-        {
-            return new OperationResult(false, "No frames were recorded. Keep the game on screen and playing during the benchmark.");
-        }
-
-        var label = request.Label == "After" ? "After" : "Before";
-        var record = _benchmarks.Add(game, label, summary, DateTime.UtcNow);
-        return new OperationResult(true, $"{game.Title}: {record.AverageFps:0} FPS average, {record.OnePercentLowFps:0} FPS 1% low.");
-    }
-
-    private async Task<OperationResult> StartOverlayAsync(string gameId)
-    {
-        var game = FindGame(gameId);
-        if (game.AntiCheat is not null)
-        {
-            return new OperationResult(false, $"The FPS overlay is off for {game.Title}, because it uses {game.AntiCheat}.");
-        }
-
-        if (RunningProcess(game) is not { } process)
-        {
-            return new OperationResult(false, $"Start {game.Title} first, then show FPS.");
-        }
-
-        var started = await _engine.StartFramesAsync(new FpsRequest(process));
-        if (!started.Ok)
-        {
-            return started;
-        }
-
-        StopOverlay();
-        _overlay = new FpsOverlay(JournalLocation.FrameCapturePath, () => RunningProcess(game) is not null);
-        _overlay.Show();
-        return new OperationResult(true, "FPS is showing. It closes when the game does.");
-    }
-
-    private OperationResult StopOverlay()
-    {
-        _overlay?.Close();
-        _overlay = null;
-        return new OperationResult(true, "The FPS overlay is hidden.");
     }
 
     private bool SetTurbo(bool on)

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { bridge, type DisplayMode, type GameBoosts, type GameEntry, type GamingOverview, type OperationResult } from "./bridge";
-import { BenchmarkCard, BiosCard, FpsOverlayButton, TurboCard } from "./ExtraPanels";
+import { BiosCard, TurboCard } from "./ExtraPanels";
 import { TweaksPage } from "./TweaksPage";
 
 type Tab = "games" | "system" | "tweaks" | "anti-cheat";
@@ -77,7 +77,6 @@ function GamesTab() {
   return (
     <div>
       <TurboCard />
-      {games && games.length > 0 && <BenchmarkCard games={games} />}
       <p className="mb-3 text-muted-foreground">
         Boosts that apply while playing need TuneForge open or in the tray, and everything goes back when the game closes.
       </p>
@@ -111,7 +110,6 @@ function GamesTab() {
               {open === game.id && (
                 <div className="mt-3 flex flex-col gap-3">
                   <p className="text-sm break-all text-muted-foreground">{game.executable}</p>
-                  <FpsOverlayButton game={game} />
                   {game.launcher === "Steam" && (
                     <div className="flex items-center justify-between gap-3">
                       <span className="min-w-0">
@@ -343,15 +341,13 @@ const antiCheatRows: [string, string, string][] = [
   ["Power plan and notifications", "Allowed", "Changes Windows, not the game."],
   ["Closing other apps", "Allowed", "Only affects the apps you picked."],
   ["High priority", "Skipped", "It targets the game's own process, so TuneForge leaves protected games alone."],
-  ["FPS overlay", "Skipped", "It's a separate window, not code in the game, but it stays off to be safe."],
-  ["Benchmark", "Allowed", "Reads frame timing from Windows' event tracing. The game isn't touched."],
 ];
 
 function AntiCheatTab() {
   return (
     <div>
       <p className="mb-3 text-muted-foreground">
-        TuneForge never reads or changes a game's memory or files. These rules apply to any game where Easy Anti-Cheat, BattlEye, Vanguard or similar is found. They come from how each boost works, and haven't been tested against each anti-cheat.
+        TuneForge never reads or changes a game's memory or files, and has no overlay. These rules apply to any game where Easy Anti-Cheat, BattlEye, Vanguard or similar is found. They come from how each boost works, and haven't been tested against each anti-cheat.
       </p>
       <div className="overflow-x-auto rounded-md border border-border bg-card p-4">
         <table className="w-full text-left">

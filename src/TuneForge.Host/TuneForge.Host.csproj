@@ -21,6 +21,5 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\third-party\PresentMon\*" Link="tools\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

@@ -22,8 +22,7 @@ public sealed record AppSettings(
     IReadOnlyList<GameProfile>? Profiles = null,
     IReadOnlyList<string>? FocusApps = null,
     ActiveBoost? Boost = null,
-    string? LastBackupUtc = null,
-    IReadOnlyList<BenchmarkRecord>? Benchmarks = null);
+    string? LastBackupUtc = null);
 
 public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
 
