@@ -11,14 +11,23 @@ const string Usage = """
       tuneforge-cli apply <id>... [--preset minimal|standard|advanced] [--no-restore-point]
       tuneforge-cli history
       tuneforge-cli undo <change-number>
+      tuneforge-cli cleanup scan
+      tuneforge-cli cleanup run <category>...
+      tuneforge-cli features
+      tuneforge-cli feature <id> on|off
+      tuneforge-cli repair <id>
 
-    apply and undo need an administrator terminal.
+    apply, undo, feature, repair and admin cleanup categories need an administrator terminal.
     """;
 
 using var identity = WindowsIdentity.GetCurrent();
 var catalog = TweakCatalog.LoadEmbedded();
 var build = Environment.OSVersion.Version.Build;
 var registry = new WindowsRegistryStore(identity.User!);
+var runner = new WindowsProcessRunner();
+var elevated = new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+var cleanup = new CleanupService(CleanupService.Standard(UserPaths.For(identity.User!)), new WindowsRecycleBin());
+var features = new FeatureService(runner, new WmiFeatureStateReader());
 
 try
 {
@@ -28,6 +37,12 @@ try
         "history" => History(),
         "apply" => Admin(() => Apply(args[1..])),
         "undo" => Admin(() => Undo(args[1..])),
+        "cleanup" => Cleanup(args[1..]),
+        "features" => Features(),
+        "feature" when args.Length == 3 && args[2] is "on" or "off" =>
+            Admin(() => Report(features.Set(new FeatureSetRequest(args[1], args[2] == "on")))),
+        "repair" when args.Length == 2 =>
+            Admin(() => Report(new RepairService(runner, new WindowsDirectoryMover()).Run(new RepairRequest(args[1])))),
         _ => Help(),
     };
 }
@@ -35,6 +50,44 @@ catch (CatalogRequestException exception)
 {
     Console.Error.WriteLine(exception.Message);
     return 2;
+}
+
+int Report(OperationResult result)
+{
+    Console.WriteLine(result.Message);
+    return result.Ok ? 0 : 1;
+}
+
+int Cleanup(string[] options)
+{
+    if (options.FirstOrDefault() == "scan")
+    {
+        foreach (var category in cleanup.Scan())
+        {
+            Console.WriteLine($"{category.Id,-14} {category.Bytes,14} bytes {category.Files,8} files");
+        }
+
+        return 0;
+    }
+
+    if (options.FirstOrDefault() == "run" && options.Length > 1)
+    {
+        var result = cleanup.Clean(options[1..], elevated);
+        Console.WriteLine($"Freed {result.FreedBytes} bytes from {result.Files} files. {result.Skipped} skipped.");
+        return 0;
+    }
+
+    return Help();
+}
+
+int Features()
+{
+    foreach (var feature in features.List())
+    {
+        Console.WriteLine($"{feature.State,-12} {feature.Id}");
+    }
+
+    return 0;
 }
 
 int Help()

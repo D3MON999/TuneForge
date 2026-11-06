@@ -29,6 +29,21 @@ public sealed class EngineClient : IDisposable
     public Task<UndoResult> UndoAsync(long changeSetId) =>
         RunAsync<UndoResult>(RpcMethods.Undo, new UndoRequest(changeSetId), TimeSpan.FromMinutes(2));
 
+    public Task<CleanupResult> CleanAsync(IReadOnlyList<string> ids) =>
+        RunAsync<CleanupResult>(RpcMethods.Cleanup, new CleanupRequest(ids), TimeSpan.FromMinutes(30));
+
+    public Task<OperationResult> SetStartupAsync(StartupSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.StartupSet, request, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> SetServiceAsync(ServiceSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.ServiceSet, request, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> SetFeatureAsync(FeatureSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.FeatureSet, request, TimeSpan.FromHours(1));
+
+    public Task<OperationResult> RepairAsync(RepairRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.Repair, request, TimeSpan.FromHours(2));
+
     /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
     private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {

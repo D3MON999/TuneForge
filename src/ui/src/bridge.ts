@@ -42,11 +42,63 @@ export interface UndoResult {
 }
 
 export interface ChangeSet {
-  Id: number;
-  CreatedUtc: string;
-  RestorePoint: string;
-  UndoneUtc: string | null;
-  TweakIds: string[];
+  id: number;
+  createdUtc: string;
+  restorePoint: string;
+  undoneUtc?: string | null;
+  tweakIds: string[];
+}
+
+export interface OperationResult {
+  ok: boolean;
+  message: string;
+  restartNeeded: boolean;
+}
+
+export interface CleanupCategory {
+  id: string;
+  title: string;
+  note: string;
+  needsAdmin: boolean;
+  defaultOn: boolean;
+  bytes: number;
+  files: number;
+}
+
+export interface CleanupResult {
+  freedBytes: number;
+  files: number;
+  skipped: number;
+}
+
+export interface StartupEntry {
+  source: string;
+  name: string;
+  command: string;
+  enabled: boolean;
+  needsAdmin: boolean;
+}
+
+export interface ServiceEntry {
+  name: string;
+  displayName: string;
+  running: boolean;
+  startType: string;
+  protected: boolean;
+}
+
+export interface FeatureEntry {
+  id: string;
+  title: string;
+  note: string;
+  state: 'enabled' | 'disabled' | 'unavailable';
+}
+
+export interface RepairInfo {
+  id: string;
+  title: string;
+  note: string;
+  longRunning: boolean;
 }
 
 interface BridgeReply {
@@ -117,6 +169,18 @@ export class Bridge {
     this.call<ApplyResult>("tweaks.apply", { ids, createRestorePoint });
   history = () => this.call<ChangeSet[]>("history.list");
   undo = (changeSetId: number) => this.call<UndoResult>("history.undo", { changeSetId });
+  cleanupScan = () => this.call<CleanupCategory[]>("cleanup.scan");
+  cleanupRun = (ids: string[]) => this.call<CleanupResult>("cleanup.run", { ids });
+  startupList = () => this.call<StartupEntry[]>("startup.list");
+  startupSet = (source: string, name: string, enabled: boolean) =>
+    this.call<OperationResult>("startup.set", { source, name, enabled });
+  serviceList = () => this.call<ServiceEntry[]>("service.list");
+  serviceSet = (name: string, startType: string) =>
+    this.call<OperationResult>("service.set", { name, startType });
+  featureList = () => this.call<FeatureEntry[]>("feature.list");
+  featureSet = (id: string, enabled: boolean) => this.call<OperationResult>("feature.set", { id, enabled });
+  repairList = () => this.call<RepairInfo[]>("repair.list");
+  repairRun = (id: string) => this.call<OperationResult>("repair.run", { id });
 }
 
 export const bridge = new Bridge(window.chrome?.webview);

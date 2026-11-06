@@ -12,6 +12,12 @@ Needs the .NET 10 SDK, Node.js 24 and the WebView2 runtime.
 
 The app is written to `artifacts\app\Debug\TuneForge.exe`.
 
+## Real-system testing
+
+`tests/sandbox/run-in-sandbox.ps1` applies and undoes every tweak on a real registry inside Windows Sandbox, then runs presets, cleanup and repairs. It refuses to run anywhere else.
+
+Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run the script with `wsb exec -r System`. Use `wsb` rather than a `.wsb` file, because the Sandbox window can crash on this PC while the VM itself works.
+
 ## Layout
 
 | Folder | Purpose |
@@ -21,6 +27,7 @@ The app is written to `artifacts\app\Debug\TuneForge.exe`.
 | `src/TuneForge.Engine` | Admin process, started on request |
 | `src/TuneForge.Engine.Core` | Engine logic and pipe server |
 | `src/TuneForge.Contracts` | Messages shared by host and engine |
+| `src/TuneForge.Cli` | Command-line tool |
 | `design-system` | Design rules |
 
 ## Rules

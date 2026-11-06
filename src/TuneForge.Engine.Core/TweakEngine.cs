@@ -74,6 +74,16 @@ public sealed class TweakEngine(
         return new ApplyResult(changeSetId, restorePoint, results);
     }
 
+    /// <summary>Applies one change built by a service, journaled so History can undo it.</summary>
+    public OperationResult ApplyBuilt(TweakItem item)
+    {
+        var changeSetId = journal.BeginChangeSet(userSid, osBuild, appVersion, "skipped");
+        var result = ApplyItem(changeSetId, item);
+        return result.Status == TweakStates.Applied
+            ? new OperationResult(true, "Saved. You can undo this from History.", item.Restart == "reboot")
+            : new OperationResult(false, result.Message ?? "Windows refused this change.");
+    }
+
     public UndoResult Undo(long changeSetId)
     {
         var owner = journal.GetSetUser(changeSetId) ?? throw new CatalogRequestException("That change no longer exists.");

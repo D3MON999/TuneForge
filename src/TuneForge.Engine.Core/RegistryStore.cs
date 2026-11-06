@@ -30,6 +30,8 @@ public interface IRegistryStore
 
     RegistryValue? Read(string hive, string path, string name);
 
+    IReadOnlyList<string> ValueNames(string hive, string path);
+
     void Write(string hive, string path, string name, RegistryValue value);
 
     void DeleteValue(string hive, string path, string name);
@@ -67,6 +69,13 @@ public sealed class WindowsRegistryStore(SecurityIdentifier user) : IRegistrySto
             RegistryValueKind.Binary => new RegistryValue("binary", Convert.ToHexString((byte[])value)),
             _ => throw new NotSupportedException($"Unsupported registry type for {name}."),
         };
+    }
+
+    public IReadOnlyList<string> ValueNames(string hive, string path)
+    {
+        using var root = OpenRoot(hive, out var prefix);
+        using var key = root.OpenSubKey(prefix + path);
+        return key?.GetValueNames() ?? [];
     }
 
     public void Write(string hive, string path, string name, RegistryValue value)

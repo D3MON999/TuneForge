@@ -27,6 +27,12 @@ internal sealed class FakeRegistry : IRegistryStore
     public RegistryValue? Read(string hive, string path, string name) =>
         _values.GetValueOrDefault(Id(hive, path, name));
 
+    public IReadOnlyList<string> ValueNames(string hive, string path) =>
+        _values.Keys
+            .Where(id => id.StartsWith(Key(hive, path) + "|", StringComparison.OrdinalIgnoreCase))
+            .Select(id => id[(id.IndexOf('|') + 1)..])
+            .ToList();
+
     public void Write(string hive, string path, string name, RegistryValue value)
     {
         if (Refuse(path))

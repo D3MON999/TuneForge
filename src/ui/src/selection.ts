@@ -32,10 +32,13 @@ export function presetSelection(preset: Preset, all: readonly Tweak[]): Set<stri
   );
 }
 
+export function matchesText(text: string, query: string): boolean {
+  const lower = text.toLowerCase();
+  return query.toLowerCase().split(/\s+/).filter(Boolean).every((word) => lower.includes(word));
+}
+
 export function matchesSearch(tweak: Tweak, query: string): boolean {
-  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const text = `${tweak.title} ${tweak.impact ?? ""} ${tweak.category}`.toLowerCase();
-  return words.every((word) => text.includes(word));
+  return matchesText(`${tweak.title} ${tweak.impact ?? ""} ${tweak.category}`, query);
 }
 
 const restartOrder: RestartNeed[] = ["none", "explorer", "signout", "reboot"];

@@ -10,6 +10,11 @@ public static class RpcMethods
     public const string Shutdown = "engine.shutdown";
     public const string ApplyTweaks = "tweaks.apply";
     public const string Undo = "history.undo";
+    public const string Cleanup = "cleanup.run";
+    public const string StartupSet = "startup.set";
+    public const string ServiceSet = "service.set";
+    public const string FeatureSet = "feature.set";
+    public const string Repair = "repair.run";
 }
 
 public static class RpcErrorCodes
@@ -53,5 +58,7 @@ public static class RpcProtocol
     public static readonly JsonSerializerOptions Json = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true,
     };
 }

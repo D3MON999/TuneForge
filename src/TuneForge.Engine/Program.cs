@@ -18,9 +18,18 @@ parent.Exited += (_, _) => stop.Cancel();
 
 JournalLocation.EnsureProtected();
 using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
+var registry = new WindowsRegistryStore(arguments.Value.ClientSid);
+var userPaths = UserPaths.For(arguments.Value.ClientSid);
+var runner = new WindowsProcessRunner();
+var system = new SystemOperations(
+    new CleanupService(CleanupService.Standard(userPaths), new WindowsRecycleBin()),
+    new StartupService(registry, userPaths),
+    new ServiceManager(registry, new WindowsServiceSource()),
+    new FeatureService(runner, new WmiFeatureStateReader()),
+    new RepairService(runner, new WindowsDirectoryMover()));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
-    new WindowsRegistryStore(arguments.Value.ClientSid),
+    registry,
     journal,
     new SystemRestorePointService(),
     arguments.Value.ClientSid.Value,
@@ -33,7 +42,8 @@ var server = new EngineServer(
         arguments.Value.ClientSid,
         hostPath,
         TimeSpan.FromSeconds(30)),
-    tweaks);
+    tweaks,
+    system);
 
 try
 {

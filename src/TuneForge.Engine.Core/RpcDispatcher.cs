@@ -7,7 +7,7 @@ using TuneForge.Engine.Core.Catalog;
 namespace TuneForge.Engine.Core;
 
 /// <summary>Maps the fixed list of method names to handlers. Unknown names are refused.</summary>
-public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = null)
+public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = null, SystemOperations? system = null)
 {
     public string Handle(string line)
     {
@@ -36,6 +36,16 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, tweaks.Apply(Parameters<ApplyRequest>(request))),
                 RpcMethods.Undo when tweaks is not null =>
                     Success(request.Id, tweaks.Undo(Parameters<UndoRequest>(request).ChangeSetId)),
+                RpcMethods.Cleanup when system is not null =>
+                    Success(request.Id, system.Cleanup.Clean(Parameters<CleanupRequest>(request).Ids, elevated: true)),
+                RpcMethods.StartupSet when system is not null && tweaks is not null =>
+                    Success(request.Id, tweaks.ApplyBuilt(system.Startup.BuildChange(Parameters<StartupSetRequest>(request)))),
+                RpcMethods.ServiceSet when system is not null && tweaks is not null =>
+                    Success(request.Id, tweaks.ApplyBuilt(system.Services.BuildChange(Parameters<ServiceSetRequest>(request)))),
+                RpcMethods.FeatureSet when system is not null =>
+                    Success(request.Id, system.Features.Set(Parameters<FeatureSetRequest>(request))),
+                RpcMethods.Repair when system is not null =>
+                    Success(request.Id, system.Repair.Run(Parameters<RepairRequest>(request))),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),
             };
         }

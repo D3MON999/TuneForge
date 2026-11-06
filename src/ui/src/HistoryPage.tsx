@@ -52,25 +52,25 @@ export function HistoryPage() {
       {sets?.length === 0 && <p className="text-muted-foreground">No changes have been made yet.</p>}
 
       {sets?.map((set) => (
-        <article key={set.Id} className="rounded-md border border-border bg-card p-4">
+        <article key={set.id} className="rounded-md border border-border bg-card p-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="font-semibold">{new Date(set.CreatedUtc).toLocaleString()}</h2>
+              <h2 className="font-semibold">{new Date(set.createdUtc).toLocaleString()}</h2>
               <p className="text-muted-foreground">
-                {set.TweakIds.length} {set.TweakIds.length === 1 ? "tweak" : "tweaks"}
-                {set.UndoneUtc ? ", undone" : ""}
+                {set.tweakIds.length} {set.tweakIds.length === 1 ? "tweak" : "tweaks"}
+                {set.undoneUtc ? ", undone" : ""}
               </p>
             </div>
-            {!set.UndoneUtc && set.TweakIds.length > 0 && (
+            {!set.undoneUtc && set.tweakIds.length > 0 && (
               <button
                 type="button"
                 disabled={undoing !== null}
-                aria-busy={undoing === set.Id}
-                onClick={() => undo(set.Id)}
+                aria-busy={undoing === set.id}
+                onClick={() => undo(set.id)}
                 className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-border px-4 font-medium disabled:cursor-wait disabled:opacity-60"
               >
-                {undoing === set.Id && <LoaderCircle aria-hidden="true" className="size-5 animate-spin" />}
-                {undoing === set.Id ? "Undoing" : "Undo"}
+                {undoing === set.id && <LoaderCircle aria-hidden="true" className="size-5 animate-spin" />}
+                {undoing === set.id ? "Undoing" : "Undo"}
               </button>
             )}
           </div>

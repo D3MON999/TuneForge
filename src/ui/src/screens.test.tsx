@@ -209,8 +209,8 @@ describe("TweaksPage", () => {
 
 describe("HistoryPage", () => {
   const sets: ChangeSet[] = [
-    { Id: 2, CreatedUtc: "2026-11-06T10:00:00.0000000Z", RestorePoint: "requested", UndoneUtc: null, TweakIds: ["a", "b"] },
-    { Id: 1, CreatedUtc: "2026-11-05T10:00:00.0000000Z", RestorePoint: "skipped", UndoneUtc: "2026-11-06T09:00:00Z", TweakIds: ["a"] },
+    { id: 2, createdUtc: "2026-11-06T10:00:00.0000000Z", restorePoint: "requested", undoneUtc: null, tweakIds: ["a", "b"] },
+    { id: 1, createdUtc: "2026-11-05T10:00:00.0000000Z", restorePoint: "skipped", undoneUtc: "2026-11-06T09:00:00Z", tweakIds: ["a"] },
   ];
 
   it("says when there is no history", async () => {

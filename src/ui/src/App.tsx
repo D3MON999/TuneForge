@@ -13,8 +13,11 @@ import {
   Wrench,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { AppsPage } from "./AppsPage";
+import { CleanupPage } from "./CleanupPage";
 import { EngineCard } from "./EngineCard";
 import { HistoryPage } from "./HistoryPage";
+import { RepairPage } from "./RepairPage";
 import { applyTheme, loadTheme, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
 
@@ -114,7 +117,10 @@ export function App() {
           )}
           {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
           {page.id === "history" && <HistoryPage />}
-          {!["dashboard", "settings", "history"].includes(page.id) && !tweakPages[page.id] && (
+          {page.id === "cleanup" && <CleanupPage />}
+          {page.id === "apps" && <AppsPage />}
+          {page.id === "repair" && <RepairPage />}
+          {["network", "monitor"].includes(page.id) && (
             <p className="text-muted-foreground">This page isn't built yet.</p>
           )}
         </div>
