@@ -35,6 +35,8 @@ const string Usage = """
       tuneforge-cli dns benchmark
       tuneforge-cli dns set <provider>|automatic|previous
       tuneforge-cli dns custom <primary> [secondary]
+      tuneforge-cli memory clean
+      tuneforge-cli autostart status|on|off
 
     apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
@@ -96,6 +98,8 @@ try
             args[2] is "automatic" or "previous" ? new DnsSetRequest(args[2]) : new DnsSetRequest("preset", args[2]))),
         "dns" when args.Length >= 3 && args[1] == "custom" => Admin(() => SetDns(
             new DnsSetRequest("custom", null, args[2], args.ElementAtOrDefault(3)))),
+        "memory" when args.Length == 2 && args[1] == "clean" => Show(new WindowsMemoryTrimmer(liveProbe).Trim()),
+        "autostart" when args.Length == 2 && args[1] is "status" or "on" or "off" => Autostart(args[1]),
         _ => Help(),
     };
 }
@@ -136,6 +140,18 @@ int SetDns(DnsSetRequest request)
 {
     JournalLocation.EnsureProtected();
     return Report(new DnsService(runner, dnsAdapters, new FileDnsBackup(JournalLocation.DnsBackupPath)).Set(request));
+}
+
+int Autostart(string action)
+{
+    var autostart = new WindowsAutostart();
+    if (action != "status")
+    {
+        autostart.Set(action == "on", Path.Combine(AppContext.BaseDirectory, "TuneForge.exe"));
+    }
+
+    Console.WriteLine(autostart.Enabled ? "on" : "off");
+    return 0;
 }
 
 int ListBuiltIn()

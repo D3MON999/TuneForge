@@ -29,6 +29,11 @@ public partial class MainWindow : Window
     private readonly EventService _events = new(new WindowsEventSource());
     private readonly NetworkTools _network = new(new WindowsNetworkProbe());
     private readonly WindowsDnsAdapters _dns = new();
+    private readonly SettingsStore _settings = new(SettingsStore.DefaultPath);
+    private readonly WindowsAutostart _autostart = new();
+    private readonly WindowsMemoryTrimmer _trimmer;
+    private readonly TrayAgent _tray;
+    private bool _exiting;
     private WindowState _stateBeforeFullScreen;
     private WindowStyle _styleBeforeFullScreen;
 
@@ -47,10 +52,62 @@ public partial class MainWindow : Window
         var probe = new WindowsLiveProbe(_runner);
         _live = new LiveMonitor(probe);
         _health = new HealthService(_storage, _events, _startup, _cleanup, probe);
+        _trimmer = new WindowsMemoryTrimmer(probe);
+        _tray = new TrayAgent(_settings, new AutomationActions(_cleanup, _startup, probe, _trimmer), ShowFromTray, ExitApp);
+        _tray.Apply(ReadSettings().Choices);
 
         InitializeComponent();
         Loaded += async (_, _) => await StartWebAsync();
-        Closed += (_, _) => _engine.Dispose();
+        Closing += (_, e) =>
+        {
+            if (!_exiting && ReadSettings().Choices.CloseToTray)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+        };
+        Closed += (_, _) => ExitApp();
+    }
+
+    public void ShowFromTray()
+    {
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
+    }
+
+    private void ExitApp()
+    {
+        if (_exiting)
+        {
+            return;
+        }
+
+        _exiting = true;
+        Close();
+        _tray.Dispose();
+        _engine.Dispose();
+        Application.Current.Shutdown();
+    }
+
+    /// <summary>The Windows setting wins, because it can be changed outside the app.</summary>
+    private AppSettings ReadSettings()
+    {
+        var settings = _settings.Load();
+        return settings with { Choices = settings.Choices with { StartWithWindows = _autostart.Enabled } };
+    }
+
+    private AppSettings SaveSettings(SettingsUpdate choices)
+    {
+        _autostart.Set(choices.StartWithWindows, Environment.ProcessPath!);
+        _settings.SaveChoices(choices);
+        var saved = ReadSettings();
+        _tray.Apply(saved.Choices);
+        return saved;
     }
 
     private async Task StartWebAsync()
@@ -174,6 +231,9 @@ public partial class MainWindow : Window
         "dns.benchmark" => await Task.Run(() => _network.BenchmarkDns(_dns.ReadCurrent())),
         "dns.set" => await _engine.SetDnsAsync(Read<DnsSetRequest>(payload)),
         "dns.flush" => await Task.Run(FlushDns),
+        "settings.get" => ReadSettings(),
+        "settings.save" => SaveSettings(Read<SettingsUpdate>(payload)),
+        "memory.clean" => await Task.Run(_trimmer.Trim),
         _ => throw new EngineException("Unknown operation."),
     };
 

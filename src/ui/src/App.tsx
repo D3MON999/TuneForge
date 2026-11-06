@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AppsPage } from "./AppsPage";
+import { AutomationSettings, MemoryCard } from "./AutomationPanels";
 import { CleanupPage } from "./CleanupPage";
 import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
@@ -118,12 +119,18 @@ export function App() {
                 ))}
               </select>
             </div>
+            <AutomationSettings />
             <EngineCard />
             </div>
           )}
           {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
           {page.id === "history" && <HistoryPage />}
-          {page.id === "cleanup" && <CleanupPage />}
+          {page.id === "cleanup" && (
+            <>
+              <CleanupPage />
+              <MemoryCard />
+            </>
+          )}
           {page.id === "apps" && <AppsPage />}
           {page.id === "repair" && <RepairPage />}
           {page.id === "network" && <NetworkPage />}

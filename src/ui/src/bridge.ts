@@ -278,6 +278,30 @@ export interface DnsSetRequest {
   secondary?: string;
 }
 
+export interface SettingsChoices {
+  closeToTray: boolean;
+  startWithWindows: boolean;
+  notifications: boolean;
+  memoryAuto: boolean;
+  memoryThreshold: number;
+  cleanAuto: boolean;
+  cleanDays: number;
+  startupWatch: boolean;
+}
+
+export interface AppSettings {
+  choices: SettingsChoices;
+  lastCleanUtc?: string | null;
+}
+
+export interface MemoryResult {
+  usedBeforeBytes: number;
+  usedAfterBytes: number;
+  totalBytes: number;
+  processes: number;
+  freedBytes: number;
+}
+
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -380,6 +404,9 @@ export class Bridge {
   dnsBenchmark = () => this.call<DnsBenchmarkRow[]>("dns.benchmark");
   dnsSet = (request: DnsSetRequest) => this.call<OperationResult>("dns.set", request);
   dnsFlush = () => this.call<OperationResult>("dns.flush");
+  settingsGet = () => this.call<AppSettings>("settings.get");
+  settingsSave = (choices: SettingsChoices) => this.call<AppSettings>("settings.save", choices);
+  memoryClean = () => this.call<MemoryResult>("memory.clean");
 }
 
 export const bridge = new Bridge(window.chrome?.webview);

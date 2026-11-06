@@ -48,9 +48,12 @@ function LiveTiles() {
     // Each read waits for the last, so a slow PC can't pile up requests.
     async function read() {
       try {
-        const next = await bridge.monitorLive();
-        if (!stopped) {
-          setStats(next);
+        // Nothing is read while the window is hidden in the tray.
+        if (!document.hidden) {
+          const next = await bridge.monitorLive();
+          if (!stopped) {
+            setStats(next);
+          }
         }
       } catch {
         // The next read tries again.
