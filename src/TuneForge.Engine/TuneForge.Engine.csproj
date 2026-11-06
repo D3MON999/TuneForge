@@ -3,6 +3,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>TuneForge.Engine</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\assets\TuneForge.ico</ApplicationIcon>
     <StartupHookSupport>false</StartupHookSupport>
     <OutputPath>$(AppOutput)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

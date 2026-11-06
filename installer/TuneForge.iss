@@ -21,6 +21,7 @@ OutputBaseFilename=TuneForge-Setup-{#AppVersion}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile={#SourcePath}..\assets\TuneForge.ico
 UninstallDisplayIcon={app}\TuneForge.exe
 CloseApplications=force
 RestartApplications=no

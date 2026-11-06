@@ -7,7 +7,11 @@
     <RootNamespace>TuneForge.Host</RootNamespace>
     <OutputPath>$(AppOutput)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ApplicationIcon>..\..\assets\TuneForge.ico</ApplicationIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="..\..\assets\TuneForge.ico" Link="TuneForge.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Using Remove="System.Windows.Forms" />
     <Using Remove="System.Drawing" />

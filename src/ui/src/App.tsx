@@ -1,6 +1,5 @@
 import {
   Activity,
-  Flame,
   Gamepad2,
   Globe,
   History,
@@ -26,6 +25,7 @@ import { HistoryPage } from "./HistoryPage";
 import { MonitorPage } from "./MonitorPage";
 import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
+import { Logo } from "./Logo";
 import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
@@ -135,7 +135,7 @@ export function App() {
     <div className="flex h-full">
       <nav aria-label="Main" className="relative z-10 flex w-56 shrink-0 flex-col bg-sidebar p-2">
         <p className="flex items-center gap-2.5 px-3 pt-2 pb-4 text-[15px] font-semibold">
-          <Flame aria-hidden="true" className="size-5 text-primary" />
+          <Logo />
           TuneForge
         </p>
         <GlobalSearch onOpen={open} />

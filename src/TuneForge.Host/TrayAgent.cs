@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -13,7 +12,7 @@ namespace TuneForge.Host;
 public sealed class TrayAgent : IDisposable
 {
     private readonly NotifyIcon _icon;
-    private readonly nint _iconHandle;
+    private readonly Icon _trayImage;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMinutes(1) };
     private readonly DispatcherTimer _gameTimer = new() { Interval = TimeSpan.FromSeconds(5) };
     private readonly AutomationRunner _runner;
@@ -27,9 +26,9 @@ public sealed class TrayAgent : IDisposable
         menu.Items.Add("Open TuneForge", null, (_, _) => open());
         menu.Items.Add("Exit", null, (_, _) => exit());
 
-        using var bitmap = DrawIcon();
-        _iconHandle = bitmap.GetHicon();
-        _icon = new NotifyIcon { Icon = Icon.FromHandle(_iconHandle), Text = "TuneForge", ContextMenuStrip = menu };
+        using var image = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/TuneForge.ico")).Stream;
+        _trayImage = new Icon(image, SystemInformation.SmallIconSize);
+        _icon = new NotifyIcon { Icon = _trayImage, Text = "TuneForge", ContextMenuStrip = menu };
         _icon.DoubleClick += (_, _) => open();
 
         _runner = new AutomationRunner(settings, actions, () => DateTimeOffset.UtcNow, Notify);
@@ -92,28 +91,12 @@ public sealed class TrayAgent : IDisposable
         });
     }
 
-    private static Bitmap DrawIcon()
-    {
-        var bitmap = new Bitmap(32, 32);
-        using var graphics = Graphics.FromImage(bitmap);
-        using var background = new SolidBrush(Color.FromArgb(0x25, 0x63, 0xEB));
-        using var bar = new SolidBrush(Color.White);
-        graphics.FillRectangle(background, 0, 0, 32, 32);
-        graphics.FillRectangle(bar, 7, 7, 18, 5);
-        graphics.FillRectangle(bar, 13, 7, 6, 18);
-        return bitmap;
-    }
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool DestroyIcon(nint icon);
-
     public void Dispose()
     {
         _timer.Stop();
         _gameTimer.Stop();
         _icon.Visible = false;
         _icon.Dispose();
-        DestroyIcon(_iconHandle);
+        _trayImage.Dispose();
     }
 }

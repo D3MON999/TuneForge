@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>tuneforge-cli</AssemblyName>
+    <ApplicationIcon>..\..\assets\TuneForge.ico</ApplicationIcon>
     <OutputPath>$(AppOutput)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
