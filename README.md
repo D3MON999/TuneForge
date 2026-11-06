@@ -1,6 +1,6 @@
 # TuneForge
 
-A Windows PC optimizer for friends and family.
+All-in-one Windows optimizer with tweaks you can undo, cleanup, app management, game boosts and network tools.
 
 ## Build
 
