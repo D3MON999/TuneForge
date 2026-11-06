@@ -56,6 +56,18 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> SetSecurityAsync(SecuritySetRequest request) =>
         RunAsync<OperationResult>(RpcMethods.SecuritySet, request, TimeSpan.FromMinutes(3));
 
+    public Task<OperationResult> SetBandwidthAsync(BandwidthRule rule) =>
+        RunAsync<OperationResult>(RpcMethods.BandwidthSet, rule, TimeSpan.FromMinutes(3));
+
+    public Task<OperationResult> RemoveBandwidthAsync(BandwidthRule rule) =>
+        RunAsync<OperationResult>(RpcMethods.BandwidthRemove, rule, TimeSpan.FromMinutes(2));
+
+    public Task<OperationResult> RestartToBiosAsync() =>
+        RunAsync<OperationResult>(RpcMethods.BiosRestart, null, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> CancelBiosRestartAsync() =>
+        RunAsync<OperationResult>(RpcMethods.BiosCancel, null, TimeSpan.FromMinutes(1));
+
     /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
     private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {

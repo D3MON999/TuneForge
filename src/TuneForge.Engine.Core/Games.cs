@@ -496,6 +496,7 @@ public sealed class GameBooster(
     Action<string, string> notify)
 {
     private const int ToastsOff = 0;
+    private const string TurboId = "turbo";
 
     public bool HasWork => store.Load() is { Profiles: { Count: > 0 } profiles } && profiles.Any(profile => profile.Boosts.AnyWhileRunning);
 
@@ -519,10 +520,31 @@ public sealed class GameBooster(
         });
     }
 
+    public bool TurboOn => store.Load().Boost?.GameId == TurboId;
+
+    /// <summary>Turbo is a boost with no game attached, so it stays on until it's turned off.</summary>
+    public void SetTurbo(bool on)
+    {
+        var current = store.Load();
+        if (on && current.Boost is null)
+        {
+            Start(new GameProfile(TurboId, "Turbo mode", string.Empty, [], null, new GameBoosts(PowerBoost: true, Focus: true)), current);
+        }
+        else if (!on && current.Boost?.GameId == TurboId)
+        {
+            Stop(current.Boost);
+        }
+    }
+
     public void Tick()
     {
         var current = store.Load();
         var running = apps.ProcessNames();
+        if (current.Boost?.GameId == TurboId)
+        {
+            return;
+        }
+
         if (current.Boost is { } boost)
         {
             var profile = current.Profiles?.FirstOrDefault(item => item.GameId == boost.GameId);
@@ -584,6 +606,7 @@ public sealed class GameBooster(
         var current = store.Load();
         if (current.Boost is { } boost)
         {
+            // Turbo has no game to watch, so after a crash or restart it simply ends.
             var profile = current.Profiles?.FirstOrDefault(item => item.GameId == boost.GameId);
             var running = apps.ProcessNames();
             if (profile is null || !profile.ProcessNames.Any(running.Contains))

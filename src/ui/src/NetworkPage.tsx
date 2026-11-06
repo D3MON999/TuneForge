@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import {
   bridge,
+  type ConnectionEntry,
   type DnsBenchmarkRow,
   type DnsSetRequest,
   type DnsStatus,
@@ -8,13 +9,15 @@ import {
   type ProbeSummary,
   type TraceResult,
 } from "./bridge";
+import { BandwidthCard, PingMonitor, SpeedCard } from "./ExtraPanels";
 
-type Tab = "tests" | "dns";
+type Tab = "tests" | "dns" | "connections";
 type Tool = "ping" | "tcping" | "trace";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "tests", label: "Connection tests" },
   { id: "dns", label: "DNS" },
+  { id: "connections", label: "Connections" },
 ];
 
 const buttonClass =
@@ -25,8 +28,91 @@ const fieldClass = "min-h-11 rounded-md border border-border bg-card px-3";
 
 const ms = (value?: number | null) => (value == null ? "None" : `${value.toFixed(1)} ms`);
 
-export function NetworkPage() {
-  const [tab, setTab] = useState<Tab>("tests");
+function ConnectionsTab() {
+  const [rows, setRows] = useState<ConnectionEntry[] | null>(null);
+  const [history, setHistory] = useState<{ title: string; timeUtc: string }[]>([]);
+  const [listening, setListening] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const scan = useCallback(() => {
+    bridge.connectionsScan().then(
+      (found) => {
+        setRows(found);
+        bridge.connectionsHistory().then(setHistory, () => setHistory([]));
+      },
+      (reason: Error) => setError(reason.message),
+    );
+  }, []);
+  useEffect(scan, [scan]);
+
+  if (error) {
+    return <p role="alert" className="font-medium text-destructive">{error}</p>;
+  }
+
+  const shown = (rows ?? []).filter((row) => row.listening === listening);
+  return (
+    <div>
+      <p className="mb-3 text-muted-foreground">Which programs are connected to the internet, and which are waiting for connections. Unknown programs are worth a closer look.</p>
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div role="group" aria-label="Connection type" className="flex gap-0.5 rounded-md bg-muted p-[3px]">
+          {[false, true].map((value) => (
+            <button
+              key={String(value)}
+              type="button"
+              aria-pressed={listening === value}
+              onClick={() => setListening(value)}
+              className={`min-h-8 cursor-pointer rounded-md px-3.5 font-medium ${listening === value ? "bg-card" : "text-muted-foreground"}`}
+            >
+              {value ? "Open ports" : "Connected"}
+            </button>
+          ))}
+        </div>
+        <button type="button" onClick={scan} className={buttonClass}>
+          Scan again
+        </button>
+      </div>
+      {!rows && <p className="text-muted-foreground">Reading connections.</p>}
+      <div className="overflow-x-auto rounded-md border border-border bg-card p-3">
+        <table className="w-full text-left text-sm tabular-nums">
+          <thead className="text-muted-foreground">
+            <tr>
+              <th scope="col" className="pr-4 font-medium">Program</th>
+              <th scope="col" className="pr-4 font-medium">{listening ? "Port" : "Connected to"}</th>
+              <th scope="col" className="font-medium">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shown.slice(0, 200).map((row, index) => (
+              <tr key={index}>
+                <td className="pr-4">{row.program}</td>
+                <td className="pr-4">{listening ? row.local : row.remote}</td>
+                <td>{row.protocol}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {history.length > 0 && (
+        <section aria-labelledby="seen-title" className="mt-5">
+          <h2 id="seen-title" className="mb-2 font-semibold text-muted-foreground">
+            Seen since TuneForge opened
+          </h2>
+          <ul className="flex flex-col gap-1 text-sm">
+            {history.slice(0, 30).map((item) => (
+              <li key={item.title} className="flex justify-between gap-3">
+                <span className="min-w-0 break-all">{item.title}</span>
+                <span className="shrink-0 text-muted-foreground">{new Date(item.timeUtc).toLocaleTimeString()}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  );
+}
+
+export function NetworkPage({ initialTab }: { initialTab?: string }) {
+  const [tab, setTab] = useState<Tab>((initialTab as Tab) ?? "tests");
 
   return (
     <div>
@@ -47,7 +133,16 @@ export function NetworkPage() {
         ))}
       </div>
       <div role="tabpanel" aria-label={tabs.find((item) => item.id === tab)?.label} className="mt-4">
-        {tab === "tests" ? <ConnectionTests /> : <DnsTab />}
+        {tab === "tests" && (
+          <div className="flex flex-col gap-5">
+            <ConnectionTests />
+            <SpeedCard />
+            <PingMonitor />
+            <BandwidthCard />
+          </div>
+        )}
+        {tab === "dns" && <DnsTab />}
+        {tab === "connections" && <ConnectionsTab />}
       </div>
     </div>
   );

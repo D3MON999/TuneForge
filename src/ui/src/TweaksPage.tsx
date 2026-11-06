@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type Tweak } from "./bridge";
+import { profileChoices, profileIds } from "./profiles";
 import { ReviewDialog } from "./ReviewDialog";
 import { matchesSearch, type Preset, presetOrder, presetSelection, toggle } from "./selection";
 
@@ -71,11 +72,19 @@ const groupLabels: Record<string, string> = {
 
 const presetLabels: Record<Preset, string> = { minimal: "Minimal", standard: "Standard", advanced: "Advanced" };
 
-export function TweaksPage({ categories, showPresets = false }: { categories: string[]; showPresets?: boolean }) {
+export function TweaksPage({
+  categories,
+  showPresets = false,
+  initialQuery = "",
+}: {
+  categories: string[];
+  showPresets?: boolean;
+  initialQuery?: string;
+}) {
   const [tweaks, setTweaks] = useState<Tweak[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [reviewing, setReviewing] = useState<string[] | null>(null);
 
   const load = useCallback(() => {
@@ -127,6 +136,17 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
                 className="min-h-8 cursor-pointer rounded-md px-3.5 font-medium text-muted-foreground hover:bg-card hover:text-foreground"
               >
                 {presetLabels[preset]}
+              </button>
+            ))}
+            {profileChoices.map((profile) => (
+              <button
+                key={profile.id}
+                type="button"
+                title={`Pick changes suited to ${profile.label.toLowerCase()}`}
+                onClick={() => setSelected(new Set(profileIds([profile.id], tweaks)))}
+                className="min-h-8 cursor-pointer rounded-md px-3.5 font-medium text-muted-foreground hover:bg-card hover:text-foreground"
+              >
+                {profile.label}
               </button>
             ))}
           </div>

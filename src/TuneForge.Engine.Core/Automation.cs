@@ -79,6 +79,8 @@ public interface IAutomationActions
     CleanupResult CleanFiles();
 
     IReadOnlyList<string> StartupNames();
+
+    OperationResult BackupRegistry();
 }
 
 /// <summary>
@@ -93,6 +95,7 @@ public sealed class AutomationRunner(
 {
     private const double Megabyte = 1024d * 1024;
     private static readonly TimeSpan MemoryRest = TimeSpan.FromMinutes(30);
+    private static readonly TimeSpan BackupRest = TimeSpan.FromDays(7);
 
     public void Tick()
     {
@@ -110,6 +113,16 @@ public sealed class AutomationRunner(
         if (settings.Choices.StartupWatch)
         {
             Startup(settings);
+        }
+
+        if (settings.Choices.RegistryBackup && Elapsed(settings.LastBackupUtc, BackupRest))
+        {
+            var result = actions.BackupRegistry();
+            store.Update(current => current with { LastBackupUtc = Stamp() });
+            if (!result.Ok)
+            {
+                Tell(settings, "Registry backup failed", result.Message);
+            }
         }
     }
 
@@ -187,8 +200,10 @@ public sealed class AutomationRunner(
 }
 
 /// <summary>Host actions, using the same services as the Cleanup and Startup pages.</summary>
-public sealed class AutomationActions(CleanupService cleanup, StartupService startup, ILiveProbe live, IMemoryTrimmer trimmer) : IAutomationActions
+public sealed class AutomationActions(CleanupService cleanup, StartupService startup, ILiveProbe live, IMemoryTrimmer trimmer, RegistryBackup backup) : IAutomationActions
 {
+    public OperationResult BackupRegistry() => backup.Run(DateTime.Now);
+
     public double MemoryPercent()
     {
         var (used, total) = live.ReadMemory();

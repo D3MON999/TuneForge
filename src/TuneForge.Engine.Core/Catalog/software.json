@@ -5,1435 +5,1674 @@
                       "id":  "Microsoft.DotNet.DesktopRuntime.10",
                       "title":  ".NET Desktop Runtime 10",
                       "note":  ".NET Desktop Runtime 10 is a runtime environment required for running applications developed with .NET 10.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "dotnet-10.0-runtime"
                   },
                   {
                       "id":  "Microsoft.DotNet.DesktopRuntime.6",
                       "title":  ".NET Desktop Runtime 6",
                       "note":  ".NET Desktop Runtime 6 is a runtime environment required for running applications developed with .NET 6.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "dotnet-6.0-runtime"
                   },
                   {
                       "id":  "Microsoft.DotNet.DesktopRuntime.8",
                       "title":  ".NET Desktop Runtime 8",
                       "note":  ".NET Desktop Runtime 8 is a runtime environment required for running applications developed with .NET 8.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "dotnet-8.0-runtime"
                   },
                   {
                       "id":  "Microsoft.DotNet.DesktopRuntime.9",
                       "title":  ".NET Desktop Runtime 9",
                       "note":  ".NET Desktop Runtime 9 is a runtime environment required for running applications developed with .NET 9.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "dotnet-9.0-runtime"
                   },
                   {
                       "id":  "AgileBits.1Password",
                       "title":  "1Password",
                       "note":  "1Password is a password manager that allows you to store and manage your passwords securely.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "1password"
                   },
                   {
                       "id":  "7zip.7zip",
                       "title":  "7-Zip",
                       "note":  "7-Zip is a free and open-source file archiver utility.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "7zip"
                   },
                   {
                       "id":  "amir1376.ABDownloadManager",
                       "title":  "AB Download Manager",
                       "note":  "AB Download Manager is an open-source download accelerator and manager with multi-threaded downloads, queue scheduling, speed limiting, a...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "ab-download-manager"
                   },
                   {
                       "id":  "Adobe.Acrobat.Reader.64-bit",
                       "title":  "Adobe Acrobat Reader",
                       "note":  "Adobe Acrobat Reader is a free PDF viewer with essential features for viewing, printing, and annotating PDF documents.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "adobereader"
                   },
                   {
                       "id":  "Famatech.AdvancedIPScanner",
                       "title":  "Advanced IP Scanner",
                       "note":  "Advanced IP Scanner is a fast and easy-to-use network scanner.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "advanced-ip-scanner"
                   },
                   {
                       "id":  "AIMP.AIMP",
                       "title":  "AIMP (Music Player)",
                       "note":  "AIMP is a feature-rich music player with support for various audio formats, playlists, and customizable user interface.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "aimp"
                   },
                   {
                       "id":  "Amazon.Corretto.21.JDK",
                       "title":  "Amazon Corretto 21 (LTS)",
                       "note":  "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "corretto21jdk"
                   },
                   {
                       "id":  "Amazon.Corretto.25.JDK",
                       "title":  "Amazon Corretto 25 (LTS)",
                       "note":  "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "corretto25jdk"
                   },
                   {
                       "id":  "Amazon.Corretto.8.JDK",
                       "title":  "Amazon Corretto 8 (LTS)",
                       "note":  "Amazon Corretto is a no-cost, multiplatform, production-ready distribution of the Open Java Development Kit (OpenJDK).",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "corretto8jdk"
                   },
                   {
                       "id":  "angryziber.AngryIPScanner",
                       "title":  "Angry IP Scanner",
                       "note":  "Angry IP Scanner is an open-source and cross-platform network scanner.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "angryip"
                   },
                   {
                       "id":  "AnyDesk.AnyDesk",
                       "title":  "AnyDesk",
                       "note":  "AnyDesk is a remote desktop software that enables users to access and control computers remotely.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "anydesk"
                   },
                   {
                       "id":  "Audacity.Audacity",
                       "title":  "Audacity",
                       "note":  "Audacity is a free and open-source audio editing software known for its powerful recording and editing capabilities.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "audacity"
                   },
                   {
                       "id":  "AutoHotkey.AutoHotkey",
                       "title":  "AutoHotkey",
                       "note":  "AutoHotkey is a scripting language for Windows that allows users to create custom automation scripts and macros.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "autohotkey"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.Autoruns",
                       "title":  "Autoruns",
                       "note":  "This utility shows you what programs are configured to run during system bootup or login.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "autoruns"
                   },
                   {
                       "id":  "Blizzard.BattleNet",
                       "title":  "Battle.net",
                       "note":  "Battle.net is a launcher for games created and developed by Activision Blizzard",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  null
                   },
                   {
                       "id":  "Betterbird.Betterbird",
                       "title":  "Betterbird",
                       "note":  "Betterbird is a fork of Mozilla Thunderbird with additional features and bugfixes.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "betterbird"
                   },
                   {
                       "id":  "Bitwarden.Bitwarden",
                       "title":  "Bitwarden",
                       "note":  "Bitwarden is an open-source password management solution.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "bitwarden"
                   },
                   {
                       "id":  "BlenderFoundation.Blender",
                       "title":  "Blender (3D Graphics)",
                       "note":  "Blender is a powerful open-source 3D creation suite, offering modeling, sculpting, animation, and rendering tools.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "blender"
                   },
                   {
                       "id":  "Blur009.BlurAutoClicker",
                       "title":  "BlurAutoClicker",
                       "note":  "An Auto-clicker with a few advanced features and generally better performance than popular alternatives.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  null
                   },
                   {
                       "id":  "Brave.Brave",
                       "title":  "Brave",
                       "note":  "Brave is a privacy-focused web browser that blocks ads and trackers, offering a faster and safer browsing experience.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "brave"
                   },
                   {
                       "id":  "Bruno.Bruno",
                       "title":  "Bruno",
                       "note":  "Bruno is a local-first API client that stores collections as plain text files for version control and collaboration.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "bruno"
                   },
                   {
                       "id":  "Klocman.BulkCrapUninstaller",
                       "title":  "Bulk Crap Uninstaller",
                       "note":  "Bulk Crap Uninstaller is a free and open-source uninstaller utility for Windows.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "bulk-crap-uninstaller"
                   },
                   {
                       "id":  "calibre.calibre",
                       "title":  "Calibre",
                       "note":  "Calibre is a powerful and easy-to-use e-book manager, viewer, and converter.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "calibre"
                   },
                   {
                       "id":  "Cemu.Cemu",
                       "title":  "Cemu",
                       "note":  "Cemu is a highly experimental software to emulate Wii U applications on PC.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "cemu"
                   },
                   {
                       "id":  "9NT1R1C2HH7J",
                       "title":  "ChatGPT Desktop",
                       "note":  "The official ChatGPT desktop app for Windows, distributed through the Microsoft Store.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  null
                   },
                   {
                       "id":  "ChatterinoTeam.Chatterino",
                       "title":  "Chatterino",
                       "note":  "Chatterino is a chat client for Twitch chat that offers a clean and customizable interface for a better streaming experience.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "chatterino"
                   },
                   {
                       "id":  "Google.Chrome",
                       "title":  "Chrome",
                       "note":  "Google Chrome is a widely used web browser known for its speed, simplicity, and seamless integration with Google services.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "googlechrome"
                   },
                   {
                       "id":  "Hibbiki.Chromium",
                       "title":  "Chromium",
                       "note":  "Chromium is the open-source project that serves as the foundation for various web browsers, including Chrome.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "chromium"
                   },
                   {
                       "id":  "Maxon.CinebenchR23",
                       "title":  "Cinebench R23",
                       "note":  "Cinebench R23 is a benchmark tool for comparing CPU rendering performance across systems.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  null
                   },
                   {
                       "id":  "Anthropic.ClaudeCode",
                       "title":  "Claude Code",
                       "note":  "Anthropic\u0027s agentic coding tool for terminal and IDE development workflows.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "claude-code"
                   },
                   {
                       "id":  "Anthropic.Claude",
                       "title":  "Claude Desktop",
                       "note":  "Anthropic\u0027s Claude desktop application for focused AI-assisted work and chat.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "claude"
                   },
                   {
                       "id":  "Cloudflare.Warp",
                       "title":  "Cloudflare WARP",
                       "note":  "WARP is a freemium VPN service provided by Cloudflare.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "warp"
                   },
                   {
                       "id":  "Kitware.CMake",
                       "title":  "CMake",
                       "note":  "CMake is an open-source, cross-platform family of tools designed to build, test and package software.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "cmake"
                   },
                   {
                       "id":  "OpenAI.Codex",
                       "title":  "Codex",
                       "note":  "Codex CLI is an OpenAI coding agent that runs locally in your terminal.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "codex"
                   },
                   {
                       "id":  "CPUID.CPU-Z",
                       "title":  "CPU-Z",
                       "note":  "CPU-Z is a system monitoring and diagnostic tool for Windows.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "cpu-z"
                   },
                   {
                       "id":  "CrystalDewWorld.CrystalDiskInfo",
                       "title":  "Crystal Disk Info",
                       "note":  "Crystal Disk Info is a disk health monitoring tool that provides information about the status and performance of hard drives.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "crystaldiskinfo"
                   },
                   {
                       "id":  "CrystalDewWorld.CrystalDiskMark",
                       "title":  "Crystal Disk Mark",
                       "note":  "Crystal Disk Mark is a disk benchmarking tool that measures the read and write speeds of storage devices.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "crystaldiskmark"
                   },
                   {
                       "id":  "Overwolf.CurseForge",
                       "title":  "CurseForge",
                       "note":  "CurseForge is a desktop application for managing mods and modpacks across multiple games, powered by Overwolf.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  null
                   },
                   {
                       "id":  "Anysphere.Cursor",
                       "title":  "Cursor",
                       "note":  "AI-powered code editor (VS Code-based) with agentic coding features and integrated AI assistance for development workflows.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "cursoride"
                   },
                   {
                       "id":  "Deskflow.Deskflow",
                       "title":  "Deskflow",
                       "note":  "Deskflow is a free and open-source software KVM that lets you share a single keyboard and mouse across multiple computers.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "deskflow"
                   },
                   {
                       "id":  "Discord.Discord",
                       "title":  "Discord",
                       "note":  "Discord is a popular communication platform with voice, video, and text chat, designed for gamers but used by a wide range of communities.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "discord"
                   },
                   {
                       "id":  "CodingWondersSoftware.DISMTools.Stable",
                       "title":  "DISMTools",
                       "note":  "DISMTools is a fast, customizable GUI for the DISM utility, supporting Windows images from Windows 7 onward.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "dismtools"
                   },
                   {
                       "id":  "Wagnardsoft.DisplayDriverUninstaller",
                       "title":  "Display Driver Uninstaller",
                       "note":  "Display Driver Uninstaller (DDU) is a tool for completely uninstalling graphics drivers from NVIDIA, AMD, and Intel.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "ddu"
                   },
                   {
                       "id":  "Docker.DockerDesktop",
                       "title":  "Docker Desktop",
                       "note":  "Docker Desktop provides a local environment for building, running, and testing containerized applications on Windows.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "docker-desktop"
                   },
                   {
                       "id":  "SpikeHD.Dorion",
                       "title":  "Dorion",
                       "note":  "Tiny alternative Discord client with a smaller footprint, snappier startup, themes, plugins and more!",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "dorion"
                   },
                   {
                       "id":  "Dropbox.Dropbox",
                       "title":  "Dropbox",
                       "note":  "Dropbox is a cloud storage client for syncing files, sharing content, and keeping documents available across devices.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "dropbox"
                   },
                   {
                       "id":  "ElectronicArts.EADesktop",
                       "title":  "EA App",
                       "note":  "EA App is a platform for accessing and playing Electronic Arts games.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "ea-app"
                   },
                   {
                       "id":  "File-New-Project.EarTrumpet",
                       "title":  "EarTrumpet (Audio)",
                       "note":  "EarTrumpet is an audio control app for Windows, providing a simple and intuitive interface for managing sound settings.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "eartrumpet"
                   },
                   {
                       "id":  "Microsoft.Edge",
                       "title":  "Edge",
                       "note":  "Microsoft Edge is a modern web browser built on Chromium, offering performance, security, and integration with Microsoft services.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "microsoft-edge"
                   },
                   {
                       "id":  "Element.Element",
                       "title":  "Element",
                       "note":  "Element is a client for Matrix; an open network for secure, decentralized communication.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "element-desktop"
                   },
                   {
                       "id":  "ES-DE.EmulationStation-DE",
                       "title":  "EmulationStation Desktop Edition",
                       "note":  "EmulationStation Desktop Edition is a frontend for browsing and launching games from your multi-platform game collection.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  null
                   },
                   {
                       "id":  "ente-io.auth-desktop",
                       "title":  "Ente Auth",
                       "note":  "Ente Auth is a free, cross-platform, end-to-end encrypted authenticator app.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "ente-auth"
                   },
                   {
                       "id":  "EpicGames.EpicGamesLauncher",
                       "title":  "Epic Games Launcher",
                       "note":  "Epic Games Launcher is the client for accessing and playing games from the Epic Games Store.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "epicgameslauncher"
                   },
                   {
                       "id":  "voidtools.Everything",
                       "title":  "Everything",
                       "note":  "Everything is a search engine that locates files and folders by filename instantly for Windows.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "everything"
                   },
                   {
                       "id":  "flux.flux",
                       "title":  "F.lux",
                       "note":  "f.lux adjusts the color temperature of your screen to reduce eye strain during nighttime use.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "f.lux"
                   },
                   {
                       "id":  "Schniz.fnm",
                       "title":  "Fast Node Manager",
                       "note":  "Fast Node Manager (fnm) is a fast, cross-platform tool for installing and switching between Node.js versions.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "fnm"
                   },
                   {
                       "id":  "AdrienAllard.FileConverter",
                       "title":  "File Converter",
                       "note":  "File Converter converts and compresses files from the Windows Explorer context menu.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "file-converter"
                   },
                   {
                       "id":  "FilesCommunity.Files",
                       "title":  "Files",
                       "note":  "Alternative file explorer.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "files"
                   },
                   {
                       "id":  "Mozilla.Firefox",
                       "title":  "Firefox",
                       "note":  "Mozilla Firefox is an open-source web browser known for its customization options, privacy features, and extensions.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "firefox"
                   },
                   {
                       "id":  "Mozilla.Firefox.ESR",
                       "title":  "Firefox ESR",
                       "note":  "Mozilla Firefox is an open-source web browser known for its customization options, privacy features, and extensions.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "FirefoxESR"
                   },
                   {
                       "id":  "Ablaze.Floorp",
                       "title":  "Floorp",
                       "note":  "Floorp is an open-source web browser project that aims to provide a simple and fast browsing experience.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "floorp"
                   },
                   {
                       "id":  "PeterPawlowski.foobar2000",
                       "title":  "foobar2000 (Music Player)",
                       "note":  "foobar2000 is a highly customizable and extensible music player for Windows, known for its modular design and advanced features.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "foobar2000"
                   },
                   {
                       "id":  "Foxit.FoxitReader",
                       "title":  "Foxit PDF Reader",
                       "note":  "Foxit PDF Reader is a free PDF viewer with a familiar ribbon-style interface.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "foxitreader"
                   },
                   {
                       "id":  "Nvidia.GeForceNow",
                       "title":  "GeForce NOW",
                       "note":  "GeForce NOW is a cloud gaming service that allows you to play high-quality PC games on your device.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "nvidia-geforce-now"
                   },
                   {
                       "id":  "GIMP.GIMP.3",
                       "title":  "GIMP (Image Editor)",
                       "note":  "GIMP is a versatile open-source raster graphics editor used for tasks such as photo retouching, image editing, and image composition.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "gimp"
                   },
                   {
                       "id":  "Git.Git",
                       "title":  "Git",
                       "note":  "Git is a distributed version control system widely used for tracking changes in source code during software development.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "git"
                   },
                   {
                       "id":  "GitExtensionsTeam.GitExtensions",
                       "title":  "Git Extensions",
                       "note":  "Git Extensions is a graphical Git client for Windows with repository, history, and commit management tools.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "gitextensions"
                   },
                   {
                       "id":  "GitHub.cli",
                       "title":  "GitHub CLI",
                       "note":  "GitHub CLI brings pull requests, issues, releases, and other GitHub workflows to the terminal.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "gh"
                   },
                   {
                       "id":  "GitHub.GitHubDesktop",
                       "title":  "GitHub Desktop",
                       "note":  "GitHub Desktop is a visual Git client that simplifies collaboration on GitHub repositories with an easy-to-use interface.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "git;github-desktop"
                   },
                   {
                       "id":  "glzr-io.glazewm",
                       "title":  "GlazeWM",
                       "note":  "GlazeWM is a tiling window manager for Windows inspired by i3 and Polybar.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "glazewm"
                   },
                   {
                       "id":  "GoLang.Go",
                       "title":  "Go",
                       "note":  "Go (or Golang) is a statically typed, compiled programming language designed for simplicity, reliability, and efficiency.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "golang"
                   },
                   {
                       "id":  "GOG.Galaxy",
                       "title":  "GOG Galaxy",
                       "note":  "GOG Galaxy is a gaming client that offers DRM-free games, additional content, and more.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "goggalaxy"
                   },
                   {
                       "id":  "Google.GoogleDrive",
                       "title":  "Google Drive",
                       "note":  "File syncing across devices all tied to your Google account.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "googledrive"
                   },
                   {
                       "id":  "TechPowerUp.GPU-Z",
                       "title":  "GPU-Z",
                       "note":  "GPU-Z provides detailed information about your graphics card and GPU.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "gpu-z"
                   },
                   {
                       "id":  "gerardog.gsudo",
                       "title":  "gsudo",
                       "note":  "gsudo is a sudo equivalent for Windows.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "gsudo"
                   },
                   {
                       "id":  "HandBrake.HandBrake",
                       "title":  "HandBrake",
                       "note":  "HandBrake is an open-source video transcoder, allowing you to convert video from nearly any format to a selection of widely supported cod...",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "handbrake"
                   },
                   {
                       "id":  "ImputNet.Helium",
                       "title":  "Helium",
                       "note":  "Private, fast, and honest web browser.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "helium"
                   },
                   {
                       "id":  "HeroicGamesLauncher.HeroicGamesLauncher",
                       "title":  "Heroic Games Launcher",
                       "note":  "Heroic Games Launcher is an open-source alternative game launcher for Epic Games Store.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "heroic-games-launcher"
                   },
                   {
                       "id":  "Hugo.Hugo.Extended",
                       "title":  "Hugo",
                       "note":  "The world\u0027s fastest framework for building websites.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "hugo-extended"
                   },
                   {
                       "id":  "REALiX.HWiNFO",
                       "title":  "HWiNFO",
                       "note":  "HWiNFO provides comprehensive hardware information and diagnostics for Windows.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "hwinfo"
                   },
                   {
                       "id":  "CPUID.HWMonitor",
                       "title":  "HWMonitor",
                       "note":  "HWMonitor is a hardware monitoring program that reads PC systems main health sensors.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "hwmonitor"
                   },
                   {
                       "id":  "MHNexus.HxD",
                       "title":  "HxD Hex Editor",
                       "note":  "HxD is a free hex editor that allows you to edit, view, search, and analyze binary files.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "HxD"
                   },
                   {
                       "id":  "DuongDieuPhap.ImageGlass",
                       "title":  "ImageGlass (Image Viewer)",
                       "note":  "ImageGlass is a versatile image viewer with support for various image formats and a focus on simplicity and speed.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "imageglass"
                   },
                   {
                       "id":  "WerWolv.ImHex",
                       "title":  "ImHex",
                       "note":  "ImHex is a free and open-source hex editor for reverse engineers and programmers, featuring a custom pattern language for decoding binary...",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "imhex"
                   },
                   {
                       "id":  "Tonec.InternetDownloadManager",
                       "title":  "Internet Download Manager",
                       "note":  "Internet Download Manager is a download manager for accelerating, resuming, and scheduling file downloads.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "internet-download-manager"
                   },
                   {
                       "id":  "IrfanSkiljan.IrfanView",
                       "title":  "IrfanView",
                       "note":  "IrfanView is a lightweight, fast, and free image viewer and editor.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "irfanview"
                   },
                   {
                       "id":  "ItchIo.Itch",
                       "title":  "Itch.io",
                       "note":  "Itch.io is a digital distribution platform for indie games and creative projects.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "itch"
                   },
                   {
                       "id":  "Apple.iTunes",
                       "title":  "iTunes",
                       "note":  "iTunes is a media player, media library, and online radio broadcaster application developed by Apple Inc.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "itunes"
                   },
                   {
                       "id":  "Jellyfin.JellyfinMediaPlayer",
                       "title":  "Jellyfin Media Player",
                       "note":  "Jellyfin Media Player is a client application for the Jellyfin media server, providing access to your media library.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "jellyfin-media-player"
                   },
                   {
                       "id":  "Jellyfin.Server",
                       "title":  "Jellyfin Server",
                       "note":  "Jellyfin Server is an open-source media server software, allowing you to organize and stream your media library.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "jellyfin"
                   },
                   {
                       "id":  "JetBrains.Toolbox",
                       "title":  "Jetbrains Toolbox",
                       "note":  "Jetbrains Toolbox is a platform for easy installation and management of JetBrains developer tools.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "jetbrainstoolbox"
                   },
                   {
                       "id":  "Joplin.Joplin",
                       "title":  "Joplin",
                       "note":  "Joplin is an open-source note-taking and to-do application with synchronization capabilities.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "joplin"
                   },
                   {
                       "id":  "sylikc.JPEGView",
                       "title":  "JPEG View",
                       "note":  "JPEGView is a lean, fast and highly configurable viewer/editor for JPEG, BMP, PNG, WEBP, TGA, GIF, JXL, HEIC, HEIF, AVIF, and TIFF images...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "jpegview"
                   },
                   {
                       "id":  "KeePassXCTeam.KeePassXC",
                       "title":  "KeePassXC",
                       "note":  "KeePassXC is a modern, secure, and open-source password manager that stores and manages your most sensitive information.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "keepassxc"
                   },
                   {
                       "id":  "CodecGuide.K-LiteCodecPack.Standard",
                       "title":  "K-Lite Codec Standard",
                       "note":  "K-Lite Codec Pack Standard is a collection of audio and video codecs and related tools, providing essential components for media playback.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "k-litecodecpack-standard"
                   },
                   {
                       "id":  "XBMCFoundation.Kodi",
                       "title":  "Kodi Media Center",
                       "note":  "Kodi is an open-source media center application that allows you to play and view most videos, music, podcasts, and other digital media fi...",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "kodi"
                   },
                   {
                       "id":  "JesseDuffield.lazygit",
                       "title":  "Lazygit",
                       "note":  "Simple terminal UI for git commands.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "lazygit"
                   },
                   {
                       "id":  "TheDocumentFoundation.LibreOffice",
                       "title":  "LibreOffice",
                       "note":  "LibreOffice is a powerful and free office suite, compatible with other major office suites.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "libreoffice-fresh"
                   },
                   {
                       "id":  "LibreWolf.LibreWolf",
                       "title":  "LibreWolf",
                       "note":  "LibreWolf is a privacy-focused web browser based on Firefox, with additional privacy and security enhancements.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "librewolf"
                   },
                   {
                       "id":  "LocalSend.LocalSend",
                       "title":  "LocalSend",
                       "note":  "An open-source cross-platform alternative to AirDrop.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "localsend.install"
                   },
                   {
                       "id":  "rjpcomputing.luaforwindows",
                       "title":  "Lua",
                       "note":  "A \u0027batteries included environment\u0027 for the Lua scripting language on Windows.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "lua"
                   },
                   {
                       "id":  "clsid2.mpc-hc",
                       "title":  "Media Player Classic - Home Cinema",
                       "note":  "Media Player Classic - Home Cinema (MPC-HC) is a free and open-source video and audio player for Windows.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "mpc-hc-clsid2"
                   },
                   {
                       "id":  "MiniTool.PartitionWizard.Free",
                       "title":  "MiniTool Partition Wizard",
                       "note":  "Comprehensive free partition manager that performs advanced operations Windows natively cannot, such as merging partitions, converting fi...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "partitionwizard"
                   },
                   {
                       "id":  "Modrinth.ModrinthApp",
                       "title":  "Modrinth App",
                       "note":  "Modrinth App is a desktop application for managing Minecraft mods and modpacks.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "modrinth-app"
                   },
                   {
                       "id":  "MoonlightGameStreamingProject.Moonlight",
                       "title":  "Moonlight/GameStream Client",
                       "note":  "Moonlight/GameStream Client allows you to stream PC games to other devices over your local network.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "moonlight-qt"
                   },
                   {
                       "id":  "mpc-qt.mpc-qt",
                       "title":  "mpc-qt",
                       "note":  "Media Player Classic Qute Theater",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "mpc-qt"
                   },
                   {
                       "id":  "shinchiro.mpv",
                       "title":  "mpv",
                       "note":  "mpv is a free, open source, and cross-platform media player supporting a wide variety of media formats, codecs, and subtitle types.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  null
                   },
                   {
                       "id":  "rcmaehl.MSEdgeRedirect",
                       "title":  "MSEdgeRedirect",
                       "note":  "A Tool to Redirect News, Search, Widgets, Weather, and More to your default browser.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "msedgeredirect"
                   },
                   {
                       "id":  "Guru3D.Afterburner",
                       "title":  "MSI Afterburner",
                       "note":  "MSI Afterburner is a graphics card overclocking utility with advanced features.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "msiafterburner"
                   },
                   {
                       "id":  "MullvadVPN.MullvadBrowser",
                       "title":  "Mullvad Browser",
                       "note":  "Mullvad Browser is a privacy-focused web browser, developed in partnership with the Tor Project.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  null
                   },
                   {
                       "id":  "MullvadVPN.MullvadVPN",
                       "title":  "Mullvad VPN",
                       "note":  "This is the VPN client software for the Mullvad VPN service.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "mullvad-app"
                   },
                   {
                       "id":  "M2Team.NanaZip",
                       "title":  "NanaZip",
                       "note":  "NanaZip is a fast and efficient file compression and decompression tool.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "nanazip"
                   },
                   {
                       "id":  "Cyanfish.NAPS2",
                       "title":  "NAPS2 (Scanner)",
                       "note":  "NAPS2 is a document scanning application that simplifies the process of creating electronic documents.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "naps2"
                   },
                   {
                       "id":  "Neovim.Neovim",
                       "title":  "Neovim",
                       "note":  "Neovim is a highly extensible text editor and an improvement over the original Vim editor.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "neovim"
                   },
                   {
                       "id":  "Netbird.Netbird",
                       "title":  "NetBird",
                       "note":  "NetBird is an open-source alternative comparable to TailScale that can be connected to a self-hosted server.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "netbird"
                   },
                   {
                       "id":  "Nextcloud.NextcloudDesktop",
                       "title":  "Nextcloud Desktop",
                       "note":  "Nextcloud Desktop is the official desktop client for the Nextcloud file synchronization and sharing platform.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "nextcloud-client"
                   },
                   {
                       "id":  "Nilesoft.Shell",
                       "title":  "Nilesoft Shell",
                       "note":  "Shell is an expanded context menu tool that adds extra functionality and customization options to the Windows context menu.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "nilesoft-shell"
                   },
                   {
                       "id":  "Insecure.Nmap",
                       "title":  "Nmap",
                       "note":  "Nmap (Network Mapper) is an open-source tool for network exploration and security auditing.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "nmap"
                   },
                   {
                       "id":  "OpenJS.NodeJS",
                       "title":  "NodeJS",
                       "note":  "NodeJS is a JavaScript runtime built on Chrome\u0027s V8 JavaScript engine for building server-side and networking applications.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "nodejs"
                   },
                   {
                       "id":  "OpenJS.NodeJS.LTS",
                       "title":  "NodeJS LTS",
                       "note":  "NodeJS LTS provides Long-Term Support releases for stable and reliable server-side JavaScript development.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "nodejs-lts"
                   },
                   {
                       "id":  "nomacs.nomacs",
                       "title":  "nomacs",
                       "note":  "nomacs is a free, open-source image viewer, which supports multiple platforms.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "nomacs"
                   },
                   {
                       "id":  "Notepad++.Notepad++",
                       "title":  "Notepad++",
                       "note":  "Notepad++ is a free, open-source code editor and Notepad replacement with support for multiple languages.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "notepadplusplus"
                   },
                   {
                       "id":  "Nlitesoft.NTLite",
                       "title":  "NTLite",
                       "note":  "Integrate updates, drivers, automate Windows and application setup, speedup Windows deployment process and have it all set for the next t...",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "ntlite-free"
                   },
                   {
                       "id":  "Microsoft.NuGet",
                       "title":  "NuGet",
                       "note":  "NuGet is a package manager for the .NET framework, enabling developers to manage and share libraries in their .NET applications.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "nuget.commandline"
                   },
                   {
                       "id":  "TechPowerUp.NVCleanstall",
                       "title":  "NVCleanstall",
                       "note":  "NVCleanstall is a tool designed to customize NVIDIA driver installations, allowing advanced users to control more aspects of the installa...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  null
                   },
                   {
                       "id":  "OBSProject.OBSStudio",
                       "title":  "OBS Studio",
                       "note":  "OBS Studio is a free and open-source software for video recording and live streaming.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "obs-studio"
                   },
                   {
                       "id":  "Obsidian.Obsidian",
                       "title":  "Obsidian",
                       "note":  "Obsidian is a powerful note-taking and knowledge management application.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "obsidian"
                   },
                   {
                       "id":  "xM4ddy.OFGB",
                       "title":  "OFGB (Oh Frick Go Back)",
                       "note":  "GUI Tool to remove ads from various places around Windows 11",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "ofgb"
                   },
                   {
                       "id":  "JanDeDobbeleer.OhMyPosh",
                       "title":  "Oh My Posh (Prompt)",
                       "note":  "Oh My Posh is a cross-platform prompt theme engine for any shell.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "oh-my-posh"
                   },
                   {
                       "id":  "KDE.Okular",
                       "title":  "Okular",
                       "note":  "Okular is a versatile document viewer with advanced features.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "okular"
                   },
                   {
                       "id":  "Microsoft.OneDrive",
                       "title":  "OneDrive",
                       "note":  "OneDrive is a cloud storage service provided by Microsoft, allowing users to store and share files securely across devices.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "onedrive"
                   },
                   {
                       "id":  "ONLYOFFICE.DesktopEditors",
                       "title":  "ONLYOFFICE Desktop",
                       "note":  "ONLYOFFICE Desktop is a comprehensive office suite for document editing and collaboration.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "onlyoffice"
                   },
                   {
                       "id":  "OPAutoClicker.OPAutoClicker",
                       "title":  "OPAutoClicker",
                       "note":  "A full-fledged autoclicker with two modes of autoclicking, at your dynamic cursor location or at a prespecified location.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "autoclicker"
                   },
                   {
                       "id":  "SST.opencode",
                       "title":  "OpenCode",
                       "note":  "OpenCode is an open-source AI coding agent built for the terminal.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "opencode"
                   },
                   {
                       "id":  "OpenRGB.OpenRGB",
                       "title":  "OpenRGB",
                       "note":  "OpenRGB is an open-source RGB lighting control software designed to manage and control RGB lighting for various components and peripherals.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "openrgb"
                   },
                   {
                       "id":  "OpenVPNTechnologies.OpenVPNConnect",
                       "title":  "OpenVPN Connect",
                       "note":  "OpenVPN Connect is a VPN client that allows you to connect securely to a VPN server.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "openvpn-connect"
                   },
                   {
                       "id":  "Oracle.VirtualBox",
                       "title":  "Oracle VirtualBox",
                       "note":  "Oracle VirtualBox is a powerful and free open-source virtualization tool for x86 and AMD64/Intel64 architectures.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "virtualbox"
                   },
                   {
                       "id":  "dotPDN.PaintDotNet",
                       "title":  "Paint.NET",
                       "note":  "Paint.NET is a free image and photo editing software for Windows.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "paint.net"
                   },
                   {
                       "id":  "Parsec.Parsec",
                       "title":  "Parsec",
                       "note":  "Parsec is a low-latency, high-quality remote desktop sharing application for collaborating and gaming across devices.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "parsec"
                   },
                   {
                       "id":  "geeksoftwareGmbH.PDF24Creator",
                       "title":  "PDF24 Creator",
                       "note":  "Free and easy-to-use online/desktop PDF tools that make you more productive",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "pdf24"
                   },
                   {
                       "id":  "PDFgear.PDFgear",
                       "title":  "PDFgear",
                       "note":  "PDFgear is a piece of full-featured PDF management software for Windows, macOS, and mobile, and it\u0027s completely free to use.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "pdfgear"
                   },
                   {
                       "id":  "PDFsam.PDFsam",
                       "title":  "PDFsam Basic",
                       "note":  "PDFsam Basic is a free and open-source tool for splitting, merging, and rotating PDF files.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "pdfsam"
                   },
                   {
                       "id":  "TrackerSoftware.PDF-XChangeEditor",
                       "title":  "PDF-XChange Editor",
                       "note":  "A comprehensive Windows-based software suite and editor for creating, viewing, editing, annotating, and signing PDF files.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "pdfxchangeeditor"
                   },
                   {
                       "id":  "Giorgiotani.Peazip",
                       "title":  "PeaZip",
                       "note":  "PeaZip is a free, open-source file archiver utility that supports multiple archive formats and provides encryption features.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "peazip"
                   },
                   {
                       "id":  "Playnite.Playnite",
                       "title":  "Playnite",
                       "note":  "Playnite is an open-source video game library manager with one simple goal: To provide a unified interface for all of your games.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "playnite"
                   },
                   {
                       "id":  "Plex.Plex",
                       "title":  "Plex Desktop",
                       "note":  "Plex Desktop for Windows is the front end for Plex Media Server.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "plex"
                   },
                   {
                       "id":  "Plex.PlexMediaServer",
                       "title":  "Plex Media Server",
                       "note":  "Plex Media Server is a media server software that allows you to organize and stream your media library.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "plexmediaserver"
                   },
                   {
                       "id":  "pnpm.pnpm",
                       "title":  "pnpm",
                       "note":  "pnpm is a fast and disk space efficient package manager for JavaScript and Node.js applications.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  null
                   },
                   {
                       "id":  "Fleex255.PolicyPlus",
                       "title":  "Policy Plus",
                       "note":  "Local Group Policy Editor plus more, for all Windows editions.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  null
                   },
                   {
                       "id":  "Postman.Postman",
                       "title":  "Postman",
                       "note":  "Postman is an API platform and desktop client for designing, testing, documenting, and collaborating on APIs.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "postman"
                   },
                   {
                       "id":  "Microsoft.PowerShell",
                       "title":  "PowerShell",
                       "note":  "PowerShell is a task automation framework and scripting language designed for system administrators, offering powerful command-line capab...",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "powershell-core"
                   },
                   {
                       "id":  "Microsoft.PowerToys",
                       "title":  "PowerToys",
                       "note":  "PowerToys is a set of utilities for power users to enhance productivity, featuring tools like FancyZones, PowerRename, and more.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "powertoys"
                   },
                   {
                       "id":  "PrismLauncher.PrismLauncher",
                       "title":  "Prism Launcher",
                       "note":  "Prism Launcher is an open-source Minecraft launcher with the ability to manage multiple instances, accounts, and mods.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "prismlauncher"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.ProcessExplorer",
                       "title":  "Process Explorer",
                       "note":  "Process Explorer is a task manager and system monitor.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "procexp"
                   },
                   {
                       "id":  "BitSum.ProcessLasso",
                       "title":  "Process Lasso",
                       "note":  "Process Lasso is a system optimization and automation tool that improves system responsiveness and stability by adjusting process priorit...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "plasso"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.ProcessMonitor",
                       "title":  "Process Monitor",
                       "note":  "SysInternals Process Monitor is an advanced monitoring tool that shows real-time file system, registry, and process/thread activity.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "procmon"
                   },
                   {
                       "id":  "Proton.ProtonAuthenticator",
                       "title":  "Proton Authenticator",
                       "note":  "2FA app from Proton to securely sync and backup 2FA codes.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "protonauth"
                   },
                   {
                       "id":  "Proton.ProtonDrive",
                       "title":  "Proton Drive",
                       "note":  "Proton Drive is an end-to-end encrypted Swiss vault for your files that protects your data.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "protondrive"
                   },
                   {
                       "id":  "Proton.ProtonMail",
                       "title":  "Proton Mail",
                       "note":  "Proton Mail is an end-to-end encrypted email service by Proton, protecting your privacy with zero-access encryption.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "protonmail"
                   },
                   {
                       "id":  "Proton.ProtonPass",
                       "title":  "Proton Pass",
                       "note":  "Proton Pass is a cloud-based password manager with end-to-end encryption and unique email aliases.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "protonpass"
                   },
                   {
                       "id":  "Proton.ProtonVPN",
                       "title":  "Proton VPN",
                       "note":  "Proton VPN is a no-logs VPN service that protects your privacy online with features like Secure Core and Tor over VPN.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "protonvpn"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.PsTools",
                       "title":  "PsTools",
                       "note":  "Microsoft Sysinternals PsTools provides utilities for managing local and remote Windows systems and monitoring processes.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "pstools"
                   },
                   {
                       "id":  "PuTTY.PuTTY",
                       "title":  "PuTTY",
                       "note":  "PuTTY is a free and open-source terminal emulator, serial console, and network file transfer application.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "putty"
                   },
                   {
                       "id":  "Python.Python.3.14",
                       "title":  "Python3",
                       "note":  "Python is a versatile programming language used for web development, data analysis, artificial intelligence, and more.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "python"
                   },
                   {
                       "id":  "qBittorrent.qBittorrent",
                       "title":  "qBittorrent",
                       "note":  "qBittorrent is a free and open-source BitTorrent client that aims to provide a feature-rich and lightweight alternative to other torrent...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "qbittorrent"
                   },
                   {
                       "id":  "pbek.QOwnNotes",
                       "title":  "QOwnNotes",
                       "note":  "QOwnNotes is a free open-source note-taking app with Nextcloud/ownCloud integration.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "qownnotes"
                   },
                   {
                       "id":  "Tox.qTox",
                       "title":  "QTox",
                       "note":  "QTox is a free and open-source messaging app that prioritizes user privacy and security in its design.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "qtox"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.RDCMan",
                       "title":  "RDCMan",
                       "note":  "RDCMan manages multiple remote desktop connections.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "rdcman"
                   },
                   {
                       "id":  "RevoUninstaller.RevoUninstaller",
                       "title":  "Revo Uninstaller",
                       "note":  "Revo Uninstaller is an advanced uninstaller tool that helps you remove unwanted software and clean up your system.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "revo-uninstaller"
                   },
                   {
                       "id":  "Roblox.Roblox",
                       "title":  "Roblox",
                       "note":  "Roblox is a platform and game creation system that allows users to create and play games developed by the community.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  null
                   },
                   {
                       "id":  "RubyInstallerTeam.Ruby.4.0",
                       "title":  "Ruby",
                       "note":  "A Ruby language execution environment with a MSYS2 installation.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "ruby"
                   },
                   {
                       "id":  "Rufus.Rufus",
                       "title":  "Rufus Imager",
                       "note":  "Rufus is a utility that helps format and create bootable USB drives, such as USB keys or pen drives.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "rufus"
                   },
                   {
                       "id":  "Rustlang.Rust.MSVC",
                       "title":  "Rust",
                       "note":  "Rust is a programming language designed for safety and performance, particularly focused on systems programming.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "rust"
                   },
                   {
                       "id":  "ShareX.ShareX",
                       "title":  "ShareX (Screenshots)",
                       "note":  "ShareX is a free and open-source screen capture and file sharing tool.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "sharex"
                   },
                   {
                       "id":  "OpenWhisperSystems.Signal",
                       "title":  "Signal",
                       "note":  "Signal is a privacy-focused messaging app that offers end-to-end encryption for secure and private communication.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "signal"
                   },
                   {
                       "id":  "WhirlwindFX.SignalRgb",
                       "title":  "SignalRGB",
                       "note":  "SignalRGB lets you control and sync your favorite RGB devices with one free application.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  null
                   },
                   {
                       "id":  "Automattic.Simplenote",
                       "title":  "Simplenote",
                       "note":  "Simplenote is an easy way to keep notes, lists, ideas and more.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "simplenote"
                   },
                   {
                       "id":  "Henry++.simplewall",
                       "title":  "Simplewall",
                       "note":  "Simplewall is a free and open-source firewall application for Windows.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "simplewall"
                   },
                   {
                       "id":  "SlackTechnologies.Slack",
                       "title":  "Slack",
                       "note":  "Slack is a collaboration hub that connects teams and facilitates communication through channels, messaging, and file sharing.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "slack"
                   },
                   {
                       "id":  "GlennDelahoy.SnappyDriverInstallerOrigin",
                       "title":  "Snappy Driver Installer Origin",
                       "note":  "Snappy Driver Installer Origin is a free and open-source driver updater with a vast driver database for Windows.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "sdio"
                   },
                   {
                       "id":  "Starship.Starship",
                       "title":  "Starship (Shell Prompt)",
                       "note":  "Starship is a fast, customizable, cross-platform prompt for PowerShell and other shells.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "starship"
                   },
                   {
                       "id":  "StartIsBack.StartAllBack",
                       "title":  "StartAllBack",
                       "note":  "StartAllBack restores and improves Windows taskbar, Start menu, File Explorer, and shell UI behavior.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "StartAllBack"
                   },
                   {
                       "id":  "Valve.Steam",
                       "title":  "Steam",
                       "note":  "Steam is a digital distribution platform for purchasing and playing video games, offering multiplayer gaming, video streaming, and more.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "steam-client"
                   },
                   {
                       "id":  "SublimeHQ.SublimeText.4",
                       "title":  "Sublime Text",
                       "note":  "Sublime Text is a sophisticated text editor for code, markup, and prose.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "sublimetext4"
                   },
                   {
                       "id":  "SumatraPDF.SumatraPDF",
                       "title":  "Sumatra PDF",
                       "note":  "Sumatra PDF is a lightweight and fast PDF viewer with minimalistic design.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "sumatrapdf"
                   },
                   {
                       "id":  "LizardByte.Sunshine",
                       "title":  "Sunshine/GameStream Server",
                       "note":  "Sunshine is a GameStream server that allows you to remotely play PC games on Android devices, offering low-latency streaming.",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "sunshine"
                   },
                   {
                       "id":  "Syncthing.Syncthing",
                       "title":  "Syncthing (CLI / Web UI)",
                       "note":  "Syncthing is a decentralized, peer-to-peer file synchronization tool that securely syncs files directly across devices without cloud serv...",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "syncthing"
                   },
                   {
                       "id":  "GermanCoding.SyncTrayzor",
                       "title":  "SyncTrayzor",
                       "note":  "SyncTrayzor is a Windows tray utility that bundles and wraps Syncthing, making it behave like a native application to easily manage and m...",
-                      "category":  "Selfhosted Tools"
+                      "category":  "Selfhosted Tools",
+                      "choco":  "synctrayzor"
                   },
                   {
                       "id":  "WinsiderSS.SystemInformer",
                       "title":  "System Informer",
                       "note":  "A free, powerful, multi-purpose tool that helps you monitor system resources, debug software and detect malware.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "systeminformer"
                   },
                   {
                       "id":  "Tailscale.Tailscale",
                       "title":  "Tailscale",
                       "note":  "The Tailscale client allows you to connect all your devices using WireGuard®, without the hassle.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "tailscale"
                   },
                   {
                       "id":  "Microsoft.Sysinternals.TCPView",
                       "title":  "TCPView",
                       "note":  "SysInternals TCPView is a network monitoring tool that displays a detailed list of all TCP and UDP endpoints on your system.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "tcpview"
                   },
                   {
                       "id":  "Microsoft.Teams",
                       "title":  "Teams",
                       "note":  "Microsoft Teams is a collaboration platform that integrates with Office 365 and offers chat, video conferencing, file sharing, and more.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "microsoft-teams"
                   },
                   {
                       "id":  "TeamSpeakSystems.TeamSpeakClient",
                       "title":  "TeamSpeak 3",
                       "note":  "TEAMSPEAK.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "teamspeak"
                   },
                   {
                       "id":  "TeamSpeakSystems.TeamSpeakClient.Beta.6",
                       "title":  "TeamSpeak 6",
                       "note":  "TEAMSPEAK.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  null
                   },
                   {
                       "id":  "TeamViewer.TeamViewer",
                       "title":  "TeamViewer",
                       "note":  "TeamViewer is a popular remote access and support software that allows you to connect to and control remote devices.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "teamviewer"
                   },
                   {
                       "id":  "Telegram.TelegramDesktop",
                       "title":  "Telegram",
                       "note":  "Telegram is a cloud-based instant messaging app known for its security features, speed, and simplicity.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "telegram"
                   },
                   {
                       "id":  "Mozilla.Thunderbird",
                       "title":  "Thunderbird",
                       "note":  "Mozilla Thunderbird is a free and open-source email client, news client, and chat client with advanced features.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "thunderbird"
                   },
                   {
                       "id":  "GlavSoft.TightVNC",
                       "title":  "TightVNC",
                       "note":  "TightVNC is a free and open-source remote desktop software that lets you access and control a computer over the network.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "TightVNC"
                   },
                   {
                       "id":  "TorProject.TorBrowser",
                       "title":  "Tor Browser",
                       "note":  "Tor Browser is designed for anonymous web browsing, utilizing the Tor network to protect user privacy and security.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "tor-browser"
                   },
                   {
                       "id":  "Ghisler.TotalCommander",
                       "title":  "Total Commander",
                       "note":  "Total Commander is a file manager for Windows that provides a powerful and intuitive interface for file management.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "TotalCommander"
                   },
                   {
                       "id":  "CharlesMilette.TranslucentTB",
                       "title":  "TranslucentTB",
                       "note":  "TranslucentTB is a tool that allows you to customize the transparency of the Windows Taskbar.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "translucenttb"
                   },
                   {
                       "id":  "JAMSoftware.TreeSize.Free",
                       "title":  "TreeSize Free",
                       "note":  "TreeSize Free is a disk space manager that helps you analyze and visualize the space usage on your drives.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "treesizefree"
                   },
                   {
                       "id":  "Ubisoft.Connect",
                       "title":  "Ubisoft Connect",
                       "note":  "Ubisoft Connect is Ubisoft\u0027s digital distribution and online gaming service, providing access to Ubisoft\u0027s games and services.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  "ubisoft-connect"
                   },
                   {
                       "id":  "eloston.ungoogled-chromium",
                       "title":  "Ungoogled Chromium",
                       "note":  "Ungoogled Chromium is a version of Chromium without Google\u0027s integration for enhanced privacy and control.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "ungoogled-chromium"
                   },
                   {
                       "id":  "Devolutions.UniGetUI",
                       "title":  "UniGetUI",
                       "note":  "UniGetUI is a GUI for WinGet, Chocolatey, and other Windows CLI package managers.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "wingetui"
                   },
                   {
                       "id":  "Unity.UnityHub",
                       "title":  "Unity Game Engine",
                       "note":  "Unity is a powerful game development platform for creating 2D, 3D, augmented reality, and virtual reality games.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "unity-hub"
                   },
                   {
                       "id":  "astral-sh.uv",
                       "title":  "uv",
                       "note":  "uv is a fast Python package and project manager written in Rust.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "uv"
                   },
                   {
                       "id":  "Hashicorp.Vagrant",
                       "title":  "Vagrant",
                       "note":  "Vagrant builds and manages reproducible virtual machine development environments from declarative configuration.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "vagrant"
                   },
                   {
                       "id":  "Ventoy.Ventoy",
                       "title":  "Ventoy",
                       "note":  "Ventoy is an open-source tool for creating bootable USB drives.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "ventoy"
                   },
                   {
                       "id":  "Vencord.Vesktop",
                       "title":  "Vesktop",
                       "note":  "A cross-platform electron-based desktop app aiming to give you a snappier Discord experience with Vencord pre-installed.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  null
                   },
                   {
                       "id":  "Rakuten.Viber",
                       "title":  "Viber",
                       "note":  "Viber is a free messaging and calling app with features like group chats, video calls, and more.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "viber"
                   },
                   {
                       "id":  "VirtualDesktop.Streamer",
                       "title":  "Virtual Desktop Streamer",
                       "note":  "Virtual Desktop Streamer is a tool that allows you to stream your desktop screen to VR devices.",
-                      "category":  "Games"
+                      "category":  "Games",
+                      "choco":  null
                   },
                   {
                       "id":  "Microsoft.VCRedist.2015+.x86",
                       "title":  "Visual C++ 2015-2022 32-bit",
                       "note":  "Visual C++ 2015-2022 32-bit redistributable package installs runtime components of Visual C++ libraries required to run 32-bit applications.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "vcredist2015"
                   },
                   {
                       "id":  "Microsoft.VCRedist.2015+.x64",
                       "title":  "Visual C++ 2015-2022 64-bit",
                       "note":  "Visual C++ 2015-2022 64-bit redistributable package installs runtime components of Visual C++ libraries required to run 64-bit applications.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "vcredist2015"
                   },
                   {
                       "id":  "Microsoft.VisualStudio.2022.Community",
                       "title":  "Visual Studio 2022",
                       "note":  "Visual Studio 2022 is an integrated development environment (IDE) for building, debugging, and deploying applications.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "visualstudio2022community"
                   },
                   {
                       "id":  "Microsoft.VisualStudio.Community",
                       "title":  "Visual Studio 2026",
                       "note":  "Visual Studio 2026 is an integrated development environment (IDE) for building, debugging, and deploying applications.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "visualstudio2026community"
                   },
                   {
                       "id":  "Vivaldi.Vivaldi",
                       "title":  "Vivaldi",
                       "note":  "Vivaldi is a highly customizable web browser with a focus on user personalization and productivity features.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "vivaldi"
                   },
                   {
                       "id":  "VideoLAN.VLC",
                       "title":  "VLC (Video Player)",
                       "note":  "VLC Media Player is a free and open-source multimedia player that supports a wide range of audio and video formats.",
-                      "category":  "Multimedia Tools"
+                      "category":  "Multimedia Tools",
+                      "choco":  "vlc"
                   },
                   {
                       "id":  "Microsoft.VisualStudioCode",
                       "title":  "VS Code",
                       "note":  "Visual Studio Code is a free, open-source code editor with support for multiple programming languages.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "vscode"
                   },
                   {
                       "id":  "VSCodium.VSCodium",
                       "title":  "VS Codium",
                       "note":  "VSCodium is a community-driven, freely-licensed binary distribution of Microsoft\u0027s VS Code.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "vscodium"
                   },
                   {
                       "id":  "Waterfox.Waterfox",
                       "title":  "Waterfox",
                       "note":  "Waterfox is a fast, privacy-focused web browser based on Firefox, designed to preserve user choice and privacy.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  "waterfox"
                   },
                   {
                       "id":  "9NKSQGP7F2NH",
                       "title":  "WhatsApp Desktop",
                       "note":  "WhatsApp Desktop is the official Windows desktop messaging app from Meta, distributed through the Microsoft Store.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  null
                   },
                   {
                       "id":  "Microsoft.WindowsTerminal",
                       "title":  "Windows Terminal",
                       "note":  "Windows Terminal is a modern, fast, and efficient terminal application for command-line users, supporting multiple tabs, panes, and more.",
-                      "category":  "Microsoft Tools"
+                      "category":  "Microsoft Tools",
+                      "choco":  "microsoft-windows-terminal"
                   },
                   {
                       "id":  "RARLab.WinRAR",
                       "title":  "WinRAR",
                       "note":  "WinRAR is a powerful archive manager that allows you to create, manage, and extract compressed files.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "winrar"
                   },
                   {
                       "id":  "WinSCP.WinSCP",
                       "title":  "WinSCP",
                       "note":  "WinSCP is a popular open-source SFTP, FTP, and SCP client for Windows.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "winscp"
                   },
                   {
                       "id":  "WireGuard.WireGuard",
                       "title":  "WireGuard",
                       "note":  "WireGuard is a fast and modern VPN (Virtual Private Network) protocol.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "wireguard"
                   },
                   {
                       "id":  "WiresharkFoundation.Wireshark",
                       "title":  "Wireshark",
                       "note":  "Wireshark is a widely-used open-source network protocol analyzer.",
-                      "category":  "Pro Tools"
+                      "category":  "Pro Tools",
+                      "choco":  "wireshark"
                   },
                   {
                       "id":  "WiseCleaner.WiseProgramUninstaller",
                       "title":  "Wise Program Uninstaller (WiseCleaner)",
                       "note":  "Wise Program Uninstaller is the perfect solution for uninstalling Windows programs, allowing you to uninstall applications quickly and co...",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  null
                   },
                   {
                       "id":  "AntibodySoftware.WizTree",
                       "title":  "WizTree",
                       "note":  "WizTree is a fast disk space analyzer that helps you quickly find the files and folders consuming the most space on your hard drive.",
-                      "category":  "Utilities"
+                      "category":  "Utilities",
+                      "choco":  "wiztree"
                   },
                   {
                       "id":  "Xournal++.Xournal++",
                       "title":  "Xournal++",
                       "note":  "Xournal++ is an open-source handwriting notetaking software with PDF annotation capabilities.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "xournalplusplus"
                   },
                   {
                       "id":  "Yarn.Yarn",
                       "title":  "Yarn",
                       "note":  "Yarn is a fast, reliable, and secure dependency management tool for JavaScript projects.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "yarn"
                   },
                   {
                       "id":  "ZedIndustries.Zed",
                       "title":  "Zed",
                       "note":  "Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.",
-                      "category":  "Development"
+                      "category":  "Development",
+                      "choco":  "zed"
                   },
                   {
                       "id":  "Zen-Team.Zen-Browser",
                       "title":  "Zen Browser",
                       "note":  "The modern, privacy-focused, performance-driven browser built on Firefox.",
-                      "category":  "Browsers"
+                      "category":  "Browsers",
+                      "choco":  null
                   },
                   {
                       "id":  "Zoom.Zoom",
                       "title":  "Zoom",
                       "note":  "Zoom is a popular video conferencing and web conferencing service for online meetings, webinars, and collaborative projects.",
-                      "category":  "Communications"
+                      "category":  "Communications",
+                      "choco":  "zoom"
                   },
                   {
                       "id":  "DigitalScholar.Zotero",
                       "title":  "Zotero",
                       "note":  "Zotero is a free, easy-to-use tool to help you collect, organize, cite, and share your research materials.",
-                      "category":  "Document"
+                      "category":  "Document",
+                      "choco":  "zotero"
                   }
               ]
 }

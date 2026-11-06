@@ -88,8 +88,14 @@ public static class WingetTable
 /// Runs winget from the unprivileged app, never from the elevated engine, because winget's path is
 /// inside the user's own folder. Installers that need admin rights show their own Windows prompt.
 /// </summary>
-public sealed class WingetClient(IToolRunner runner, IReadOnlyList<SoftwareItem> software, string? wingetPath = null)
+public sealed class WingetClient(IToolRunner runner, IReadOnlyList<SoftwareItem> software, string? wingetPath = null, string? chocolateyPath = null)
 {
+    private readonly string chocoPath = chocolateyPath ?? Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+        "chocolatey",
+        "bin",
+        "choco.exe");
+
     private const int UpdateNotApplicable = unchecked((int)0x8A15002B);
     private const int NoApplicableInstaller = unchecked((int)0x8A150010);
     private const int NoPackagesFound = unchecked((int)0x8A150014);
@@ -178,7 +184,19 @@ public sealed class WingetClient(IToolRunner runner, IReadOnlyList<SoftwareItem>
     {
         var item = software.FirstOrDefault(entry => entry.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
             ?? throw new CatalogRequestException($"Unknown app: {id}");
-        return RunInstall(item.Id, IsStoreId(item.Id) ? "msstore" : "winget", item.Title);
+        var result = RunInstall(item.Id, IsStoreId(item.Id) ? "msstore" : "winget", item.Title);
+        return !result.Ok && item.Choco is not null && File.Exists(chocoPath)
+            ? InstallWithChocolatey(item)
+            : result;
+    }
+
+    /// <summary>Only used if winget can't install an app and Chocolatey is already on this PC.</summary>
+    private OperationResult InstallWithChocolatey(SoftwareItem item)
+    {
+        var code = runner.Capture(chocoPath, ["install", item.Choco!, "-y", "--no-progress"], InstallLimit).ExitCode;
+        return code == 0
+            ? new OperationResult(true, $"{item.Title} was installed with Chocolatey.")
+            : new OperationResult(false, $"{item.Title} failed in winget and Chocolatey. Chocolatey may need an administrator terminal.");
     }
 
     public OperationResult Reinstall(BuiltInApp app) =>

@@ -40,6 +40,10 @@ public partial class MainWindow : Window
     private readonly GameScanner _gameScanner;
     private readonly WindowsRunningApps _apps = new();
     private readonly ProcessService _processes = new();
+    private readonly WindowsDisplayModes _display = new();
+    private readonly CloudflareSpeedProbe _speed = new();
+    private readonly ConnectionScanner _connections = new(new WindowsProcessRunner());
+    private readonly IReadOnlyList<string> _softwareIds = AppCatalogs.LoadSoftware().Select(item => item.Id).ToList();
     private readonly AdvancedService _advanced = new(
         new WindowsProcessRunner(),
         new FileAdvancedState(JournalLocation.AdvancedStatePath),
@@ -74,7 +78,7 @@ public partial class MainWindow : Window
         _gameScanner = new GameScanner(GameSources.Detect());
         _tray = new TrayAgent(
             _settings,
-            new AutomationActions(_cleanup, _startup, probe, _trimmer),
+            new AutomationActions(_cleanup, _startup, probe, _trimmer, new RegistryBackup(_runner, RegistryBackup.DefaultFolder)),
             new WindowsGameSettings(),
             _plans,
             _apps,
@@ -167,6 +171,14 @@ public partial class MainWindow : Window
         core.NewWindowRequested += (_, e) => e.Handled = true;
         core.WebMessageReceived += OnWebMessage;
         core.ContainsFullScreenElementChanged += (_, _) => SetFullScreen(core.ContainsFullScreenElement);
+
+        // The camera and microphone tests are the only things that ask, and only after a click.
+        core.PermissionRequested += (_, e) =>
+        {
+            var allowed = e.Uri.StartsWith(AppOrigin + "/", StringComparison.OrdinalIgnoreCase)
+                && e.PermissionKind is CoreWebView2PermissionKind.Camera or CoreWebView2PermissionKind.Microphone;
+            e.State = allowed ? CoreWebView2PermissionState.Allow : CoreWebView2PermissionState.Deny;
+        };
         core.Navigate($"{AppOrigin}/index.html");
     }
 
@@ -276,6 +288,27 @@ public partial class MainWindow : Window
         "process.list" => await Task.Run(_processes.List),
         "process.end" => await Task.Run(() => _processes.End(Read<ProcessEndRequest>(payload))),
         "winget.repair" => await Task.Run(_builtIn.RepairWinget),
+        "power.create" => await Task.Run(() => new PowerTools(_runner).CreatePlan(Read<ProbeRequest>(payload).Host)),
+        "power.parking" => await Task.Run(new PowerTools(_runner).ReadCoreParking),
+        "power.keepCores" => await Task.Run(new PowerTools(_runner).KeepCoresAwake),
+        "display.read" => await Task.Run(_display.Read),
+        "display.best" => await Task.Run(SetBestDisplay),
+        "connections.scan" => await Task.Run(ScanConnections),
+        "connections.history" => _connections.History().Select(item => new ActivityItem(item.Key, item.Value)).ToList(),
+        "settings.export" => await ExportSettingsAsync(),
+        "settings.import" => await ImportSettingsAsync(),
+        "speed.run" => await Task.Run(new SpeedTest(_speed).Run),
+        "bandwidth.list" => await Task.Run(new BandwidthLimits(_runner).List),
+        "bandwidth.set" => await _engine.SetBandwidthAsync(Read<BandwidthRule>(payload)),
+        "bandwidth.remove" => await _engine.RemoveBandwidthAsync(Read<BandwidthRule>(payload)),
+        "gpu.health" => await Task.Run(() => GpuChecks.Read(_runner)),
+        "bios.restart" => await _engine.RestartToBiosAsync(),
+        "bios.cancel" => await _engine.CancelBiosRestartAsync(),
+        "registry.backup" => await Task.Run(() => new RegistryBackup(_runner, RegistryBackup.DefaultFolder).Run(DateTime.Now)),
+        "turbo.get" => _tray.Games.TurboOn,
+        "turbo.set" => await Task.Run(() => SetTurbo(Read<TurboRequest>(payload).Enabled)),
+        "games.verify" => VerifySteamGame(Read<SteamVerifyRequest>(payload).GameId),
+        "crash.open" => OpenCrashFolder(),
         "update.check" => await Task.Run(_updates.Check),
         "update.install" => await InstallUpdateAsync(),
         _ => throw new EngineException("Unknown operation."),
@@ -324,6 +357,84 @@ public partial class MainWindow : Window
 
         _ = Dispatcher.BeginInvoke(ExitApp);
         return new OperationResult(true, "Installing the update.");
+    }
+
+    private bool SetTurbo(bool on)
+    {
+        _tray.Games.SetTurbo(on);
+        return _tray.Games.TurboOn;
+    }
+
+    /// <summary>Asks Steam to check a game's files. The ID comes from the scan, never from the interface.</summary>
+    private OperationResult VerifySteamGame(string gameId)
+    {
+        var game = _games.FirstOrDefault(item => item.Id == gameId && item.Launcher == "Steam")
+            ?? throw new CatalogRequestException("Unknown game.");
+        using var _ = Process.Start(new ProcessStartInfo($"steam://validate/{game.Id["steam-".Length..]}") { UseShellExecute = true });
+        return new OperationResult(true, "Steam is checking the game's files.");
+    }
+
+    private static OperationResult OpenCrashFolder()
+    {
+        Directory.CreateDirectory(App.CrashFolder);
+        using var _ = Process.Start(new ProcessStartInfo(App.CrashFolder) { UseShellExecute = true });
+        return new OperationResult(true, "Opened.");
+    }
+
+    private OperationResult SetBestDisplay() =>
+        _display.SetBest()
+            ? new OperationResult(true, "Your display is at its highest refresh rate.")
+            : new OperationResult(false, "Windows couldn't change the refresh rate.");
+
+    private IReadOnlyList<ConnectionEntry> ScanConnections()
+    {
+        var names = _processes.List().ToDictionary(process => process.Id, process => process.Name);
+        return _connections.Scan(id => names.GetValueOrDefault(id, "Unknown"));
+    }
+
+    private async Task<ReportResult> ExportSettingsAsync()
+    {
+        var applied = (await Task.Run(_scanner.Scan)).Where(item => item.State == TweakStates.Applied).Select(item => item.Id);
+        var apps = _softwareIds.Intersect((await Task.Run(_winget.ListSoftware)).Items.Where(item => item.Installed).Select(item => item.Id));
+        var text = SettingsFile.Build(applied, ReadSettings(), apps);
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            FileName = "TuneForge settings.json",
+            DefaultExt = ".json",
+            Filter = "TuneForge settings|*.json",
+        };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return new ReportResult(false, null);
+        }
+
+        await File.WriteAllTextAsync(dialog.FileName, text);
+        return new ReportResult(true, dialog.FileName);
+    }
+
+    /// <summary>Tweaks from a file still go through Review. App settings apply straight away.</summary>
+    private async Task<ImportResult?> ImportSettingsAsync()
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "TuneForge settings|*.json" };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return null;
+        }
+
+        var text = await File.ReadAllTextAsync(dialog.FileName);
+        var tweakIds = (await Task.Run(_scanner.Scan)).Select(item => item.Id).ToList();
+        var (file, result) = SettingsFile.Read(text, tweakIds, _softwareIds);
+        if (file.Choices is not null)
+        {
+            SaveSettings(file.Choices);
+        }
+
+        if (file.FocusApps is not null)
+        {
+            _settings.Update(settings => settings with { FocusApps = file.FocusApps });
+        }
+
+        return result;
     }
 
     private static OperationResult OpenTool(string id)

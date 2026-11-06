@@ -9,7 +9,9 @@ public sealed record SettingsUpdate(
     int MemoryThreshold = 85,
     bool CleanAuto = false,
     int CleanDays = 7,
-    bool StartupWatch = false);
+    bool StartupWatch = false,
+    bool RegistryBackup = false,
+    bool CrashLogs = false);
 
 /// <summary>The choices plus what the app remembers between runs.</summary>
 public sealed record AppSettings(
@@ -19,7 +21,8 @@ public sealed record AppSettings(
     IReadOnlyList<string>? KnownStartup = null,
     IReadOnlyList<GameProfile>? Profiles = null,
     IReadOnlyList<string>? FocusApps = null,
-    ActiveBoost? Boost = null);
+    ActiveBoost? Boost = null,
+    string? LastBackupUtc = null);
 
 public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
 

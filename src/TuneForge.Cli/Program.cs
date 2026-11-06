@@ -42,6 +42,12 @@ const string Usage = """
       tuneforge-cli power use <id>
       tuneforge-cli power add-ultimate
       tuneforge-cli boost-test <process> <settings-file>
+      tuneforge-cli advanced list
+      tuneforge-cli advanced on|off <id>
+      tuneforge-cli speedtest
+      tuneforge-cli limit <program.exe> <mbps>
+      tuneforge-cli limit-remove <program.exe>
+      tuneforge-cli limits
 
     apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
@@ -110,6 +116,12 @@ try
         "power" when args.Length == 3 && args[1] == "use" => Report(new OperationResult(new WindowsPowerPlans(runner).Activate(args[2]), "Done.")),
         "power" when args.Length == 2 && args[1] == "add-ultimate" => Report(new OperationResult(new WindowsPowerPlans(runner).AddUltimate(), "Done.")),
         "boost-test" when args.Length == 3 => BoostTest(args[1], args[2]),
+        "advanced" when args.Length == 2 && args[1] == "list" => Show(Advanced().List()),
+        "advanced" when args.Length == 3 && args[1] is "on" or "off" => Admin(() => Report(Advanced().Set(new AdvancedSetRequest(args[2], args[1] == "on")))),
+        "speedtest" => Speed(),
+        "limit" when args.Length == 3 && long.TryParse(args[2], out var mbps) => Admin(() => Report(new BandwidthLimits(runner).Set(new BandwidthRule(args[1], mbps)))),
+        "limit-remove" when args.Length == 2 => Admin(() => Report(new BandwidthLimits(runner).Remove(args[1]))),
+        "limits" => Show(new BandwidthLimits(runner).List()),
         _ => Help(),
     };
 }
@@ -180,6 +192,22 @@ int BoostTest(string process, string settingsFile)
     booster.Save(game, new GameBoosts());
     State("after");
     return 0;
+}
+
+AdvancedService Advanced()
+{
+    if (elevated)
+    {
+        JournalLocation.EnsureProtected();
+    }
+
+    return new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings());
+}
+
+int Speed()
+{
+    using var probe = new CloudflareSpeedProbe();
+    return Show(new SpeedTest(probe).Run());
 }
 
 int Autostart(string action)

@@ -54,6 +54,12 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, system.Advanced.Set(Parameters<AdvancedSetRequest>(request))),
                 RpcMethods.SecuritySet when system is not null =>
                     Success(request.Id, system.Security.TurnOn(Parameters<SecuritySetRequest>(request))),
+                RpcMethods.BandwidthSet when system is not null =>
+                    Success(request.Id, system.Bandwidth.Set(Parameters<BandwidthRule>(request))),
+                RpcMethods.BandwidthRemove when system is not null =>
+                    Success(request.Id, system.Bandwidth.Remove(Parameters<BandwidthRule>(request).Program)),
+                RpcMethods.BiosRestart when system is not null => Success(request.Id, system.Bios.Restart()),
+                RpcMethods.BiosCancel when system is not null => Success(request.Id, system.Bios.Cancel()),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),
             };
         }

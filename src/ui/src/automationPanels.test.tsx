@@ -20,6 +20,8 @@ const defaults: SettingsChoices = {
   cleanAuto: false,
   cleanDays: 7,
   startupWatch: false,
+  registryBackup: false,
+  crashLogs: false,
 };
 
 beforeEach(() => {

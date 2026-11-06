@@ -14,6 +14,16 @@ vi.mock("./bridge", () => ({
     powerSet: vi.fn(),
     powerUltimate: vi.fn(),
     focusSave: vi.fn(),
+    powerCreate: vi.fn(),
+    powerParking: vi.fn(),
+    powerKeepCores: vi.fn(),
+    displayRead: vi.fn(),
+    displayBest: vi.fn(),
+    turboGet: vi.fn(),
+    turboSet: vi.fn(),
+    gamesVerify: vi.fn(),
+    biosRestart: vi.fn(),
+    biosCancel: vi.fn(),
   },
 }));
 
@@ -46,6 +56,9 @@ beforeEach(() => {
   vi.resetAllMocks();
   api.gamesList.mockResolvedValue(games);
   api.gamingOverview.mockResolvedValue(overview);
+  api.displayRead.mockResolvedValue({ name: "2560 x 1440", currentHz: 60, bestHz: 165 });
+  api.powerParking.mockResolvedValue({ minimumCoresPercent: 10 });
+  api.turboGet.mockResolvedValue(false);
 });
 
 afterEach(cleanup);
@@ -91,6 +104,55 @@ describe("GamingPage", () => {
     expect(api.powerSet).toHaveBeenCalledWith("p2");
     expect(await screen.findByText("The power plan was changed.")).toBeTruthy();
     expect(screen.getByText(/Resize BAR is off/)).toBeTruthy();
+  });
+
+  it("offers the top refresh rate, core parking and a custom plan", async () => {
+    const user = userEvent.setup();
+    api.displayBest.mockResolvedValue({ ok: true, message: "Done.", restartNeeded: false });
+    api.powerKeepCores.mockResolvedValue({ ok: true, message: "Done.", restartNeeded: false });
+    api.powerCreate.mockResolvedValue({ ok: true, message: "Created.", restartNeeded: false });
+    render(<GamingPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Power and focus" }));
+    await user.click(await screen.findByRole("button", { name: "Use 165 Hz" }));
+    expect(api.displayBest).toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Keep cores awake" }));
+    expect(api.powerKeepCores).toHaveBeenCalled();
+
+    await user.type(screen.getByLabelText("New plan name"), "Mine");
+    await user.click(screen.getByRole("button", { name: "Create from current plan" }));
+    expect(api.powerCreate).toHaveBeenCalledWith("Mine");
+  });
+
+  it("turns Turbo mode on and asks before restarting into BIOS", async () => {
+    const user = userEvent.setup();
+    api.turboSet.mockResolvedValue(true);
+    api.biosRestart.mockResolvedValue({ ok: true, message: "Restarting.", restartNeeded: true });
+    render(<GamingPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Turn on" }));
+    expect(api.turboSet).toHaveBeenCalledWith(true);
+    expect(await screen.findByText(/Turbo mode is on/)).toBeTruthy();
+
+    await user.click(screen.getByRole("tab", { name: "Power and focus" }));
+    await user.click(await screen.findByRole("button", { name: "Restart into BIOS" }));
+    expect(api.biosRestart).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Yes, restart" }));
+    expect(api.biosRestart).toHaveBeenCalled();
+    expect(await screen.findByRole("button", { name: "Cancel restart" })).toBeTruthy();
+  });
+
+  it("repairs a Steam game", async () => {
+    const user = userEvent.setup();
+    api.gamesVerify.mockResolvedValue({ ok: true, message: "Checking.", restartNeeded: false });
+    render(<GamingPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Boosts for Solo Game" }));
+    await user.click(screen.getByRole("button", { name: "Repair Solo Game" }));
+
+    expect(api.gamesVerify).toHaveBeenCalledWith("a");
   });
 
   it("saves the focus app list", async () => {

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { bridge, type GameBoosts, type GameEntry, type GamingOverview, type OperationResult } from "./bridge";
+import { bridge, type DisplayMode, type GameBoosts, type GameEntry, type GamingOverview, type OperationResult } from "./bridge";
+import { BiosCard, TurboCard } from "./ExtraPanels";
 import { TweaksPage } from "./TweaksPage";
 
 type Tab = "games" | "system" | "tweaks" | "anti-cheat";
@@ -22,8 +23,8 @@ const boostOptions: { key: keyof GameBoosts; label: string; note: string }[] = [
 const buttonClass =
   "min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-4 font-medium disabled:cursor-not-allowed disabled:opacity-60";
 
-export function GamingPage() {
-  const [tab, setTab] = useState<Tab>("games");
+export function GamingPage({ initialTab, initialQuery }: { initialTab?: string; initialQuery?: string }) {
+  const [tab, setTab] = useState<Tab>((initialTab as Tab) ?? "games");
 
   return (
     <div>
@@ -46,7 +47,7 @@ export function GamingPage() {
       <div role="tabpanel" aria-label={tabs.find((item) => item.id === tab)?.label} className="mt-4">
         {tab === "games" && <GamesTab />}
         {tab === "system" && <SystemTab />}
-        {tab === "tweaks" && <TweaksPage categories={["gaming"]} />}
+        {tab === "tweaks" && <TweaksPage categories={["gaming"]} initialQuery={initialQuery} />}
         {tab === "anti-cheat" && <AntiCheatTab />}
       </div>
     </div>
@@ -75,6 +76,7 @@ function GamesTab() {
 
   return (
     <div>
+      <TurboCard />
       <p className="mb-3 text-muted-foreground">
         Boosts that apply while playing need TuneForge open or in the tray, and everything goes back when the game closes.
       </p>
@@ -108,6 +110,17 @@ function GamesTab() {
               {open === game.id && (
                 <div className="mt-3 flex flex-col gap-3">
                   <p className="text-sm break-all text-muted-foreground">{game.executable}</p>
+                  {game.launcher === "Steam" && (
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="min-w-0">
+                        <span className="block font-medium">Repair this game</span>
+                        <span className="block text-sm text-muted-foreground">Asks Steam to check its files and replace damaged ones.</span>
+                      </span>
+                      <button type="button" aria-label={`Repair ${game.title}`} onClick={() => bridge.gamesVerify(game.id).catch((reason: Error) => setError(reason.message))} className={buttonClass}>
+                        Repair
+                      </button>
+                    </div>
+                  )}
                   {boostOptions.map((option) => {
                     const blocked = option.key === "highPriority" && Boolean(game.antiCheat);
                     return (
@@ -148,6 +161,15 @@ function SystemTab() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<OperationResult | string | null>(null);
   const [picked, setPicked] = useState<Set<string>>(new Set());
+  const [planName, setPlanName] = useState("");
+  const [display, setDisplay] = useState<DisplayMode | null>(null);
+  const [parking, setParking] = useState<number | null>(null);
+
+  const readHardware = useCallback(() => {
+    bridge.displayRead().then(setDisplay, () => setDisplay(null));
+    bridge.powerParking().then((status) => setParking(status.minimumCoresPercent ?? null), () => setParking(null));
+  }, []);
+  useEffect(readHardware, [readHardware]);
 
   const reload = useCallback(() => {
     bridge.gamingOverview().then(
@@ -220,9 +242,61 @@ function SystemTab() {
             </div>
           ))}
         </div>
-        <button type="button" disabled={busy} onClick={() => run(bridge.powerUltimate)} className={`${buttonClass} mt-3`}>
-          Add Ultimate Performance
-        </button>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button type="button" disabled={busy} onClick={() => run(bridge.powerUltimate)} className={buttonClass}>
+            Add Ultimate Performance
+          </button>
+          <input
+            aria-label="New plan name"
+            value={planName}
+            onChange={(event) => setPlanName(event.target.value)}
+            placeholder="New plan name"
+            className="min-h-11 w-44 rounded-md border border-border bg-background px-3"
+          />
+          <button
+            type="button"
+            disabled={busy || planName.trim() === ""}
+            onClick={() => run(() => bridge.powerCreate(planName)).then(() => setPlanName(""))}
+            className={buttonClass}
+          >
+            Create from current plan
+          </button>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">A new plan starts as a copy of your active plan.</p>
+      </section>
+
+      <section aria-labelledby="cpu-title" className="rounded-lg border border-border bg-card p-6">
+        <h2 id="cpu-title" className="text-lg font-semibold">
+          Display and CPU
+        </h2>
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-medium">
+              {display ? `Refresh rate: ${display.currentHz} Hz of ${display.bestHz} Hz` : "Refresh rate not reported"}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {display?.name}. Windows doesn't always pick your monitor's top speed.
+            </p>
+          </div>
+          {display && display.currentHz < display.bestHz && (
+            <button type="button" disabled={busy} onClick={() => run(bridge.displayBest).then(readHardware)} className={buttonClass}>
+              Use {display.bestHz} Hz
+            </button>
+          )}
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-medium">
+              {parking == null ? "Core parking not reported" : parking < 100 ? `Core parking is on (${parking}% of cores stay awake)` : "Core parking is off"}
+            </p>
+            <p className="text-sm text-muted-foreground">Parked CPU cores save power, but can cause brief stutters while waking.</p>
+          </div>
+          {parking != null && parking < 100 && (
+            <button type="button" disabled={busy} onClick={() => run(bridge.powerKeepCores).then(readHardware)} className={buttonClass}>
+              Keep cores awake
+            </button>
+          )}
+        </div>
       </section>
 
       <section aria-labelledby="focus-title" className="rounded-lg border border-border bg-card p-6">
@@ -255,6 +329,8 @@ function SystemTab() {
         </h2>
         <p className="mt-1 text-muted-foreground">{resizeBarText[overview.resizeBar]}</p>
       </section>
+
+      <BiosCard />
     </div>
   );
 }

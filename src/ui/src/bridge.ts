@@ -288,6 +288,8 @@ export interface SettingsChoices {
   cleanAuto: boolean;
   cleanDays: number;
   startupWatch: boolean;
+  registryBackup: boolean;
+  crashLogs: boolean;
 }
 
 export interface AppSettings {
@@ -372,6 +374,48 @@ export interface ProcessEntry {
   memoryBytes: number;
   hasWindow: boolean;
   locked: boolean;
+}
+
+export interface DisplayMode {
+  name: string;
+  currentHz: number;
+  bestHz: number;
+}
+
+export interface ConnectionEntry {
+  protocol: string;
+  local: string;
+  remote: string;
+  state: string;
+  processId: number;
+  program: string;
+  listening: boolean;
+}
+
+export interface ImportResult {
+  tweaks: string[];
+  apps: string[];
+  ignored: number;
+}
+
+export interface SpeedResult {
+  downloadMbps?: number | null;
+  uploadMbps?: number | null;
+  error?: string | null;
+}
+
+export interface BandwidthRule {
+  program: string;
+  mbps: number;
+}
+
+export interface GpuHealth {
+  name: string;
+  driver: string;
+  temperatureC?: number | null;
+  fanPercent?: number | null;
+  powerWatts?: number | null;
+  performance: string;
 }
 
 interface BridgeReply {
@@ -494,6 +538,27 @@ export class Bridge {
   processList = () => this.call<ProcessEntry[]>("process.list");
   processEnd = (id: number, name: string) => this.call<OperationResult>("process.end", { id, name });
   wingetRepair = () => this.call<OperationResult>("winget.repair");
+  powerCreate = (host: string) => this.call<OperationResult>("power.create", { host });
+  powerParking = () => this.call<{ minimumCoresPercent?: number | null }>("power.parking");
+  powerKeepCores = () => this.call<OperationResult>("power.keepCores");
+  displayRead = () => this.call<DisplayMode | null>("display.read");
+  displayBest = () => this.call<OperationResult>("display.best");
+  connectionsScan = () => this.call<ConnectionEntry[]>("connections.scan");
+  connectionsHistory = () => this.call<{ title: string; timeUtc: string }[]>("connections.history");
+  settingsExport = () => this.call<ReportResult>("settings.export");
+  settingsImport = () => this.call<ImportResult | null>("settings.import");
+  speedRun = () => this.call<SpeedResult>("speed.run");
+  bandwidthList = () => this.call<BandwidthRule[]>("bandwidth.list");
+  bandwidthSet = (program: string, mbps: number) => this.call<OperationResult>("bandwidth.set", { program, mbps });
+  bandwidthRemove = (program: string) => this.call<OperationResult>("bandwidth.remove", { program, mbps: 0 });
+  gpuHealth = () => this.call<GpuHealth | null>("gpu.health");
+  biosRestart = () => this.call<OperationResult>("bios.restart");
+  biosCancel = () => this.call<OperationResult>("bios.cancel");
+  registryBackup = () => this.call<OperationResult>("registry.backup");
+  turboGet = () => this.call<boolean>("turbo.get");
+  turboSet = (enabled: boolean) => this.call<boolean>("turbo.set", { enabled });
+  gamesVerify = (gameId: string) => this.call<OperationResult>("games.verify", { gameId });
+  crashOpen = () => this.call<OperationResult>("crash.open");
   updateCheck = () => this.call<UpdateStatus>("update.check");
   updateInstall = () => this.call<OperationResult>("update.install");
 }

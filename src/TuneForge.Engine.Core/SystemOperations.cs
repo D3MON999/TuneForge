@@ -12,4 +12,6 @@ public sealed record SystemOperations(
     BuiltInAppService BuiltIn,
     DnsService Dns,
     AdvancedService Advanced,
-    SecurityService Security);
+    SecurityService Security,
+    BandwidthLimits Bandwidth,
+    BiosRestart Bios);

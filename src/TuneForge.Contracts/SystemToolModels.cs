@@ -32,3 +32,13 @@ public sealed record ProcessEndRequest(int Id, string Name);
 public sealed record DisplayModeInfo(string Name, int CurrentHz, int BestHz);
 
 public sealed record CoreParkingStatus(int? MinimumCoresPercent);
+
+public sealed record ActivityItem(string Title, string TimeUtc);
+
+public sealed record SpeedResult(double? DownloadMbps, double? UploadMbps, string? Error);
+
+public sealed record BandwidthRule(string Program, long Mbps);
+
+public sealed record TurboRequest(bool Enabled);
+
+public sealed record SteamVerifyRequest(string GameId);

@@ -19,6 +19,10 @@ public static class RpcMethods
     public const string DnsSet = "dns.set";
     public const string AdvancedSet = "advanced.set";
     public const string SecuritySet = "security.set";
+    public const string BandwidthSet = "bandwidth.set";
+    public const string BandwidthRemove = "bandwidth.remove";
+    public const string BiosRestart = "bios.restart";
+    public const string BiosCancel = "bios.cancel";
 }
 
 public static class RpcErrorCodes

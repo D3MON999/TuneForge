@@ -23,6 +23,11 @@ vi.mock("./bridge", () => ({
     dnsBenchmark: vi.fn(),
     dnsSet: vi.fn(),
     dnsFlush: vi.fn(),
+    gpuHealth: vi.fn(),
+    bandwidthList: vi.fn(),
+    speedRun: vi.fn(),
+    connectionsScan: vi.fn(),
+    connectionsHistory: vi.fn(),
   },
 }));
 
@@ -65,6 +70,8 @@ beforeEach(() => {
   api.monitorLive.mockResolvedValue(live);
   api.systemSummary.mockResolvedValue(system);
   api.healthCheck.mockResolvedValue(health);
+  api.gpuHealth.mockResolvedValue(null);
+  api.bandwidthList.mockResolvedValue([]);
 });
 
 afterEach(cleanup);

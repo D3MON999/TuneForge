@@ -5620,6 +5620,57 @@
      "value": 2
     }
    ]
+  },
+  {
+   "id": "windows.safe-services",
+   "title": "Safe service preset",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "Offline Files and sharing your internet connection stop working.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "description": "Turns off telemetry, Offline Files and connection sharing, and sets the Maps and Storage services to start only when needed.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\DiagTrack",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\CscService",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\SharedAccess",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\MapsBroker",
+     "name": "Start",
+     "kind": "dword",
+     "value": 3
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\StorSvc",
+     "name": "Start",
+     "kind": "dword",
+     "value": 3
+    }
+   ]
   }
  ]
 }

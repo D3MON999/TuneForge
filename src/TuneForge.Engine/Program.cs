@@ -30,7 +30,9 @@ var system = new SystemOperations(
     new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn()),
     new DnsService(runner, new WindowsDnsAdapters(), new FileDnsBackup(JournalLocation.DnsBackupPath)),
     new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings()),
-    new SecurityService(runner));
+    new SecurityService(runner),
+    new BandwidthLimits(runner),
+    new BiosRestart(runner));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

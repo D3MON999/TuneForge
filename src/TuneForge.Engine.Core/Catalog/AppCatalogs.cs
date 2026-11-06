@@ -16,7 +16,8 @@ public sealed record SoftwareItem(
     [property: JsonPropertyName("id")] string Id,
     [property: JsonPropertyName("title")] string Title,
     [property: JsonPropertyName("note")] string Note,
-    [property: JsonPropertyName("category")] string Category);
+    [property: JsonPropertyName("category")] string Category,
+    [property: JsonPropertyName("choco")] string? Choco = null);
 
 /// <summary>The fixed app lists built into the app. Callers can only name items in them.</summary>
 public static class AppCatalogs

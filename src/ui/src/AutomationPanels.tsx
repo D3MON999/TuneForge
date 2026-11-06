@@ -100,7 +100,7 @@ export function AutomationSettings() {
   const { choices } = settings;
   const toggle = (key: BooleanKey) => (value: boolean) => save({ [key]: value });
   const running = choices.closeToTray || choices.startWithWindows;
-  const automatic = choices.memoryAuto || choices.cleanAuto || choices.startupWatch;
+  const automatic = choices.memoryAuto || choices.cleanAuto || choices.startupWatch || choices.registryBackup;
 
   return (
     <>
@@ -180,6 +180,23 @@ export function AutomationSettings() {
             checked={choices.startupWatch}
             onChange={toggle("startupWatch")}
           />
+          <Toggle
+            label="Back up the registry every week"
+            note="Saves to Documents\TuneForge Backups and keeps the last 5 copies."
+            checked={choices.registryBackup}
+            onChange={toggle("registryBackup")}
+          />
+          <Toggle
+            label="Keep crash logs"
+            note="Saves a file on this PC if TuneForge crashes. Nothing is sent anywhere. You can share a log if you want help."
+            checked={choices.crashLogs}
+            onChange={toggle("crashLogs")}
+          />
+          {choices.crashLogs && (
+            <button type="button" onClick={() => void bridge.crashOpen()} className="ml-8 min-h-11 w-fit cursor-pointer rounded-md border border-border px-4 font-medium">
+              Open crash logs
+            </button>
+          )}
         </div>
       </section>
     </>

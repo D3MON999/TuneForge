@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { bridge, type ErrorGroup, type StorageReport, type WindowsEvent } from "./bridge";
+import { ControllerTest, GpuCard, HeadsetTest, WebcamTest } from "./ExtraPanels";
 import { formatBytes } from "./format";
 
 type Tab = "storage" | "errors" | "logs" | "tests";
@@ -11,8 +12,8 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "tests", label: "Hardware tests" },
 ];
 
-export function MonitorPage() {
-  const [tab, setTab] = useState<Tab>("storage");
+export function MonitorPage({ initialTab }: { initialTab?: string }) {
+  const [tab, setTab] = useState<Tab>((initialTab as Tab) ?? "storage");
 
   return (
     <div>
@@ -67,6 +68,7 @@ function StorageTab() {
 
   return (
     <div className="flex flex-col gap-2">
+      <GpuCard />
       {report.disks.map((disk) => (
         <div key={disk.name} className="flex items-center justify-between gap-3 rounded-md border border-border bg-card p-3">
           <div className="min-w-0">
@@ -195,6 +197,9 @@ function HardwareTests() {
       <KeyboardTest />
       <MouseTest />
       <MonitorTest />
+      <WebcamTest />
+      <HeadsetTest />
+      <ControllerTest />
     </div>
   );
 }

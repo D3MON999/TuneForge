@@ -48,6 +48,14 @@ public sealed class AutomationTests : IDisposable
         }
 
         public IReadOnlyList<string> StartupNames() => Startup;
+
+        public int Backups { get; private set; }
+
+        public OperationResult BackupRegistry()
+        {
+            Backups++;
+            return new OperationResult(true, "Saved.");
+        }
     }
 
     private AutomationRunner Runner(FakeActions actions) =>
@@ -188,6 +196,22 @@ public sealed class AutomationTests : IDisposable
         Choose(new SettingsUpdate(StartupWatch: false));
 
         Assert.Null(_store.Load().KnownStartup);
+    }
+
+    [Fact]
+    public void RegistryBackup_RunsWeekly()
+    {
+        Choose(new SettingsUpdate(RegistryBackup: true));
+        var actions = new FakeActions();
+        var runner = Runner(actions);
+
+        runner.Tick();
+        runner.Tick();
+        Assert.Equal(1, actions.Backups);
+
+        _now = _now.AddDays(7);
+        runner.Tick();
+        Assert.Equal(2, actions.Backups);
     }
 
     [Fact]

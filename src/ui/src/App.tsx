@@ -19,7 +19,9 @@ import { AutomationSettings, MemoryCard } from "./AutomationPanels";
 import { CleanupPage } from "./CleanupPage";
 import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
+import { RegistryBackupCard } from "./ExtraPanels";
 import { GamingPage } from "./GamingPage";
+import { BackupCard, GlobalSearch, guideShouldShow, PageHelp, type SearchTarget, SetupGuide } from "./Guide";
 import { HistoryPage } from "./HistoryPage";
 import { MonitorPage } from "./MonitorPage";
 import { NetworkPage } from "./NetworkPage";
@@ -111,8 +113,20 @@ function ThemePicker({ theme, onChange }: { theme: ThemeChoice; onChange: (choic
 export function App() {
   const [active, setActive] = useState("dashboard");
   const [theme, setTheme] = useState<ThemeChoice>(loadTheme);
+  const [target, setTarget] = useState<SearchTarget | null>(null);
+  const [guide, setGuide] = useState(guideShouldShow);
 
   useEffect(() => applyTheme(theme), [theme]);
+
+  function open(next: SearchTarget) {
+    setTarget(next);
+    setActive(next.page);
+  }
+
+  function navigate(id: string) {
+    setTarget(null);
+    setActive(id);
+  }
 
   const page = pages.find((item) => item.id === active) ?? pages[0];
   const settings = pages[pages.length - 1];
@@ -124,15 +138,16 @@ export function App() {
           <Flame aria-hidden="true" className="size-5 text-primary" />
           TuneForge
         </p>
+        <GlobalSearch onOpen={open} />
         <ul className="flex flex-col gap-0.5">
           {pages.slice(0, -1).map((item) => (
             <li key={item.id}>
-              <NavItem item={item} current={item.id === active} onClick={() => setActive(item.id)} />
+              <NavItem item={item} current={item.id === active} onClick={() => navigate(item.id)} />
             </li>
           ))}
         </ul>
         <div className="mt-auto pt-2">
-          <NavItem item={settings} current={active === settings.id} onClick={() => setActive(settings.id)} />
+          <NavItem item={settings} current={active === settings.id} onClick={() => navigate(settings.id)} />
         </div>
       </nav>
 
@@ -144,17 +159,21 @@ export function App() {
               <p className="mt-0.5 text-muted-foreground">{page.subtitle}</p>
             </header>
           )}
-          {page.id === "dashboard" && <DashboardPage onNavigate={setActive} />}
+          <PageHelp key={page.id} page={page.id} />
+          {page.id === "dashboard" && <DashboardPage onNavigate={navigate} />}
           {page.id === "settings" && (
             <div className="flex flex-col gap-5">
               <ThemePicker theme={theme} onChange={setTheme} />
+              <BackupCard onGuide={() => setGuide(true)} />
               <AutomationSettings />
               <UpdateCard />
               <EngineCard />
             </div>
           )}
           {page.id === "privacy" && <SecurityCard />}
-          {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
+          {tweakPages[page.id] && (
+            <TweaksPage key={`${page.id}${target?.query}`} {...tweakPages[page.id]} initialQuery={target?.query} />
+          )}
           {page.id === "optimize" && <AdvancedSwitches />}
           {page.id === "history" && <HistoryPage />}
           {page.id === "cleanup" && (
@@ -163,18 +182,20 @@ export function App() {
               <MemoryCard />
             </>
           )}
-          {page.id === "apps" && <AppsPage />}
+          {page.id === "apps" && <AppsPage key={target?.tab} initialTab={target?.tab} />}
           {page.id === "repair" && (
             <>
               <RepairPage />
+              <RegistryBackupCard />
               <WindowsTools />
             </>
           )}
-          {page.id === "gaming" && <GamingPage />}
-          {page.id === "network" && <NetworkPage />}
-          {page.id === "monitor" && <MonitorPage />}
+          {page.id === "gaming" && <GamingPage key={target?.tab} initialTab={target?.tab} initialQuery={target?.query} />}
+          {page.id === "network" && <NetworkPage key={target?.tab} initialTab={target?.tab} />}
+          {page.id === "monitor" && <MonitorPage key={target?.tab} initialTab={target?.tab} />}
         </div>
       </main>
+      {guide && <SetupGuide onDone={() => setGuide(false)} />}
     </div>
   );
 }

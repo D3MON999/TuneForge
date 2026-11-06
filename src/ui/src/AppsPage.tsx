@@ -16,8 +16,8 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "processes", label: "Processes" },
 ];
 
-export function AppsPage() {
-  const [tab, setTab] = useState<Tab>("startup");
+export function AppsPage({ initialTab }: { initialTab?: string }) {
+  const [tab, setTab] = useState<Tab>((initialTab as Tab) ?? "startup");
 
   return (
     <div>

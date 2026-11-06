@@ -44,7 +44,7 @@ public sealed class TrayAgent : IDisposable
     /// <summary>The icon shows only while something needs it, and the checks only run then too.</summary>
     public void Apply(SettingsUpdate choices)
     {
-        var automations = choices.MemoryAuto || choices.CleanAuto || choices.StartupWatch;
+        var automations = choices.MemoryAuto || choices.CleanAuto || choices.StartupWatch || choices.RegistryBackup;
         var games = _games.HasWork;
         _icon.Visible = automations || games || choices.CloseToTray || choices.StartWithWindows;
         _timer.IsEnabled = automations;
