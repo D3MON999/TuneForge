@@ -2,6 +2,7 @@ import {
   Activity,
   Gamepad2,
   Globe,
+  History,
   LayoutDashboard,
   type LucideIcon,
   Package,
@@ -13,7 +14,9 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { EngineCard } from "./EngineCard";
+import { HistoryPage } from "./HistoryPage";
 import { applyTheme, loadTheme, type ThemeChoice } from "./theme";
+import { TweaksPage } from "./TweaksPage";
 
 interface Page {
   id: string;
@@ -31,8 +34,19 @@ const pages: Page[] = [
   { id: "privacy", label: "Privacy", icon: ShieldCheck },
   { id: "repair", label: "Repair", icon: Wrench },
   { id: "monitor", label: "Monitor", icon: Activity },
+  { id: "history", label: "History", icon: History },
   { id: "settings", label: "Settings", icon: Settings },
 ];
+
+/** Pages that list tweaks, and the catalog categories each one shows. */
+const tweakPages: Record<string, { categories: string[]; showPresets?: boolean }> = {
+  optimize: {
+    categories: ["privacy", "ai", "windows", "taskbar", "start-search", "explorer", "appearance", "update", "browser"],
+    showPresets: true,
+  },
+  privacy: { categories: ["privacy", "ai"] },
+  gaming: { categories: ["gaming"] },
+};
 
 const themes: { value: ThemeChoice; label: string }[] = [
   { value: "system", label: "Match Windows" },
@@ -98,7 +112,9 @@ export function App() {
               </select>
             </div>
           )}
-          {page.id !== "dashboard" && page.id !== "settings" && (
+          {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
+          {page.id === "history" && <HistoryPage />}
+          {!["dashboard", "settings", "history"].includes(page.id) && !tweakPages[page.id] && (
             <p className="text-muted-foreground">This page isn't built yet.</p>
           )}
         </div>

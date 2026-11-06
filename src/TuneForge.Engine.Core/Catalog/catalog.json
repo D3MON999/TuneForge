@@ -1,0 +1,3280 @@
+{
+ "schemaVersion": 1,
+ "groups": [
+  {
+   "id": "taskbar-combine",
+   "title": "Combine taskbar buttons"
+  },
+  {
+   "id": "taskbar-combine-other",
+   "title": "Combine buttons on other displays"
+  },
+  {
+   "id": "taskbar-other-displays",
+   "title": "Taskbar on other displays"
+  },
+  {
+   "id": "explorer-opens-to",
+   "title": "File Explorer opens to"
+  },
+  {
+   "id": "alt-tab",
+   "title": "Tabs in Alt+Tab"
+  },
+  {
+   "id": "taskbar-search",
+   "title": "Taskbar search"
+  },
+  {
+   "id": "drive-letters",
+   "title": "Drive letters"
+  },
+  {
+   "id": "start-all-apps",
+   "title": "Start menu All Apps view"
+  },
+  {
+   "id": "spotlight",
+   "title": "Windows Spotlight desktop"
+  }
+ ],
+ "items": [
+  {
+   "id": "privacy.disable-telemetry",
+   "title": "Disable telemetry, tracking & targeted ads",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Some Microsoft personalized features stop working.",
+   "restart": "signout",
+   "presets": [
+    "minimal"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+     "name": "Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+     "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+     "name": "HasAccepted",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Input\\TIPC",
+     "name": "Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\InputPersonalization",
+     "name": "RestrictImplicitInkCollection",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\InputPersonalization",
+     "name": "RestrictImplicitTextCollection",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\InputPersonalization\\TrainedDataStore",
+     "name": "HarvestContacts",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Personalization\\Settings",
+     "name": "AcceptedPrivacyPolicy",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+     "name": "AllowTelemetry",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "Start_TrackProgs",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "PublishUserActivities",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Siuf\\Rules",
+     "name": "NumberOfSIUFInPeriod",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Siuf\\Rules",
+     "name": "PeriodInNanoSeconds",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "PersonalizationReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "DiagnosticData",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-suggestions",
+   "title": "Disable tips, tricks & suggested content throughout Windows",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "minimal"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-310093Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-338388Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SystemPaneSuggestionsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "Start_IrisRecommendations",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-338389Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SoftLandingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-338393Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-353694Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-353696Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-353698Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\SystemSettings\\AccountNotifications",
+     "name": "EnableAccountNotifications",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\UserProfileEngagement",
+     "name": "ScoobeSystemSettingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "ShowSyncProviderNotifications",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SilentInstalledAppsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Windows.SystemToast.Suggested",
+     "name": "Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Mobility",
+     "name": "OptedIn",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "Start_AccountNotifications",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Windows.SystemToast.BackupReminder",
+     "name": "Enabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-location-services",
+   "title": "Disable Windows location services & app location access",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Maps, weather and Find My Device lose your location.",
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors",
+     "name": "DisableLocation",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-find-my-device",
+   "title": "Disable Find My Device location tracking",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "You can't locate this PC if it's lost.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\FindMyDevice",
+     "name": "AllowFindMyDevice",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-lockscreen-tips",
+   "title": "Disable tips & tricks on the lock screen",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "minimal"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "SubscribedContent-338387Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+     "name": "RotatingLockScreenOverlayEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "appearance.enable-desktop-spotlight",
+   "title": "Enable Windows spotlight desktop background and shortcut",
+   "category": "appearance",
+   "group": "spotlight",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableSpotlightCollectionOnDesktop",
+     "delete": true
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel",
+     "name": "{2cc5ca98-6485-489a-920e-b3e88a6ccce3}",
+     "delete": true
+    }
+   ]
+  },
+  {
+   "id": "appearance.disable-desktop-spotlight",
+   "title": "Disable Windows spotlight desktop background",
+   "category": "appearance",
+   "group": "spotlight",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableSpotlightCollectionOnDesktop",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel",
+     "name": "{2cc5ca98-6485-489a-920e-b3e88a6ccce3}",
+     "delete": true
+    }
+   ]
+  },
+  {
+   "id": "appearance.hide-desktop-spotlight-icon",
+   "title": "Hide the 'Learn about this picture' desktop shortcut",
+   "category": "appearance",
+   "group": "spotlight",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableSpotlightCollectionOnDesktop",
+     "delete": true
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel",
+     "name": "{2cc5ca98-6485-489a-920e-b3e88a6ccce3}",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-edge-ads",
+   "title": "Disable ads, suggestions and newsfeed in Edge",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "NewTabPageContentEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "NewTabPageHideDefaultTopSites",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeShoppingAssistantEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "TabServicesEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "AlternateErrorPagesEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "UserFeedbackAllowed",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ShowRecommendationsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "WalletDonationEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "HideFirstRunExperience",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "DefaultBrowserSettingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "DefaultBrowserSettingsCampaignEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "SpotlightExperiencesAndRecommendationsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ShowAcrobatSubscriptionButton",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-copilot",
+   "title": "Disable Microsoft Copilot",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "ShowCopilotButton",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+     "name": "TurnOffWindowsCopilot",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+     "name": "TurnOffWindowsCopilot",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-recall",
+   "title": "Disable Windows Recall",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "DisableAIDataAnalysis",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "DisableAIDataAnalysis",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "AllowRecallEnablement",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "TurnOffSavingSnapshots",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-click-to-do",
+   "title": "Disable Click To Do, AI text & image analysis",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "DisableClickToDo",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+     "name": "DisableClickToDo",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-aisvc-auto-start",
+   "title": "Prevent AI service from starting automatically",
+   "category": "ai",
+   "group": null,
+   "risk": "medium",
+   "impact": "Windows AI features start more slowly or stop working.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\WSAIFabricSvc",
+     "name": "Start",
+     "kind": "dword",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "id": "gaming.disable-dvr",
+   "title": "Disable Xbox game/screen recording",
+   "category": "gaming",
+   "group": null,
+   "risk": "low",
+   "impact": "Game clips and screen recording stop working.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "System\\GameConfigStore",
+     "name": "GameDVR_Enabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+     "name": "AppCaptureEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",
+     "name": "AllowGameDVR",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "gaming.disable-game-bar-integration",
+   "title": "Disable Game Bar integration",
+   "category": "gaming",
+   "group": null,
+   "risk": "medium",
+   "impact": "Game Bar shortcuts and links stop opening it.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\GameBar",
+     "name": "UseNexusForGameBarEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebar",
+     "name": "",
+     "kind": "string",
+     "value": "URL:ms-gamebar"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebar",
+     "name": "URL Protocol",
+     "kind": "string",
+     "value": ""
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebar",
+     "name": "NoOpenWith",
+     "kind": "string",
+     "value": ""
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebar\\shell\\open\\command",
+     "name": "",
+     "kind": "string",
+     "value": "%SystemRoot%/System32/systray.exe"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebarservices",
+     "name": "",
+     "kind": "string",
+     "value": "URL:ms-gamebarservices"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebarservices",
+     "name": "URL Protocol",
+     "kind": "string",
+     "value": ""
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebarservices",
+     "name": "NoOpenWith",
+     "kind": "string",
+     "value": ""
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\ms-gamebarservices\\shell\\open\\command",
+     "name": "",
+     "kind": "string",
+     "value": "%SystemRoot%/System32/systray.exe"
+    }
+   ]
+  },
+  {
+   "id": "start-search.disable-start-recommended",
+   "title": "Hide recommended section in the start menu",
+   "category": "start-search",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",
+     "name": "HideRecommendedSection",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "start-search.disable-start-all-apps",
+   "title": "Hide 'All Apps' section in the start menu",
+   "category": "start-search",
+   "group": "start-all-apps",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 26200,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoStartMenuMorePrograms",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "start-search.disable-start-phone-link",
+   "title": "Disable Phone Link integration in the start menu",
+   "category": "start-search",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Start\\Companions\\Microsoft.YourPhone_8wekyb3d8bbwe",
+     "name": "IsEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "start-search.disable-bing",
+   "title": "Disable Bing web search & Copilot integration in search",
+   "category": "start-search",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\Explorer",
+     "name": "DisableSearchBoxSuggestions",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+     "name": "AllowCortana",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+     "name": "CortanaConsent",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-settings365-ads",
+   "title": "Hide Microsoft 365 Copilot ads in Settings Home",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableConsumerAccountStateContent",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-settings-home",
+   "title": "Hide Settings 'Home' page",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "SettingsPageVisibility",
+     "kind": "string",
+     "value": "hide:home"
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-edge-ai",
+   "title": "Disable AI features in Microsoft Edge",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "CopilotCDPPageContext",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "CopilotPageContext",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "HubsSidebarEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "Microsoft365CopilotChatIconEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeEntraCopilotPageContext",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeHistoryAISearchEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ComposeInlineEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "GenAILocalFoundationalModelSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "NewTabPageBingChatEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-chrome-ai",
+   "title": "Disable AI features in Google Chrome",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "AIModeSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "AutofillPredictionSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "ChromeSuggestionsSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "CreateThemesSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "DevToolsGenAiSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "FindAndFillWithGeminiSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "GeminiSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "GeminiSparkSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "GenAILocalFoundationalModelSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "HelpMeWriteSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "HistorySearchSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "SearchContentSharingSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "SmartTabSharingSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "TabCompareSettings",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "ThirdPartyAiChatSettings",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "VoiceTypingSettings",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-paint-ai",
+   "title": "Disable AI features in Paint",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+     "name": "DisableCocreator",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+     "name": "DisableGenerativeFill",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+     "name": "DisableImageCreator",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+     "name": "DisableGenerativeErase",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+     "name": "DisableRemoveBackground",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "ai.disable-notepad-ai",
+   "title": "Disable AI features in Notepad",
+   "category": "ai",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22621,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\WindowsNotepad",
+     "name": "DisableAIFeatures",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "appearance.enable-dark-mode",
+   "title": "Enable dark theme for system and apps",
+   "category": "appearance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+     "name": "AppsUseLightTheme",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+     "name": "SystemUsesLightTheme",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.revert-context-menu",
+   "title": "Use classic Windows 10 context menu style",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": "Windows 11's newer menu is hidden.",
+   "restart": "signout",
+   "presets": [
+    "advanced"
+   ],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32",
+     "name": "",
+     "kind": "string",
+     "value": ""
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-mouse-acceleration",
+   "title": "Disable Enhance Pointer Precision (mouse acceleration)",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Mouse",
+     "name": "MouseSpeed",
+     "kind": "string",
+     "value": "0"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Mouse",
+     "name": "MouseThreshold1",
+     "kind": "string",
+     "value": "0"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Mouse",
+     "name": "MouseThreshold2",
+     "kind": "string",
+     "value": "0"
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-sticky-keys",
+   "title": "Disable Sticky Keys keyboard shortcut (5x shift)",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 26100,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Accessibility\\StickyKeys",
+     "name": "Flags",
+     "kind": "string",
+     "value": "506"
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-window-snapping",
+   "title": "Disable window snapping",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": "Dragging a window to a screen edge won't resize it.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "WindowArrangementActive",
+     "kind": "string",
+     "value": "0"
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-snap-assist",
+   "title": "Disable showing app suggestions when snapping windows",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "SnapAssist",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-snap-layouts",
+   "title": "Hide snap layout flyout at top of screen and on maximize button",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "EnableSnapBar",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "EnableSnapAssistFlyout",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.hide-tabs-in-alt-tab",
+   "title": "Hide tabs from apps when snapping or pressing Alt+Tab",
+   "category": "windows",
+   "group": "alt-tab",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MultiTaskingAltTabFilter",
+     "kind": "dword",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "id": "windows.show3-tabs-in-alt-tab",
+   "title": "Show 3 tabs from apps when snapping or pressing Alt+Tab",
+   "category": "windows",
+   "group": "alt-tab",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MultiTaskingAltTabFilter",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "windows.show5-tabs-in-alt-tab",
+   "title": "Show 5 tabs from apps when snapping or pressing Alt+Tab",
+   "category": "windows",
+   "group": "alt-tab",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MultiTaskingAltTabFilter",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.show20-tabs-in-alt-tab",
+   "title": "Show 20 tabs from apps when snapping or pressing Alt+Tab",
+   "category": "windows",
+   "group": "alt-tab",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MultiTaskingAltTabFilter",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.taskbar-align-left",
+   "title": "Align taskbar to the left",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "TaskbarAl",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.hide-search-tb",
+   "title": "Hide search icon from the taskbar",
+   "category": "taskbar",
+   "group": "taskbar-search",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+     "name": "SearchboxTaskbarMode",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.show-search-icon-tb",
+   "title": "Show search icon on the taskbar",
+   "category": "taskbar",
+   "group": "taskbar-search",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+     "name": "SearchboxTaskbarMode",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.show-search-label-tb",
+   "title": "Show search icon with label on the taskbar",
+   "category": "taskbar",
+   "group": "taskbar-search",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+     "name": "SearchboxTaskbarMode",
+     "kind": "dword",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "id": "taskbar.show-search-box-tb",
+   "title": "Show search box on the taskbar",
+   "category": "taskbar",
+   "group": "taskbar-search",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+     "name": "SearchboxTaskbarMode",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "taskbar.hide-taskview",
+   "title": "Hide 'Task view' button on the taskbar",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "ShowTaskViewButton",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.hide-chat",
+   "title": "Hide Chat (meet now) icon on the taskbar",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": 22621,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "TaskbarMn",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "HideSCAMeetNow",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-storage-sense",
+   "title": "Disable Storage Sense automatic disk cleanup",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": "Windows stops clearing old files on its own.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy",
+     "name": "01",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-fast-startup",
+   "title": "Disable fast start-up",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": "Cold starts can take a little longer.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power",
+     "name": "HiberbootEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.enable-end-task",
+   "title": "Show 'End Task' option in taskbar context menu",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": 22631,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings",
+     "name": "TaskbarEndTask",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.enable-last-active-click",
+   "title": "Enable 'Last Active Click' behavior for taskbar apps",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "LastActiveClick",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-taskbar-always",
+   "title": "Always combine taskbar buttons and hide labels for the main display",
+   "category": "taskbar",
+   "group": "taskbar-combine",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "TaskbarGlomLevel",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-mmtaskbar-always",
+   "title": "Always combine taskbar buttons and hide labels for secondary displays",
+   "category": "taskbar",
+   "group": "taskbar-combine-other",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarGlomLevel",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-taskbar-when-full",
+   "title": "Combine taskbar buttons and hide labels when taskbar is full for the main display",
+   "category": "taskbar",
+   "group": "taskbar-combine",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "TaskbarGlomLevel",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-mmtaskbar-when-full",
+   "title": "Combine taskbar buttons and hide labels when taskbar is full for secondary displays",
+   "category": "taskbar",
+   "group": "taskbar-combine-other",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarGlomLevel",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-taskbar-never",
+   "title": "Never combine taskbar buttons and show labels for the main display",
+   "category": "taskbar",
+   "group": "taskbar-combine",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "TaskbarGlomLevel",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "taskbar.combine-mmtaskbar-never",
+   "title": "Never combine taskbar buttons and show labels for secondary displays",
+   "category": "taskbar",
+   "group": "taskbar-combine-other",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarGlomLevel",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "taskbar.mmtaskbar-mode-all",
+   "title": "Show app icons on all taskbars",
+   "category": "taskbar",
+   "group": "taskbar-other-displays",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarMode",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "taskbar.mmtaskbar-mode-main-active",
+   "title": "Show app icons on main taskbar and on taskbar where the window is open",
+   "category": "taskbar",
+   "group": "taskbar-other-displays",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarMode",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.mmtaskbar-mode-active",
+   "title": "Show app icons only on taskbar where the window is open",
+   "category": "taskbar",
+   "group": "taskbar-other-displays",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "MMTaskbarMode",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "explorer.explorer-to-home",
+   "title": "Change the default location that File Explorer opens to 'Home'",
+   "category": "explorer",
+   "group": "explorer-opens-to",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "LaunchTo",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "explorer.explorer-to-this-pc",
+   "title": "Change the default location that File Explorer opens to 'This PC'",
+   "category": "explorer",
+   "group": "explorer-opens-to",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "LaunchTo",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "explorer.explorer-to-downloads",
+   "title": "Change the default location that File Explorer opens to 'Downloads'",
+   "category": "explorer",
+   "group": "explorer-opens-to",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "LaunchTo",
+     "kind": "dword",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "id": "explorer.explorer-to-one-drive",
+   "title": "Change the default location that File Explorer opens to 'OneDrive'",
+   "category": "explorer",
+   "group": "explorer-opens-to",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "LaunchTo",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "explorer.show-known-file-ext",
+   "title": "Show file extensions for known file types",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "HideFileExt",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "explorer.show-hidden-folders",
+   "title": "Show hidden files, folders and drives",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": "System and hidden files become easier to change by accident.",
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "Hidden",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "explorer.hide-home",
+   "title": "Hide 'Home' from navigation pane",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}",
+     "name": "",
+     "kind": "string",
+     "value": "CLSID_MSGraphHomeFolder"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}",
+     "name": "System.IsPinnedToNameSpaceTree",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "CheckedValue",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "DefaultValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "HKeyRoot",
+     "kind": "dword",
+     "value": 2147483649
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "Id",
+     "kind": "dword",
+     "value": 13
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "RegPath",
+     "kind": "string",
+     "value": "Software\\Classes\\CLSID\\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "Text",
+     "kind": "string",
+     "value": "Show Home"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "Type",
+     "kind": "string",
+     "value": "checkbox"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "UncheckedValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowHome",
+     "name": "ValueName",
+     "kind": "string",
+     "value": "System.IsPinnedToNameSpaceTree"
+    }
+   ]
+  },
+  {
+   "id": "explorer.hide-gallery",
+   "title": "Hide 'Gallery' from navigation pane",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}",
+     "name": "System.IsPinnedToNameSpaceTree",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "CheckedValue",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "DefaultValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "HKeyRoot",
+     "kind": "dword",
+     "value": 2147483649
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "Id",
+     "kind": "dword",
+     "value": 13
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "RegPath",
+     "kind": "string",
+     "value": "Software\\Classes\\CLSID\\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c}"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "Text",
+     "kind": "string",
+     "value": "Show Gallery"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "Type",
+     "kind": "string",
+     "value": "checkbox"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "UncheckedValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowGallery",
+     "name": "ValueName",
+     "kind": "string",
+     "value": "System.IsPinnedToNameSpaceTree"
+    }
+   ]
+  },
+  {
+   "id": "appearance.disable-transparency",
+   "title": "Disable transparency effects",
+   "category": "appearance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+     "name": "EnableTransparency",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "appearance.disable-animations",
+   "title": "Disable animations and visual effects",
+   "category": "appearance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "UserPreferencesMask",
+     "kind": "binary",
+     "value": "9012078010000000"
+    }
+   ]
+  },
+  {
+   "id": "update.disable-update-asap",
+   "title": "Prevent getting updates as soon as they're available",
+   "category": "update",
+   "group": null,
+   "risk": "low",
+   "impact": "New features reach you a little later.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\WindowsUpdate\\UX\\Settings",
+     "name": "IsContinuousInnovationOptedIn",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "update.prevent-update-auto-reboot",
+   "title": "Prevent automatic restarts after updates while signed in",
+   "category": "update",
+   "group": null,
+   "risk": "low",
+   "impact": "Updates may wait until you restart yourself.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+     "name": "NoAutoRebootWithLoggedOnUsers",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "update.disable-device-auto-app-download",
+   "title": "Prevent Windows from auto-installing device companion apps",
+   "category": "update",
+   "group": null,
+   "risk": "low",
+   "impact": "Companion apps for devices must be installed by hand.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Device Metadata",
+     "name": "PreventDeviceMetadataFromNetwork",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "explorer.hide-onedrive",
+   "title": "Hide 'OneDrive' from navigation pane",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Classes\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}",
+     "name": "System.IsPinnedToNameSpaceTree",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "CheckedValue",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "DefaultValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "HKeyRoot",
+     "kind": "dword",
+     "value": 2147483649
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "Id",
+     "kind": "dword",
+     "value": 13
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "RegPath",
+     "kind": "string",
+     "value": "Software\\Classes\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "Text",
+     "kind": "string",
+     "value": "Show OneDrive"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "Type",
+     "kind": "string",
+     "value": "checkbox"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "UncheckedValue",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\NavPane\\ShowOneDrive",
+     "name": "ValueName",
+     "kind": "string",
+     "value": "System.IsPinnedToNameSpaceTree"
+    }
+   ]
+  },
+  {
+   "id": "explorer.add-folders-to-this-pc",
+   "title": "Add common folders back to 'This PC' page",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 22000,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{d3162b92-9365-467a-956b-92703aca08af}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{d3162b92-9365-467a-956b-92703aca08af}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{088e3905-0323-4b02-9826-5d99428e115f}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{088e3905-0323-4b02-9826-5d99428e115f}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{1CF1260C-4DD0-4ebb-811F-33C572699FDE}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{24ad3ad4-a569-4530-98e1-ab02f9417aa8}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}",
+     "name": "HideIfEnabled",
+     "delete": true
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace\\{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}",
+     "name": "HiddenByDefault",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "browser.disable-brave-bloat",
+   "title": "Disable bloat in Brave browser (AI, Crypto, etc.)",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveVPNDisabled",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveWalletDisabled",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveAIChatEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveRewardsDisabled",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveTalkDisabled",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "Software\\Policies\\BraveSoftware\\Brave",
+     "name": "BraveNewsDisabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "explorer.show-drive-letters-first",
+   "title": "Show drive letters before drive label",
+   "category": "explorer",
+   "group": "drive-letters",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowDriveLettersFirst",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "explorer.show-drive-letters-last",
+   "title": "Show drive letters after drive label",
+   "category": "explorer",
+   "group": "drive-letters",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowDriveLettersFirst",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "explorer.show-network-drive-letters-first",
+   "title": "Show network drive letters before drive label",
+   "category": "explorer",
+   "group": "drive-letters",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowDriveLettersFirst",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "explorer.hide-drive-letters",
+   "title": "Hide all drive letters",
+   "category": "explorer",
+   "group": "drive-letters",
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowDriveLettersFirst",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "start-search.start-all-apps-category",
+   "title": "Show All Apps in Category view (Default)",
+   "category": "start-search",
+   "group": "start-all-apps",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 26200,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Start",
+     "name": "AllAppsViewMode",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoStartMenuMorePrograms",
+     "delete": true
+    }
+   ]
+  },
+  {
+   "id": "start-search.start-all-apps-grid",
+   "title": "Show All Apps in Grid view",
+   "category": "start-search",
+   "group": "start-all-apps",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 26200,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Start",
+     "name": "AllAppsViewMode",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoStartMenuMorePrograms",
+     "delete": true
+    }
+   ]
+  },
+  {
+   "id": "start-search.start-all-apps-list",
+   "title": "Show All Apps in List view",
+   "category": "start-search",
+   "group": "start-all-apps",
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": 26200,
+   "maxBuild": null,
+   "source": "Win11Debloat",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Start",
+     "name": "AllAppsViewMode",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoStartMenuMorePrograms",
+     "delete": true
+    }
+   ]
+  },
+  {
+   "id": "privacy.activity",
+   "title": "Disable activity history",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "EnableActivityFeed",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "PublishUserActivities",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "UploadUserActivities",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "start-search.revert-start-menu",
+   "title": "Use the previous Start menu layout",
+   "category": "start-search",
+   "group": null,
+   "risk": "medium",
+   "impact": "Windows updates may undo this or change how it behaves.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\ControlSet001\\Control\\FeatureManagement\\Overrides\\8\\3036241548",
+     "name": "EnabledState",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "browser.edge-debloat",
+   "title": "Turn off extra Microsoft Edge features",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\EdgeUpdate",
+     "name": "CreateDesktopShortcutDefault",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "PersonalizationReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ShowRecommendationsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "UserFeedbackAllowed",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ConfigureDoNotTrack",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "AlternateErrorPagesEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeCollectionsEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeShoppingAssistantEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "MicrosoftEdgeInsiderPromotionEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "ShowMicrosoftRewards",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "WebWidgetAllowed",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "DiagnosticData",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "EdgeAssetDeliveryServiceEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "WalletDonationEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "DefaultBrowserSettingsCampaignEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.consumer-features",
+   "title": "Stop Windows installing suggested apps",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [
+    "minimal"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableWindowsConsumerFeatures",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "update.delivery-optimization",
+   "title": "Stop sharing updates with other PCs",
+   "category": "update",
+   "group": null,
+   "risk": "low",
+   "impact": "Updates download only from Microsoft.",
+   "restart": "signout",
+   "presets": [
+    "standard"
+   ],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+     "name": "DODownloadMode",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.ipv46",
+   "title": "Prefer IPv4 over IPv6",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "IPv6-only sites and services may connect more slowly.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+     "name": "DisabledComponents",
+     "kind": "dword",
+     "value": 32
+    }
+   ]
+  },
+  {
+   "id": "privacy.disable-bgapps",
+   "title": "Stop apps running in the background",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Apps may stop updating or notifying while closed.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications",
+     "name": "GlobalUserDisabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.detailed-bso-d",
+   "title": "Show details on crash screens",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": "Crash screens show technical details.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\CrashControl",
+     "name": "DisplayParameters",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\CrashControl",
+     "name": "DisableEmoticon",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "taskbar.battery-percentage",
+   "title": "Show battery percentage on the taskbar",
+   "category": "taskbar",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "IsBatteryPercentageEnabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.verbose-logon",
+   "title": "Show detailed startup messages",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+     "name": "VerboseStatus",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "appearance.scrollbars",
+   "title": "Keep scrollbars always visible",
+   "category": "appearance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Accessibility",
+     "name": "DynamicScrollbars",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "appearance.login-blur",
+   "title": "Keep the sign-in screen blur on",
+   "category": "appearance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "DisableAcrylicBackgroundOnLogon",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-lockscreen",
+   "title": "Skip the lock screen",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "You go straight to the sign-in screen.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization",
+     "name": "NoLockScreen",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "gaming.game-mode",
+   "title": "Turn on Game Mode",
+   "category": "gaming",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\GameBar",
+     "name": "AllowAutoGameMode",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\GameBar",
+     "name": "AutoGameModeEnabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.long-paths",
+   "title": "Allow long file paths",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "WinUtil",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+     "name": "LongPathsEnabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  }
+ ]
+}

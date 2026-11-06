@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="src/TuneForge.Cli/TuneForge.Cli.csproj" />
   <Project Path="src/TuneForge.Contracts/TuneForge.Contracts.csproj" />
   <Project Path="src/TuneForge.Engine.Core/TuneForge.Engine.Core.csproj" />
   <Project Path="src/TuneForge.Engine/TuneForge.Engine.csproj" />

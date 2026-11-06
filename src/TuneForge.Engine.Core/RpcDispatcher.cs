@@ -2,16 +2,13 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text.Json;
 using TuneForge.Contracts;
+using TuneForge.Engine.Core.Catalog;
 
 namespace TuneForge.Engine.Core;
 
 /// <summary>Maps the fixed list of method names to handlers. Unknown names are refused.</summary>
-public sealed class RpcDispatcher
+public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = null)
 {
-    private readonly Action _requestShutdown;
-
-    public RpcDispatcher(Action requestShutdown) => _requestShutdown = requestShutdown;
-
     public string Handle(string line)
     {
         RpcRequest? request;
@@ -35,8 +32,20 @@ public sealed class RpcDispatcher
             {
                 RpcMethods.Ping => Success(request.Id, BuildPing()),
                 RpcMethods.Shutdown => Shutdown(request.Id),
+                RpcMethods.ApplyTweaks when tweaks is not null =>
+                    Success(request.Id, tweaks.Apply(Parameters<ApplyRequest>(request))),
+                RpcMethods.Undo when tweaks is not null =>
+                    Success(request.Id, tweaks.Undo(Parameters<UndoRequest>(request).ChangeSetId)),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),
             };
+        }
+        catch (CatalogRequestException exception)
+        {
+            return Failure(request.Id, RpcErrorCodes.InvalidParams, exception.Message);
+        }
+        catch (JsonException)
+        {
+            return Failure(request.Id, RpcErrorCodes.InvalidParams, "Invalid parameters.");
         }
         catch (Exception)
         {
@@ -44,9 +53,12 @@ public sealed class RpcDispatcher
         }
     }
 
+    private static T Parameters<T>(RpcRequest request) =>
+        (request.Params ?? throw new JsonException()).Deserialize<T>(RpcProtocol.Json) ?? throw new JsonException();
+
     private string Shutdown(long id)
     {
-        _requestShutdown();
+        requestShutdown();
         return Success(id, true);
     }
 

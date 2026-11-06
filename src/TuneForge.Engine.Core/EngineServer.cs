@@ -12,7 +12,7 @@ public sealed record EngineOptions(
     TimeSpan ConnectTimeout);
 
 /// <summary>Serves one verified client over a locked-down pipe, then stops.</summary>
-public sealed class EngineServer(EngineOptions options)
+public sealed class EngineServer(EngineOptions options, TweakEngine? tweaks = null)
 {
     public async Task RunAsync(CancellationToken cancellationToken)
     {
@@ -40,7 +40,7 @@ public sealed class EngineServer(EngineOptions options)
         }
 
         var channel = new LineChannel(pipe);
-        var dispatcher = new RpcDispatcher(session.Cancel);
+        var dispatcher = new RpcDispatcher(session.Cancel, tweaks);
         try
         {
             while (await channel.ReadLineAsync(session.Token).ConfigureAwait(false) is { } line)

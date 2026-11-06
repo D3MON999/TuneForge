@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Principal;
 using TuneForge.Engine.Core;
+using TuneForge.Engine.Core.Catalog;
 
 // Arguments: --pipe <name> --client-sid <sid> --parent-pid <pid>
 var arguments = ParseArguments(args);
@@ -15,11 +16,24 @@ using var parent = Process.GetProcessById(arguments.Value.ParentPid);
 parent.EnableRaisingEvents = true;
 parent.Exited += (_, _) => stop.Cancel();
 
-var server = new EngineServer(new EngineOptions(
-    arguments.Value.Pipe,
-    arguments.Value.ClientSid,
-    hostPath,
-    TimeSpan.FromSeconds(30)));
+JournalLocation.EnsureProtected();
+using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
+var tweaks = new TweakEngine(
+    TweakCatalog.LoadEmbedded(),
+    new WindowsRegistryStore(arguments.Value.ClientSid),
+    journal,
+    new SystemRestorePointService(),
+    arguments.Value.ClientSid.Value,
+    Environment.OSVersion.Version.Build,
+    typeof(TweakEngine).Assembly.GetName().Version?.ToString(3) ?? "0.0.0");
+
+var server = new EngineServer(
+    new EngineOptions(
+        arguments.Value.Pipe,
+        arguments.Value.ClientSid,
+        hostPath,
+        TimeSpan.FromSeconds(30)),
+    tweaks);
 
 try
 {

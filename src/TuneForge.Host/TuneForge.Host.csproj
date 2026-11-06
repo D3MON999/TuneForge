@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TuneForge.Contracts\TuneForge.Contracts.csproj" />
-    <ProjectReference Include="..\TuneForge.Engine\TuneForge.Engine.csproj" />
+    <ProjectReference Include="..\TuneForge.Engine.Core\TuneForge.Engine.Core.csproj" />
+    <ProjectReference Include="..\TuneForge.Engine\TuneForge.Engine.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />

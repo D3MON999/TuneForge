@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.14" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\TuneForge.Contracts\TuneForge.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Catalog\catalog.json" LogicalName="TuneForge.Catalog.json" />
   </ItemGroup>
 </Project>

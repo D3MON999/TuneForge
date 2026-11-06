@@ -10,29 +10,36 @@ namespace TuneForge.Host;
 
 public class EngineException(string message) : Exception(message);
 
-public sealed class EngineCancelledException() : EngineException("Elevation was declined.");
+public sealed class EngineCancelledException() : EngineException("Admin permission was declined.");
 
-/// <summary>Starts the elevated engine on request and talks to it over its private pipe.</summary>
+/// <summary>Starts the elevated engine for one job, sends it, then lets the engine exit.</summary>
 public sealed class EngineClient : IDisposable
 {
     private const int ErrorCancelled = 1223;
 
     private readonly SemaphoreSlim _gate = new(1, 1);
-    private NamedPipeClientStream? _pipe;
-    private LineChannel? _channel;
     private long _nextId;
 
-    public async Task<PingResult> ConnectAndPingAsync()
+    public Task<PingResult> PingAsync() =>
+        RunAsync<PingResult>(RpcMethods.Ping, null, TimeSpan.FromSeconds(10));
+
+    public Task<ApplyResult> ApplyAsync(ApplyRequest request) =>
+        RunAsync<ApplyResult>(RpcMethods.ApplyTweaks, request, TimeSpan.FromMinutes(5));
+
+    public Task<UndoResult> UndoAsync(long changeSetId) =>
+        RunAsync<UndoResult>(RpcMethods.Undo, new UndoRequest(changeSetId), TimeSpan.FromMinutes(2));
+
+    /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
+    private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {
         await _gate.WaitAsync();
         try
         {
-            if (_pipe is not { IsConnected: true })
-            {
-                await StartEngineAsync();
-            }
-
-            return await PingAsync();
+            await using var pipe = await StartEngineAsync();
+            var channel = new LineChannel(pipe);
+            var result = await CallAsync<T>(channel, method, parameters, timeLimit);
+            await CallAsync<bool>(channel, RpcMethods.Shutdown, null, TimeSpan.FromSeconds(5));
+            return result;
         }
         finally
         {
@@ -40,9 +47,8 @@ public sealed class EngineClient : IDisposable
         }
     }
 
-    private async Task StartEngineAsync()
+    private static async Task<NamedPipeClientStream> StartEngineAsync()
     {
-        CloseSession();
         var enginePath = Path.Combine(AppContext.BaseDirectory, "TuneForge.Engine.exe");
         var pipeName = $"TuneForge.Engine.{Guid.NewGuid():N}";
         using var identity = WindowsIdentity.GetCurrent();
@@ -79,42 +85,39 @@ public sealed class EngineClient : IDisposable
             throw;
         }
 
-        _pipe = pipe;
-        _channel = new LineChannel(pipe);
+        return pipe;
     }
 
-    private async Task<PingResult> PingAsync()
+    private async Task<T> CallAsync<T>(LineChannel channel, string method, object? parameters, TimeSpan timeLimit)
     {
         var id = Interlocked.Increment(ref _nextId);
+        var payload = parameters is null
+            ? (JsonElement?)null
+            : JsonSerializer.SerializeToElement(parameters, parameters.GetType(), RpcProtocol.Json);
         var request = JsonSerializer.Serialize(
-            new RpcRequest(RpcProtocol.Version, id, RpcMethods.Ping),
+            new RpcRequest(RpcProtocol.Version, id, method, payload),
             RpcProtocol.Json);
 
-        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-        await _channel!.WriteLineAsync(request, timeout.Token);
-        var line = await _channel.ReadLineAsync(timeout.Token)
+        using var timeout = new CancellationTokenSource(timeLimit);
+        await channel.WriteLineAsync(request, timeout.Token);
+        var line = await channel.ReadLineAsync(timeout.Token)
             ?? throw new EngineException("The engine closed the connection.");
 
         var response = JsonSerializer.Deserialize<RpcResponse>(line, RpcProtocol.Json);
-        if (response?.Id != id || response.Result is not { } result)
+        if (response?.Id != id)
         {
             throw new EngineException("The engine sent an invalid reply.");
         }
 
-        return result.Deserialize<PingResult>(RpcProtocol.Json)
-            ?? throw new EngineException("The engine sent an invalid reply.");
+        if (response.Error is { } error)
+        {
+            throw new EngineException(error.Message);
+        }
+
+        return response.Result is { } result
+            ? result.Deserialize<T>(RpcProtocol.Json) ?? throw new EngineException("The engine sent an invalid reply.")
+            : throw new EngineException("The engine sent an invalid reply.");
     }
 
-    private void CloseSession()
-    {
-        _pipe?.Dispose();
-        _pipe = null;
-        _channel = null;
-    }
-
-    public void Dispose()
-    {
-        CloseSession();
-        _gate.Dispose();
-    }
+    public void Dispose() => _gate.Dispose();
 }
