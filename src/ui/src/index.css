@@ -164,6 +164,12 @@ body,
   height: 100%;
 }
 
+/* The main panel does the scrolling, so the page itself must never get a bar of its own. */
+html,
+body {
+  overflow: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

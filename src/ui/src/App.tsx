@@ -147,7 +147,7 @@ export function App() {
           TuneForge
         </p>
         <GlobalSearch onOpen={open} />
-        <ul className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto">
+        <ul className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto [scrollbar-width:none]">
           {pages.slice(0, -1).map((item) => (
             <li key={item.id}>
               <NavItem item={item} current={item.id === active} onClick={() => navigate(item.id)} />
@@ -159,7 +159,7 @@ export function App() {
         </div>
       </nav>
 
-      <main className="min-w-0 flex-1 overflow-y-auto p-7">
+      <main className="relative min-w-0 flex-1 overflow-y-auto p-7">
         <div className="mx-auto max-w-5xl">
           {page.id !== "dashboard" && (
             <header className="hero mb-5 px-6 py-5">
