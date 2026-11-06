@@ -40,7 +40,7 @@ export function UpdateCard() {
       <h2 id="update-title" className="text-lg font-semibold">
         Updates
       </h2>
-      <p className="mt-1 text-muted-foreground">TuneForge only checks when you click, and never installs without asking.</p>
+      <p className="mt-1 text-muted-foreground">TuneForge checks for updates at startup and every 6 hours, and installs them by itself. It only installs updates signed by the developer, and waits if a game is running.</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <button type="button" disabled={busy} aria-busy={busy} onClick={check} className={buttonClass}>
           {busy ? "Working" : "Check for updates"}

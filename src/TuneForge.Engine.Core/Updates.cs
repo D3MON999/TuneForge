@@ -177,6 +177,64 @@ public sealed class UpdateService(IReleaseFeed feed, Version current, string pub
     }
 }
 
+public enum AutoUpdateResult
+{
+    UpToDate,
+    Busy,
+    Started,
+}
+
+/// <summary>
+/// Runs from a scheduled task as SYSTEM, then exits, so nothing stays in the background. Only an
+/// installer carrying the release key's signature is run, from a folder only admins can write.
+/// </summary>
+public sealed class AutoUpdater(
+    UpdateService updates,
+    Func<IReadOnlyList<string>> running,
+    string markerPath,
+    Action<string> launch,
+    TimeSpan grace)
+{
+    public const string Argument = "--auto-update";
+    public const string InstallerArguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /autoupdate=1";
+
+    /// <summary>A game could lose its boost, and another engine would be replaced in the middle of a job.</summary>
+    public static bool Busy(IReadOnlyList<string> names) =>
+        ProtectedProcesses.AnyGameRunning(names)
+        || names.Count(name => name.Equals("TuneForge.Engine", StringComparison.OrdinalIgnoreCase)) > 1;
+
+    public AutoUpdateResult Run()
+    {
+        var status = updates.Check();
+        if (!status.Available)
+        {
+            return AutoUpdateResult.UpToDate;
+        }
+
+        if (Busy(running()))
+        {
+            return AutoUpdateResult.Busy;
+        }
+
+        using var installer = updates.Download();
+
+        // The open app sees this, closes itself and arranges to reopen once the installer is done.
+        File.WriteAllText(markerPath, status.Latest);
+        Thread.Sleep(grace);
+        try
+        {
+            launch(installer.Path);
+        }
+        catch
+        {
+            File.Delete(markerPath);
+            throw;
+        }
+
+        return AutoUpdateResult.Started;
+    }
+}
+
 /// <summary>Holds the installer open so it can be read and run, but not changed or replaced.</summary>
 public sealed class VerifiedInstaller(string path, FileStream locked) : IDisposable
 {

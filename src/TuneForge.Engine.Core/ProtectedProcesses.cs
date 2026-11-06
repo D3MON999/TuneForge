@@ -23,6 +23,14 @@ public static class ProtectedProcesses
 
     public static bool AnyRunning(IEnumerable<string> running) => running.Any(IsProtected);
 
+    /// <summary>Anti-cheat that stays running with no game open, so it can't mean someone is playing.</summary>
+    private static readonly HashSet<string> AlwaysOn = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "vgc", "vgtray", "RiotClientServices", "EasyAntiCheat", "EasyAntiCheat_EOS", "BEService", "BEService_x64", "faceitservice", "PnkBstrA", "PnkBstrB",
+    };
+
+    public static bool AnyGameRunning(IEnumerable<string> running) => running.Any(name => IsProtected(name) && !AlwaysOn.Contains(name));
+
     public static bool IsProtectedService(string name) => Services.Contains(name, StringComparer.OrdinalIgnoreCase);
 
     public static bool IsProtectedStartup(string name, string command) =>

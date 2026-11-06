@@ -36,6 +36,11 @@ public static class JournalLocation
 
     public static string AdvancedStatePath => Path.Combine(Folder, "advanced.json");
 
+    public static string UpdatesFolder => Path.Combine(Folder, "Updates");
+
+    /// <summary>Only admins can write it. The app reads it to know an update is about to replace it.</summary>
+    public static string UpdateMarkerPath => Path.Combine(Folder, "update-starting");
+
     /// <summary>Creates the folder with admin-only write access. Call only from the elevated engine.</summary>
     public static void EnsureProtected()
     {

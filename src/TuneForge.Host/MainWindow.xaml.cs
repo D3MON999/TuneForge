@@ -55,6 +55,8 @@ public partial class MainWindow : Window
         UpdateService.LoadPublicKey(),
         UpdateService.DefaultFolder);
     private volatile IReadOnlyList<GameEntry> _games = [];
+    private readonly System.Windows.Threading.DispatcherTimer _updateWatch = new() { Interval = TimeSpan.FromSeconds(5) };
+    private readonly DateTime _startedUtc = DateTime.UtcNow;
     private bool _exiting;
     private WindowState _stateBeforeFullScreen;
     private WindowStyle _styleBeforeFullScreen;
@@ -89,6 +91,8 @@ public partial class MainWindow : Window
 
         InitializeComponent();
         Web.DefaultBackgroundColor = System.Drawing.Color.Black;
+        _updateWatch.Tick += (_, _) => WatchForAutoUpdate();
+        _updateWatch.Start();
 
         // Black until the page loads and says which theme is on, so the bar doesn't flash white.
         SourceInitialized += (_, _) => SetTitleBar(new WindowThemeRequest("#000000", true));
@@ -102,6 +106,32 @@ public partial class MainWindow : Window
             }
         };
         Closed += (_, _) => ExitApp();
+    }
+
+    /// <summary>
+    /// An automatic update replaces this program, and runs as SYSTEM so it can't reopen it. So the
+    /// app steps aside and starts a small waiter, as the person, that reopens it when the installer is done.
+    /// A marker older than this run is left over from the update that started it.
+    /// </summary>
+    private void WatchForAutoUpdate()
+    {
+        var marker = new FileInfo(JournalLocation.UpdateMarkerPath);
+        if (!marker.Exists || marker.LastWriteTimeUtc <= _startedUtc)
+        {
+            return;
+        }
+
+        _updateWatch.Stop();
+        var arguments = IsVisible ? string.Empty : $" -ArgumentList '{WindowsAutostart.TrayArgument}'";
+        var wait = $"for ($i = 0; $i -lt 100 -and (Test-Path '{marker.FullName}'); $i++) {{ Start-Sleep 3 }}; Start-Process '{Environment.ProcessPath}'{arguments}";
+        using var _ = Process.Start(new ProcessStartInfo
+        {
+            FileName = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"),
+            Arguments = $"-NoProfile -NonInteractive -WindowStyle Hidden -Command \"{wait}\"",
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        });
+        ExitApp();
     }
 
     private bool SetTitleBar(WindowThemeRequest request)

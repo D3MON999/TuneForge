@@ -34,6 +34,7 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
 
 [Files]
 Source: "{#AppFolder}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "update-task.xml"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\TuneForge"; Filename: "{app}\TuneForge.exe"
@@ -44,13 +45,28 @@ Name: "{autodesktop}\TuneForge"; Filename: "{app}\TuneForge.exe"; Tasks: desktop
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "TuneForge"; Flags: dontcreatekey uninsdeletevalue
 
 [Run]
+; Checks for updates at startup and every 6 hours, then exits. Nothing stays running.
+Filename: "{sys}\schtasks.exe"; Parameters: "/Create /TN ""TuneForge Updater"" /XML ""{app}\update-task.xml"" /F"; Flags: runhidden
 Filename: "{app}\TuneForge.exe"; Description: "Open TuneForge"; Flags: nowait postinstall skipifsilent runasoriginaluser
-; An update runs silently, so this reopens the app afterwards.
-Filename: "{app}\TuneForge.exe"; Flags: nowait runasoriginaluser; Check: WizardSilent
+; An update from the app runs silently, so this reopens the app afterwards.
+Filename: "{app}\TuneForge.exe"; Flags: nowait runasoriginaluser; Check: WizardSilent and not IsAutoUpdate
+; An automatic update runs as SYSTEM, which can't open the app. Removing this tells the app it's safe to reopen.
+Filename: "{cmd}"; Parameters: "/c del /q ""{commonappdata}\TuneForge\update-starting"""; Flags: runhidden; Check: IsAutoUpdate
+
+[UninstallRun]
+Filename: "{sys}\schtasks.exe"; Parameters: "/Delete /TN ""TuneForge Updater"" /F"; Flags: runhidden; RunOnceId: "RemoveUpdater"
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{commonappdata}\TuneForge\Updates"
 
 [Code]
 const
   Key = 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}';
+
+function IsAutoUpdate: Boolean;
+begin
+  Result := ExpandConstant('{param:autoupdate|0}') = '1';
+end;
 
 function HasWebView2: Boolean;
 var
