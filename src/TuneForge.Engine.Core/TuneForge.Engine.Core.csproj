@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TuneForge.Contracts\TuneForge.Contracts.csproj" />
+  </ItemGroup>
+</Project>

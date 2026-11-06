@@ -1,0 +1,9 @@
+bin/
+obj/
+artifacts/
+node_modules/
+src/TuneForge.Host/wwwroot/
+*.user
+.vs/
+*.log
+__pycache__/

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>TuneForge.Engine</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <OutputPath>$(AppOutput)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TuneForge.Engine.Core\TuneForge.Engine.Core.csproj" />
+  </ItemGroup>
+</Project>

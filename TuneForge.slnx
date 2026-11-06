@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/TuneForge.Contracts/TuneForge.Contracts.csproj" />
+  <Project Path="src/TuneForge.Engine.Core/TuneForge.Engine.Core.csproj" />
+  <Project Path="src/TuneForge.Engine/TuneForge.Engine.csproj" />
+  <Project Path="src/TuneForge.Host/TuneForge.Host.csproj" />
+  <Project Path="tests/TuneForge.Engine.Tests/TuneForge.Engine.Tests.csproj" />
+</Solution>

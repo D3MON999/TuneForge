@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>TuneForge</AssemblyName>
+    <RootNamespace>TuneForge.Host</RootNamespace>
+    <OutputPath>$(AppOutput)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TuneForge.Contracts\TuneForge.Contracts.csproj" />
+    <ProjectReference Include="..\TuneForge.Engine\TuneForge.Engine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
