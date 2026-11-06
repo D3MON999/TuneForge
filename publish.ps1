@@ -1,14 +1,16 @@
-# Publishes a new version. Installed copies pick it up by themselves within 6 hours.
+# Publishes a new version. Installed copies offer it within 6 hours. Add -Important to bring it on screen.
 #   ./publish.ps1 -Version 0.1.1 -Notes "What changed"
 # Tests everything, builds and signs the installer, pushes the code and creates the release.
 param(
     [Parameter(Mandatory)] [ValidatePattern('^\d+\.\d+\.\d+$')] [string] $Version,
-    [Parameter(Mandatory)] [string] $Notes
+    [Parameter(Mandatory)] [string] $Notes,
+    # Brings the update on screen on PCs where TuneForge is only in the tray.
+    [switch] $Important
 )
 
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
-$repository = 'D3MON999/TuneForge-Releases'
+$repository = 'D3MON999/TuneForge'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $git = (Get-Command git -ErrorAction SilentlyContinue).Source
@@ -58,7 +60,7 @@ Invoke-Git push origin HEAD
 $release = Invoke-RestMethod "https://api.github.com/repos/$repository/releases" -Method Post -Headers $headers -ContentType 'application/json' -UseBasicParsing -Body (@{
     tag_name = "v$Version"
     name     = "TuneForge $Version"
-    body     = $Notes
+    body     = $(if ($Important) { "[important]`n$Notes" } else { $Notes })
 } | ConvertTo-Json)
 
 $installer = "$root\artifacts\release\TuneForge-Setup-$Version.exe"

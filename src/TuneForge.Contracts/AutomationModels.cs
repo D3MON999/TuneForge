@@ -26,7 +26,10 @@ public sealed record AppSettings(
     IReadOnlyList<string>? IgnoredChecks = null,
     IReadOnlyDictionary<string, string>? IgnoredLevels = null);
 
-public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
+public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message, bool Important = false, string? Notes = null);
+
+/// <summary>Nudge goes up each time an important update comes back on screen, so Later only lasts until then.</summary>
+public sealed record UpdatePrompt(UpdateStatus Status, int Nudge);
 
 public sealed record MemoryResult(long UsedBeforeBytes, long UsedAfterBytes, long TotalBytes, int Processes, bool Skipped = false)
 {

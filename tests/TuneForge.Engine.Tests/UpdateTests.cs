@@ -47,6 +47,17 @@ public sealed class UpdateServiceTests : IDisposable
         new(feed, new Version(current), _key.ExportSubjectPublicKeyInfoPem(), _folder);
 
     [Fact]
+    public void Check_PassesOnAnImportantUpdateAndItsNotes()
+    {
+        var release = Release("1.2.0") with { Important = true, Notes = "Fixes a crash." };
+
+        var status = Service(new FakeFeed(release, [], [])).Check();
+
+        Assert.True(status.Important);
+        Assert.Equal("Fixes a crash.", status.Notes);
+    }
+
+    [Fact]
     public void Check_OffersANewerVersion()
     {
         var status = Service(new FakeFeed(Release("1.2.0"), [], [])).Check();
@@ -138,7 +149,7 @@ public sealed class UpdateServiceTests : IDisposable
 
 public class GitHubReleaseFeedTests
 {
-    private const string Base = "https://github.com/D3MON999/TuneForge-Releases/releases/download/v1.2.3/";
+    private const string Base = "https://github.com/D3MON999/TuneForge/releases/download/v1.2.3/";
 
     private static string Json(string tag, params string[] urls) =>
         $"{{\"tag_name\":\"{tag}\",\"assets\":[{string.Join(',', urls.Select(url => $"{{\"browser_download_url\":\"{url}\"}}"))}]}}";

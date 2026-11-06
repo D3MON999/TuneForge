@@ -8,7 +8,7 @@ using TuneForge.Engine.Core.Catalog;
 
 namespace TuneForge.Engine.Core;
 
-public sealed record ReleaseInfo(Version Version, string InstallerUrl, string SignatureUrl);
+public sealed record ReleaseInfo(Version Version, string InstallerUrl, string SignatureUrl, bool Important = false, string Notes = "");
 
 public interface IReleaseFeed
 {
@@ -23,8 +23,10 @@ public interface IReleaseFeed
 /// <summary>Only talks to the app's own public releases, and only when someone asks.</summary>
 public sealed class GitHubReleaseFeed : IReleaseFeed, IDisposable
 {
-    public const string Repository = "D3MON999/TuneForge-Releases";
+    public const string Repository = "D3MON999/TuneForge";
+    public const string ImportantMark = "[important]";
     private const long MaxBytes = 1024L * 1024 * 1024;
+    private const int MaxNotes = 600;
     private static readonly string LatestUrl = $"https://api.github.com/repos/{Repository}/releases/latest";
     private static readonly string DownloadPrefix = $"https://github.com/{Repository}/releases/download/";
 
@@ -59,7 +61,11 @@ public sealed class GitHubReleaseFeed : IReleaseFeed, IDisposable
             .ToList();
         var installer = urls.FirstOrDefault(url => url.EndsWith(".exe", StringComparison.OrdinalIgnoreCase));
         var signature = urls.FirstOrDefault(url => url.EndsWith(".exe.sig", StringComparison.OrdinalIgnoreCase));
-        return installer is null || signature is null ? null : new ReleaseInfo(version, installer, signature);
+        var body = document.RootElement.TryGetProperty("body", out var text) && text.ValueKind == JsonValueKind.String ? text.GetString() ?? string.Empty : string.Empty;
+        var important = body.Contains(ImportantMark, StringComparison.OrdinalIgnoreCase);
+        var notes = body.Replace(ImportantMark, string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
+        notes = notes.Length > MaxNotes ? notes[..MaxNotes] : notes;
+        return installer is null || signature is null ? null : new ReleaseInfo(version, installer, signature, important, notes);
     }
 
     public void Download(string url, string path)
@@ -131,7 +137,7 @@ public sealed class UpdateService(IReleaseFeed feed, Version current, string pub
         }
 
         return Newer(latest)
-            ? new UpdateStatus(Text(current), Text(latest.Version), true, $"Version {Text(latest.Version)} is ready to install.")
+            ? new UpdateStatus(Text(current), Text(latest.Version), true, $"Version {Text(latest.Version)} is ready to install.", latest.Important, latest.Notes)
             : new UpdateStatus(Text(current), Text(latest.Version), false, "TuneForge is up to date.");
     }
 
@@ -174,64 +180,6 @@ public sealed class UpdateService(IReleaseFeed feed, Version current, string pub
         using var key = ECDsa.Create();
         key.ImportFromPem(publicKeyPem);
         return key.VerifyData(stream, signature, HashAlgorithmName.SHA256);
-    }
-}
-
-public enum AutoUpdateResult
-{
-    UpToDate,
-    Busy,
-    Started,
-}
-
-/// <summary>
-/// Runs from a scheduled task as SYSTEM, then exits, so nothing stays in the background. Only an
-/// installer carrying the release key's signature is run, from a folder only admins can write.
-/// </summary>
-public sealed class AutoUpdater(
-    UpdateService updates,
-    Func<IReadOnlyList<string>> running,
-    string markerPath,
-    Action<string> launch,
-    TimeSpan grace)
-{
-    public const string Argument = "--auto-update";
-    public const string InstallerArguments = "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /autoupdate=1";
-
-    /// <summary>A game could lose its boost, and another engine would be replaced in the middle of a job.</summary>
-    public static bool Busy(IReadOnlyList<string> names) =>
-        ProtectedProcesses.AnyGameRunning(names)
-        || names.Count(name => name.Equals("TuneForge.Engine", StringComparison.OrdinalIgnoreCase)) > 1;
-
-    public AutoUpdateResult Run()
-    {
-        var status = updates.Check();
-        if (!status.Available)
-        {
-            return AutoUpdateResult.UpToDate;
-        }
-
-        if (Busy(running()))
-        {
-            return AutoUpdateResult.Busy;
-        }
-
-        using var installer = updates.Download();
-
-        // The open app sees this, closes itself and arranges to reopen once the installer is done.
-        File.WriteAllText(markerPath, status.Latest);
-        Thread.Sleep(grace);
-        try
-        {
-            launch(installer.Path);
-        }
-        catch
-        {
-            File.Delete(markerPath);
-            throw;
-        }
-
-        return AutoUpdateResult.Started;
     }
 }
 

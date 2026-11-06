@@ -55,8 +55,11 @@ public partial class MainWindow : Window
         UpdateService.LoadPublicKey(),
         UpdateService.DefaultFolder);
     private volatile IReadOnlyList<GameEntry> _games = [];
-    private readonly System.Windows.Threading.DispatcherTimer _updateWatch = new() { Interval = TimeSpan.FromSeconds(5) };
-    private readonly DateTime _startedUtc = DateTime.UtcNow;
+    private static readonly TimeSpan UpdateCheckEvery = TimeSpan.FromHours(6);
+    private static readonly TimeSpan BusyRetry = TimeSpan.FromMinutes(10);
+    private readonly System.Windows.Threading.DispatcherTimer _updateTimer = new() { Interval = TimeSpan.FromMinutes(2) };
+    private volatile UpdateStatus? _pendingUpdate;
+    private int _updateNudge;
     private bool _exiting;
     private WindowState _stateBeforeFullScreen;
     private WindowStyle _styleBeforeFullScreen;
@@ -91,8 +94,8 @@ public partial class MainWindow : Window
 
         InitializeComponent();
         Web.DefaultBackgroundColor = System.Drawing.Color.Black;
-        _updateWatch.Tick += (_, _) => WatchForAutoUpdate();
-        _updateWatch.Start();
+        _updateTimer.Tick += async (_, _) => await CheckForUpdateAsync();
+        _updateTimer.Start();
 
         // Black until the page loads and says which theme is on, so the bar doesn't flash white.
         SourceInitialized += (_, _) => SetTitleBar(new WindowThemeRequest("#000000", true));
@@ -109,29 +112,35 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// An automatic update replaces this program, and runs as SYSTEM so it can't reopen it. So the
-    /// app steps aside and starts a small waiter, as the person, that reopens it when the installer is done.
-    /// A marker older than this run is left over from the update that started it.
+    /// Runs while the app is open or in the tray. It only ever asks, and nothing installs without a click.
+    /// An important update brings the window up, but never over a game: it tries again shortly after.
     /// </summary>
-    private void WatchForAutoUpdate()
+    private async Task CheckForUpdateAsync()
     {
-        var marker = new FileInfo(JournalLocation.UpdateMarkerPath);
-        if (!marker.Exists || marker.LastWriteTimeUtc <= _startedUtc)
+        _updateTimer.Interval = UpdateCheckEvery;
+        try
         {
-            return;
-        }
+            var status = await Task.Run(_updates.Check);
+            _pendingUpdate = status.Available ? status : null;
+            if (status is not { Available: true, Important: true })
+            {
+                return;
+            }
 
-        _updateWatch.Stop();
-        var arguments = IsVisible ? string.Empty : $" -ArgumentList '{WindowsAutostart.TrayArgument}'";
-        var wait = $"for ($i = 0; $i -lt 100 -and (Test-Path '{marker.FullName}'); $i++) {{ Start-Sleep 3 }}; Start-Process '{Environment.ProcessPath}'{arguments}";
-        using var _ = Process.Start(new ProcessStartInfo
+            if (await Task.Run(UserBusy.Now))
+            {
+                _updateTimer.Interval = BusyRetry;
+                return;
+            }
+
+            _updateNudge++;
+            ShowFromTray();
+        }
+        catch (Exception exception)
         {
-            FileName = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"),
-            Arguments = $"-NoProfile -NonInteractive -WindowStyle Hidden -Command \"{wait}\"",
-            UseShellExecute = false,
-            CreateNoWindow = true,
-        });
-        ExitApp();
+            // This runs from a timer, so anything left uncaught would close the app.
+            App.LogCrash(exception);
+        }
     }
 
     private bool SetTitleBar(WindowThemeRequest request)
@@ -363,6 +372,7 @@ public partial class MainWindow : Window
         "games.verify" => VerifySteamGame(Read<SteamVerifyRequest>(payload).GameId),
         "crash.open" => OpenCrashFolder(),
         "update.check" => await Task.Run(_updates.Check),
+        "update.pending" => _pendingUpdate is { } pending ? new UpdatePrompt(pending, _updateNudge) : null,
         "update.install" => await InstallUpdateAsync(),
         _ => throw new EngineException("Unknown operation."),
     };

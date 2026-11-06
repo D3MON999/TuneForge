@@ -27,6 +27,7 @@ import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
 import { bridge } from "./bridge";
 import { Logo } from "./Logo";
+import { UpdatePromptPage, useUpdatePrompt } from "./UpdatePrompt";
 import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, titleBarColors, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
@@ -116,6 +117,7 @@ export function App() {
   const [theme, setTheme] = useState<ThemeChoice>(loadTheme);
   const [target, setTarget] = useState<SearchTarget | null>(null);
   const [guide, setGuide] = useState(guideShouldShow);
+  const { prompt, later } = useUpdatePrompt();
 
   useEffect(() => {
     applyTheme(theme);
@@ -160,7 +162,8 @@ export function App() {
       </nav>
 
       <main className="relative min-w-0 flex-1 overflow-y-auto p-7">
-        <div className="mx-auto max-w-5xl">
+        {prompt && <UpdatePromptPage prompt={prompt} onLater={later} />}
+        <div className={prompt ? "hidden" : "mx-auto max-w-5xl"}>
           {page.id !== "dashboard" && (
             <header className="hero mb-5 px-6 py-5">
               <h1 className="text-[27px] leading-tight font-semibold tracking-tight">{page.label}</h1>

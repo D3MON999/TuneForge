@@ -1,7 +1,7 @@
 /** The app icon, with the same dark tile on every theme. */
-export function Logo() {
+export function Logo({ className = "size-6" }: { className?: string }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 256 256" className="size-6 shrink-0">
+    <svg aria-hidden="true" viewBox="0 0 256 256" className={`${className} shrink-0`}>
       <rect width="256" height="256" rx="48" fill="#0d0d0d" />
       <g fill="none" strokeWidth="34" strokeLinecap="round">
         <path d="M 62.9 199.1 A 92 92 0 1 1 193.1 199.1" stroke="#666666" />

@@ -347,6 +347,13 @@ export interface UpdateStatus {
   latest?: string | null;
   available: boolean;
   message: string;
+  important?: boolean;
+  notes?: string | null;
+}
+
+export interface UpdatePrompt {
+  status: UpdateStatus;
+  nudge: number;
 }
 
 export interface AdvancedEntry {
@@ -570,6 +577,7 @@ export class Bridge {
   gamesVerify = (gameId: string) => this.call<OperationResult>("games.verify", { gameId });
   crashOpen = () => this.call<OperationResult>("crash.open");
   updateCheck = () => this.call<UpdateStatus>("update.check");
+  updatePending = () => this.call<UpdatePrompt | null>("update.pending");
   updateInstall = () => this.call<OperationResult>("update.install");
 }
 

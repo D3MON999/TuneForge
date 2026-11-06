@@ -1,13 +1,11 @@
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Principal;
 using TuneForge.Engine.Core;
 using TuneForge.Engine.Core.Catalog;
 
 // Arguments: --pipe <name> --client-sid <sid> --parent-pid <pid>
-var autoUpdate = args is [AutoUpdater.Argument];
-var parsed = ParseArguments(args);
-if (!autoUpdate && parsed is null)
+var arguments = ParseArguments(args);
+if (arguments is null)
 {
     return 2;
 }
@@ -25,18 +23,12 @@ if (!EngineChecks.InProtectedFolder(AppContext.BaseDirectory, Environment.GetFol
 }
 #endif
 
-if (autoUpdate)
-{
-    return RunAutoUpdate();
-}
-
-var arguments = parsed!.Value;
 var hostPath = Path.Combine(AppContext.BaseDirectory, "TuneForge.exe");
 using var stop = new CancellationTokenSource();
 Process parent;
 try
 {
-    parent = Process.GetProcessById(arguments.ParentPid);
+    parent = Process.GetProcessById(arguments.Value.ParentPid);
 }
 catch (ArgumentException)
 {
@@ -49,8 +41,8 @@ parent.Exited += (_, _) => stop.Cancel();
 
 JournalLocation.EnsureProtected();
 using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
-var registry = new WindowsRegistryStore(arguments.ClientSid);
-var userPaths = UserPaths.For(arguments.ClientSid);
+var registry = new WindowsRegistryStore(arguments.Value.ClientSid);
+var userPaths = UserPaths.For(arguments.Value.ClientSid);
 var runner = new WindowsProcessRunner();
 var system = new SystemOperations(
     new CleanupService(CleanupService.Standard(userPaths), new WindowsRecycleBin()),
@@ -69,14 +61,14 @@ var tweaks = new TweakEngine(
     registry,
     journal,
     new SystemRestorePointService(),
-    arguments.ClientSid.Value,
+    arguments.Value.ClientSid.Value,
     Environment.OSVersion.Version.Build,
     typeof(TweakEngine).Assembly.GetName().Version?.ToString(3) ?? "0.0.0");
 
 var server = new EngineServer(
     new EngineOptions(
-        arguments.Pipe,
-        arguments.ClientSid,
+        arguments.Value.Pipe,
+        arguments.Value.ClientSid,
         hostPath,
         TimeSpan.FromSeconds(30)),
     tweaks,
@@ -94,32 +86,6 @@ catch (OperationCanceledException)
 catch (UnauthorizedAccessException)
 {
     return 3;
-}
-
-// A failed check just tries again on the next run, so nothing here needs to be shown to anyone.
-static int RunAutoUpdate()
-{
-    try
-    {
-        JournalLocation.EnsureProtected();
-        using var feed = new GitHubReleaseFeed();
-        var updates = new UpdateService(feed, UpdateService.CurrentVersion, UpdateService.LoadPublicKey(), JournalLocation.UpdatesFolder);
-        var updater = new AutoUpdater(
-            updates,
-            () => Process.GetProcesses().Select(process => process.ProcessName).ToList(),
-            JournalLocation.UpdateMarkerPath,
-            path =>
-            {
-                using var _ = Process.Start(new ProcessStartInfo(path, AutoUpdater.InstallerArguments) { UseShellExecute = false });
-            },
-            TimeSpan.FromSeconds(12));
-        updater.Run();
-        return 0;
-    }
-    catch (Exception exception) when (exception is HttpRequestException or IOException or TaskCanceledException or UnauthorizedAccessException or CatalogRequestException or Win32Exception)
-    {
-        return 7;
-    }
 }
 
 static (string Pipe, SecurityIdentifier ClientSid, int ParentPid)? ParseArguments(string[] values)
