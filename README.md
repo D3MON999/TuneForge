@@ -1,6 +1,6 @@
 # TuneForge
 
-A private Windows PC optimizer for friends and family.
+A Windows PC optimizer for friends and family.
 
 ## Build
 
