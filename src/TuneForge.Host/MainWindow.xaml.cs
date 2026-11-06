@@ -1,4 +1,7 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Text.Json;
 using System.Windows;
@@ -36,6 +39,11 @@ public partial class MainWindow : Window
     private readonly WindowsPowerPlans _plans;
     private readonly GameScanner _gameScanner;
     private readonly WindowsRunningApps _apps = new();
+    private readonly UpdateService _updates = new(
+        new GitHubReleaseFeed(),
+        UpdateService.CurrentVersion,
+        UpdateService.LoadPublicKey(),
+        UpdateService.DefaultFolder);
     private volatile IReadOnlyList<GameEntry> _games = [];
     private bool _exiting;
     private WindowState _stateBeforeFullScreen;
@@ -253,6 +261,8 @@ public partial class MainWindow : Window
         "power.set" => await Task.Run(() => SetPlan(Read<PowerPlanRequest>(payload).Id)),
         "power.ultimate" => await Task.Run(AddUltimatePlan),
         "focus.save" => await Task.Run(() => SaveFocusApps(Read<FocusAppsRequest>(payload).Names)),
+        "update.check" => await Task.Run(_updates.Check),
+        "update.install" => await InstallUpdateAsync(),
         _ => throw new EngineException("Unknown operation."),
     };
 
@@ -269,6 +279,36 @@ public partial class MainWindow : Window
             fromEngine.FreedBytes + mine.FreedBytes,
             fromEngine.Files + mine.Files,
             fromEngine.Skipped + mine.Skipped);
+    }
+
+    /// <summary>Windows asks for admin permission, then the installer replaces and reopens the app.</summary>
+    private async Task<OperationResult> InstallUpdateAsync()
+    {
+        string installer;
+        try
+        {
+            installer = await Task.Run(_updates.Download);
+        }
+        catch (Exception exception) when (exception is HttpRequestException or IOException or TaskCanceledException)
+        {
+            return new OperationResult(false, "The update couldn't be downloaded. Try again.");
+        }
+
+        try
+        {
+            using var _ = Process.Start(new ProcessStartInfo(installer)
+            {
+                UseShellExecute = true,
+                Arguments = UpdateService.SilentArguments,
+            });
+        }
+        catch (Win32Exception)
+        {
+            return new OperationResult(false, "The update was cancelled.");
+        }
+
+        _ = Dispatcher.BeginInvoke(ExitApp);
+        return new OperationResult(true, "Installing the update.");
     }
 
     private IReadOnlyList<GameEntry> ScanGames()

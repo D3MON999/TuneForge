@@ -25,6 +25,7 @@ import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
 import { applyTheme, loadTheme, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
+import { UpdateCard } from "./UpdateCard";
 
 interface Page {
   id: string;
@@ -120,6 +121,7 @@ export function App() {
               </select>
             </div>
             <AutomationSettings />
+            <UpdateCard />
             <EngineCard />
             </div>
           )}

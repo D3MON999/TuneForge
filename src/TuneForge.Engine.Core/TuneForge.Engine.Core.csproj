@@ -12,5 +12,6 @@
     <EmbeddedResource Include="Catalog\catalog.json" LogicalName="TuneForge.Catalog.json" />
     <EmbeddedResource Include="Catalog\builtin-apps.json" LogicalName="TuneForge.BuiltInApps.json" />
     <EmbeddedResource Include="Catalog\software.json" LogicalName="TuneForge.Software.json" />
+    <EmbeddedResource Include="Catalog\release-public-key.pem" LogicalName="TuneForge.ReleaseKey.pem" />
   </ItemGroup>
 </Project>

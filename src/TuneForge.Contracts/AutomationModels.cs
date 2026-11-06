@@ -21,6 +21,8 @@ public sealed record AppSettings(
     IReadOnlyList<string>? FocusApps = null,
     ActiveBoost? Boost = null);
 
+public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
+
 public sealed record MemoryResult(long UsedBeforeBytes, long UsedAfterBytes, long TotalBytes, int Processes)
 {
     public long FreedBytes => Math.Max(0, UsedBeforeBytes - UsedAfterBytes);

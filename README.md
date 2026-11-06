@@ -12,6 +12,14 @@ Needs the .NET 10 SDK, Node.js 24 and the WebView2 runtime.
 
 The app is written to `artifacts\app\Debug\TuneForge.exe`.
 
+## Release
+
+```powershell
+./release.ps1
+```
+
+This runs every test, then writes the signed installer to `artifacts\release`. It needs Inno Setup 6 and the signing key at `%LOCALAPPDATA%\TuneForgeTools\release-key.pem`. Keep a backup of that key and never commit it, because installed copies only accept updates signed with it. To release, publish the `.exe` and `.exe.sig` to a GitHub release tagged `vX.Y.Z` in the public releases repository.
+
 ## Real-system testing
 
 `tests/sandbox/run-in-sandbox.ps1` applies and undoes every tweak on a real registry inside Windows Sandbox, then runs presets, cleanup and repairs. It refuses to run anywhere else.
@@ -26,6 +34,8 @@ Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run t
 
 `tests/sandbox/run-gaming-in-sandbox.ps1` boosts a stand-in game and checks everything is undone. Run it from a scheduled task under a throwaway standard user. That user needs the Performance Log Users group to run a task, and has no admin rights.
 
+`tests/sandbox/run-install-in-sandbox.ps1` installs the real installer, checks it, then uninstalls it. Map `artifacts\release` to `C:\tf\installer` and run it with `wsb exec -r System`.
+
 ## Layout
 
 | Folder | Purpose |
@@ -36,6 +46,8 @@ Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run t
 | `src/TuneForge.Engine.Core` | Engine logic and pipe server |
 | `src/TuneForge.Contracts` | Messages shared by host and engine |
 | `src/TuneForge.Cli` | Command-line tool |
+| `installer` | Inno Setup script |
+| `tools/TuneForge.ReleaseTool` | Makes and uses the update signing key, not shipped |
 | `design-system` | Design rules |
 
 ## Rules

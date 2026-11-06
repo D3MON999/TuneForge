@@ -15,6 +15,7 @@ TuneForge is private software. It uses these components under their own licences
 | Microsoft.Data.Sqlite | Change journal | MIT |
 | SQLitePCLRaw, SQLite | Change journal | Apache-2.0, public domain |
 | Testing Library, happy-dom | Test tools | MIT |
+| Inno Setup | Installer | Inno Setup License |
 | UI/UX Pro Max | Design guidance, not shipped | MIT |
 | Win11Debloat | Tweak data in `catalog.json`, app data in `builtin-apps.json` | MIT, notice below |
 | WinUtil | Tweak data in `catalog.json`, app data in `builtin-apps.json` and `software.json`, DNS provider addresses | MIT, notice below |

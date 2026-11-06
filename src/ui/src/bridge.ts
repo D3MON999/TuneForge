@@ -333,6 +333,13 @@ export interface GamingOverview {
   runningApps: string[];
 }
 
+export interface UpdateStatus {
+  current: string;
+  latest?: string | null;
+  available: boolean;
+  message: string;
+}
+
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -444,6 +451,8 @@ export class Bridge {
   powerSet = (id: string) => this.call<OperationResult>("power.set", { id });
   powerUltimate = () => this.call<OperationResult>("power.ultimate");
   focusSave = (names: string[]) => this.call<OperationResult>("focus.save", { names });
+  updateCheck = () => this.call<UpdateStatus>("update.check");
+  updateInstall = () => this.call<OperationResult>("update.install");
 }
 
 export const bridge = new Bridge(window.chrome?.webview);

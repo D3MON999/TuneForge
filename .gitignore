@@ -1,6 +1,8 @@
 bin/
 obj/
 artifacts/
+*.tsbuildinfo
+release-key.pem
 node_modules/
 src/TuneForge.Host/wwwroot/
 *.user
