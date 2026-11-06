@@ -53,3 +53,11 @@ Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run t
 ## Rules
 
 - Record every third-party component in `THIRD_PARTY_NOTICES.md`.
+
+## Releasing
+
+1. Commit and push in GitHub Desktop.
+2. Double-click `Release.cmd`. It raises the version, tests, builds and signs, then opens the release page and the folder with the files.
+3. Drag in the three `TuneForge-Setup` files and click **Publish release**.
+
+Installed copies offer the update within 6 hours. Add `[important]` to the release notes to bring it on screen on PCs where TuneForge is only in the tray.
