@@ -19,7 +19,8 @@ public sealed record TweakStatus(
     [property: JsonPropertyName("restart")] string Restart,
     [property: JsonPropertyName("presets")] IReadOnlyList<string> Presets,
     [property: JsonPropertyName("requiresAdmin")] bool RequiresAdmin,
-    [property: JsonPropertyName("state")] string State);
+    [property: JsonPropertyName("state")] string State,
+    [property: JsonPropertyName("description")] string Description = "");
 
 public sealed record TweakChange(
     [property: JsonPropertyName("setting")] string Setting,

@@ -38,7 +38,7 @@ export function matchesText(text: string, query: string): boolean {
 }
 
 export function matchesSearch(tweak: Tweak, query: string): boolean {
-  return matchesText(`${tweak.title} ${tweak.impact ?? ""} ${tweak.category}`, query);
+  return matchesText(`${tweak.title} ${tweak.description} ${tweak.impact ?? ""} ${tweak.category}`, query);
 }
 
 const restartOrder: RestartNeed[] = ["none", "explorer", "signout", "reboot"];

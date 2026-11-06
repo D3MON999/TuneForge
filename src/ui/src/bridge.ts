@@ -13,12 +13,13 @@ export interface Tweak {
   title: string;
   category: string;
   group: string | null;
-  risk: "low" | "medium";
+  risk: "low" | "medium" | "high";
   impact: string | null;
   restart: RestartNeed;
   presets: string[];
   requiresAdmin: boolean;
   state: TweakState;
+  description: string;
 }
 
 export interface TweakPreview {

@@ -52,7 +52,7 @@ const pages: Page[] = [
 /** Pages that list tweaks, and the catalog categories each one shows. */
 const tweakPages: Record<string, { categories: string[]; showPresets?: boolean }> = {
   optimize: {
-    categories: ["privacy", "ai", "windows", "taskbar", "start-search", "explorer", "appearance", "update", "browser"],
+    categories: ["performance", "privacy", "ai", "windows", "taskbar", "start-search", "explorer", "appearance", "update", "browser", "network", "advanced"],
     showPresets: true,
   },
   privacy: { categories: ["privacy", "ai"] },

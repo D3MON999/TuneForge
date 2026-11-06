@@ -14,6 +14,7 @@ function tweak(id: string, overrides: Partial<Tweak> = {}): Tweak {
     presets: [],
     requiresAdmin: false,
     state: "not-applied",
+    description: "",
     ...overrides,
   };
 }

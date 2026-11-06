@@ -38,7 +38,8 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
             item.Restart,
             item.Presets,
             item.RequiresAdmin,
-            state);
+            state,
+            item.Description);
     }
 
     internal static bool Matches(RegistryValue? current, RegistryValue? target) =>

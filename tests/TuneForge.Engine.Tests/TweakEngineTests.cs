@@ -246,8 +246,9 @@ public class TweakCatalogTests
         foreach (var item in Catalog.Items)
         {
             Assert.False(string.IsNullOrWhiteSpace(item.Title), item.Id);
-            Assert.Contains(item.Risk, new[] { "low", "medium" });
-            Assert.Contains(item.Source, new[] { "Win11Debloat", "WinUtil" });
+            Assert.False(string.IsNullOrWhiteSpace(item.Description), $"{item.Id} needs a description.");
+            Assert.Contains(item.Risk, new[] { "low", "medium", "high" });
+            Assert.Contains(item.Source, new[] { "Win11Debloat", "WinUtil", "Windows" });
             Assert.Contains(item.Restart, new[] { "none", "explorer", "signout", "reboot" });
             Assert.NotEmpty(item.Actions);
             if (item.Group is not null)
@@ -255,7 +256,7 @@ public class TweakCatalogTests
                 Assert.Contains(item.Group, groups);
             }
 
-            if (item.Risk == "medium")
+            if (item.Risk != "low")
             {
                 Assert.False(string.IsNullOrWhiteSpace(item.Impact), $"{item.Id} must say what you give up.");
             }
@@ -276,7 +277,7 @@ public class TweakCatalogTests
     [Fact]
     public void Catalog_HasNoSecurityReducingSettings()
     {
-        var banned = new[] { "DisableAntiSpyware", "DisableRealtimeMonitoring", "SmartScreen", "EnableVirtualizationBasedSecurity", "HypervisorEnforcedCodeIntegrity", "EnableLUA" };
+        var banned = new[] { "DisableAntiSpyware", "DisableRealtimeMonitoring", "SmartScreen", "EnableVirtualizationBasedSecurity", "HypervisorEnforcedCodeIntegrity", "EnableLUA", "Image File Execution Options" };
         var names = Catalog.Items.SelectMany(item => item.Actions).Select(action => $@"{action.Path}\{action.Name}");
 
         Assert.DoesNotContain(names, name => banned.Any(word => name.Contains(word, StringComparison.OrdinalIgnoreCase)));

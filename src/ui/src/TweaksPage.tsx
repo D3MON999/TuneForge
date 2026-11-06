@@ -4,6 +4,7 @@ import {
   EyeOff,
   FolderOpen,
   Gamepad2,
+  Gauge,
   Globe,
   type LucideIcon,
   Palette,
@@ -12,6 +13,8 @@ import {
   Search,
   SlidersHorizontal,
   SquareMenu,
+  TriangleAlert,
+  Wifi,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type Tweak } from "./bridge";
@@ -29,9 +32,19 @@ export const categoryLabels: Record<string, string> = {
   update: "Windows Update",
   browser: "Browsers",
   gaming: "Gaming",
+  performance: "Performance",
+  network: "Network",
+  advanced: "Advanced",
+};
+
+const categoryNotes: Record<string, string> = {
+  advanced: "These change how Windows works at a low level. Only use them if you know why you want them. Read each warning, and keep a restore point turned on.",
 };
 
 const categoryIcons: Record<string, LucideIcon> = {
+  performance: Gauge,
+  network: Wifi,
+  advanced: TriangleAlert,
   privacy: EyeOff,
   ai: Bot,
   windows: AppWindow,
@@ -126,6 +139,9 @@ export function TweaksPage({ categories, showPresets = false }: { categories: st
         .map((section) => (
           <section key={section.category} className="mt-6">
             <h2 className="font-semibold text-muted-foreground">{categoryLabels[section.category]}</h2>
+            {categoryNotes[section.category] && (
+              <p className="mt-1 text-sm text-warning">{categoryNotes[section.category]}</p>
+            )}
             <div className="tweak-list mt-2 flex flex-col gap-1.5">
               {section.items.filter((tweak) => !tweak.group).map((tweak) => (
                 <TweakRow
@@ -195,6 +211,7 @@ function Badges({ tweak }: { tweak: Tweak }) {
     <>
       {tweak.state === "applied" && <span className="text-sm text-success">Applied</span>}
       {tweak.risk === "medium" && <span className="text-sm text-warning">Medium risk</span>}
+      {tweak.risk === "high" && <span className="text-sm font-medium text-destructive">High risk</span>}
     </>
   );
 }
@@ -214,7 +231,8 @@ function TweakRow({ tweak, checked, onToggle }: { tweak: Tweak; checked: boolean
             <span className="font-medium">{tweak.title}</span>
             <Badges tweak={tweak} />
           </span>
-          {tweak.impact && <span className="block text-sm text-muted-foreground">{tweak.impact}</span>}
+          {tweak.description && <span className="block text-sm text-muted-foreground">{tweak.description}</span>}
+          {tweak.impact && <span className="block text-sm text-warning">{tweak.impact}</span>}
         </span>
       </span>
     </label>
@@ -242,9 +260,13 @@ function ChoiceGroup({ group, options, selected, onChange }: ChoiceGroupProps) {
               disabled={applied}
               onChange={() => onChange(tweak)}
             />
-            <span className="flex flex-wrap items-center gap-2">
-              {tweak.title}
-              <Badges tweak={tweak} />
+            <span>
+              <span className="flex flex-wrap items-center gap-2">
+                {tweak.title}
+                <Badges tweak={tweak} />
+              </span>
+              {tweak.description && <span className="block text-sm text-muted-foreground">{tweak.description}</span>}
+              {tweak.impact && <span className="block text-sm text-warning">{tweak.impact}</span>}
             </span>
           </label>
         );

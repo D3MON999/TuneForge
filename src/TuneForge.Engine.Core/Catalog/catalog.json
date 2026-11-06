@@ -36,6 +36,14 @@
   {
    "id": "spotlight",
    "title": "Windows Spotlight desktop"
+  },
+  {
+   "id": "ipv6-mode",
+   "title": "IPv6"
+  },
+  {
+   "id": "update-mode",
+   "title": "Windows Update mode"
   }
  ],
  "items": [
@@ -158,7 +166,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Limits the usage data Windows sends to Microsoft and turns off your advertising ID."
   },
   {
    "id": "privacy.disable-suggestions",
@@ -301,7 +310,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows showing tips, app suggestions and promotions in Settings, Start and notifications."
   },
   {
    "id": "privacy.disable-location-services",
@@ -325,7 +335,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Turns off location for Windows and every app."
   },
   {
    "id": "privacy.disable-find-my-device",
@@ -347,7 +358,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows reporting this PC's location for Find My Device."
   },
   {
    "id": "privacy.disable-lockscreen-tips",
@@ -378,7 +390,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Removes the tips and promotions shown on the lock screen."
   },
   {
    "id": "appearance.enable-desktop-spotlight",
@@ -405,7 +418,8 @@
      "name": "{2cc5ca98-6485-489a-920e-b3e88a6ccce3}",
      "delete": true
     }
-   ]
+   ],
+   "description": "Shows a new Microsoft photo as your desktop background each day."
   },
   {
    "id": "appearance.disable-desktop-spotlight",
@@ -433,7 +447,8 @@
      "name": "{2cc5ca98-6485-489a-920e-b3e88a6ccce3}",
      "delete": true
     }
-   ]
+   ],
+   "description": "Keeps your own desktop background instead of Microsoft's daily photo."
   },
   {
    "id": "appearance.hide-desktop-spotlight-icon",
@@ -461,7 +476,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes the desktop shortcut that Windows Spotlight adds."
   },
   {
    "id": "privacy.disable-edge-ads",
@@ -569,7 +585,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Removes ads, the news feed and suggested content from Edge's new tab page."
   },
   {
    "id": "ai.disable-copilot",
@@ -607,7 +624,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes Microsoft Copilot from Windows and blocks it from running."
   },
   {
    "id": "ai.disable-recall",
@@ -652,7 +670,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Stops Windows Recall taking snapshots of what's on your screen."
   },
   {
    "id": "ai.disable-click-to-do",
@@ -683,7 +702,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Turns off Click to Do, which analyses text and images on your screen with AI."
   },
   {
    "id": "ai.disable-aisvc-auto-start",
@@ -705,7 +725,8 @@
      "kind": "dword",
      "value": 3
     }
-   ]
+   ],
+   "description": "Stops the Windows AI service starting by itself."
   },
   {
    "id": "gaming.disable-dvr",
@@ -741,7 +762,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows recording gameplay in the background, which frees up some performance."
   },
   {
    "id": "gaming.disable-game-bar-integration",
@@ -819,7 +841,8 @@
      "kind": "string",
      "value": "%SystemRoot%/System32/systray.exe"
     }
-   ]
+   ],
+   "description": "Stops Xbox Game Bar opening with games and controllers."
   },
   {
    "id": "start-search.disable-start-recommended",
@@ -843,7 +866,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes the Recommended section from the Start menu."
   },
   {
    "id": "start-search.disable-start-all-apps",
@@ -865,7 +889,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Hides the All apps list in the Start menu."
   },
   {
    "id": "start-search.disable-start-phone-link",
@@ -889,7 +914,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Removes the Phone Link panel from the Start menu."
   },
   {
    "id": "start-search.disable-bing",
@@ -927,7 +953,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Keeps Start menu search on this PC, without web results from Bing."
   },
   {
    "id": "privacy.disable-settings365-ads",
@@ -951,7 +978,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes Microsoft 365 and Copilot promotions from the Settings home page."
   },
   {
    "id": "windows.disable-settings-home",
@@ -973,7 +1001,8 @@
      "kind": "string",
      "value": "hide:home"
     }
-   ]
+   ],
+   "description": "Removes the Home page from the Settings app."
   },
   {
    "id": "ai.disable-edge-ai",
@@ -1053,7 +1082,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Turns off Copilot and other AI features in Edge."
   },
   {
    "id": "ai.disable-chrome-ai",
@@ -1180,7 +1210,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Turns off the AI features built into Chrome."
   },
   {
    "id": "ai.disable-paint-ai",
@@ -1232,7 +1263,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes AI features such as image generation from Paint."
   },
   {
    "id": "ai.disable-notepad-ai",
@@ -1256,7 +1288,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes AI features such as Rewrite from Notepad."
   },
   {
    "id": "appearance.enable-dark-mode",
@@ -1285,7 +1318,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Switches Windows and apps that follow it to the dark theme."
   },
   {
    "id": "windows.revert-context-menu",
@@ -1309,7 +1343,8 @@
      "kind": "string",
      "value": ""
     }
-   ]
+   ],
+   "description": "Brings back the full right-click menu, without Show more options."
   },
   {
    "id": "windows.disable-mouse-acceleration",
@@ -1345,7 +1380,8 @@
      "kind": "string",
      "value": "0"
     }
-   ]
+   ],
+   "description": "Makes the pointer move the same distance as your hand, whatever the speed. Popular for aiming in games."
   },
   {
    "id": "windows.disable-sticky-keys",
@@ -1367,7 +1403,8 @@
      "kind": "string",
      "value": "506"
     }
-   ]
+   ],
+   "description": "Stops the Sticky Keys prompt appearing when you tap Shift five times."
   },
   {
    "id": "windows.disable-window-snapping",
@@ -1389,7 +1426,8 @@
      "kind": "string",
      "value": "0"
     }
-   ]
+   ],
+   "description": "Stops windows snapping to the edges when you drag them."
   },
   {
    "id": "windows.disable-snap-assist",
@@ -1411,7 +1449,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows suggesting other windows to fill the space after you snap one."
   },
   {
    "id": "windows.disable-snap-layouts",
@@ -1440,7 +1479,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Hides the layout options that appear over a window's maximize button."
   },
   {
    "id": "windows.hide-tabs-in-alt-tab",
@@ -1462,7 +1502,8 @@
      "kind": "dword",
      "value": 3
     }
-   ]
+   ],
+   "description": "Shows only windows in Alt+Tab, not Edge tabs."
   },
   {
    "id": "windows.show3-tabs-in-alt-tab",
@@ -1484,7 +1525,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Shows your three latest Edge tabs in Alt+Tab."
   },
   {
    "id": "windows.show5-tabs-in-alt-tab",
@@ -1506,7 +1548,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows your five latest Edge tabs in Alt+Tab."
   },
   {
    "id": "windows.show20-tabs-in-alt-tab",
@@ -1528,7 +1571,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Shows your twenty latest Edge tabs in Alt+Tab."
   },
   {
    "id": "taskbar.taskbar-align-left",
@@ -1550,7 +1594,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Moves taskbar icons to the left, as on Windows 10."
   },
   {
    "id": "taskbar.hide-search-tb",
@@ -1572,7 +1617,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Removes search from the taskbar."
   },
   {
    "id": "taskbar.show-search-icon-tb",
@@ -1594,7 +1640,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows search on the taskbar as an icon."
   },
   {
    "id": "taskbar.show-search-label-tb",
@@ -1616,7 +1663,8 @@
      "kind": "dword",
      "value": 3
     }
-   ]
+   ],
+   "description": "Shows search on the taskbar as an icon with a label."
   },
   {
    "id": "taskbar.show-search-box-tb",
@@ -1638,7 +1686,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Shows the full search box on the taskbar."
   },
   {
    "id": "taskbar.hide-taskview",
@@ -1660,7 +1709,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Removes the Task View button from the taskbar."
   },
   {
    "id": "taskbar.hide-chat",
@@ -1689,7 +1739,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Removes the Chat button from the taskbar."
   },
   {
    "id": "windows.disable-storage-sense",
@@ -1711,7 +1762,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows deleting temporary files and Recycle Bin items by itself."
   },
   {
    "id": "windows.disable-fast-startup",
@@ -1733,7 +1785,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Makes shutdown a full shutdown. Fixes some driver and dual-boot problems, but startup takes a little longer."
   },
   {
    "id": "taskbar.enable-end-task",
@@ -1757,7 +1810,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Adds End task to the taskbar's right-click menu, so you can close frozen apps quickly."
   },
   {
    "id": "taskbar.enable-last-active-click",
@@ -1779,7 +1833,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Clicking a grouped taskbar app opens its last window instead of a preview."
   },
   {
    "id": "taskbar.combine-taskbar-always",
@@ -1801,7 +1856,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Always groups windows of the same app and hides their labels."
   },
   {
    "id": "taskbar.combine-mmtaskbar-always",
@@ -1823,7 +1879,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Always groups windows of the same app on your other displays."
   },
   {
    "id": "taskbar.combine-taskbar-when-full",
@@ -1845,7 +1902,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Groups windows of the same app only when the taskbar fills up."
   },
   {
    "id": "taskbar.combine-mmtaskbar-when-full",
@@ -1867,7 +1925,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Groups windows on your other displays only when their taskbar fills up."
   },
   {
    "id": "taskbar.combine-taskbar-never",
@@ -1889,7 +1948,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Never groups windows, so each one shows its own label."
   },
   {
    "id": "taskbar.combine-mmtaskbar-never",
@@ -1911,7 +1971,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Never groups windows on your other displays."
   },
   {
    "id": "taskbar.mmtaskbar-mode-all",
@@ -1933,7 +1994,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Shows every open app on all your taskbars."
   },
   {
    "id": "taskbar.mmtaskbar-mode-main-active",
@@ -1955,7 +2017,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows apps on the main taskbar and on the taskbar of the display they're on."
   },
   {
    "id": "taskbar.mmtaskbar-mode-active",
@@ -1977,7 +2040,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Shows apps only on the taskbar of the display they're on."
   },
   {
    "id": "explorer.explorer-to-home",
@@ -1999,7 +2063,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Opens File Explorer on Home."
   },
   {
    "id": "explorer.explorer-to-this-pc",
@@ -2021,7 +2086,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Opens File Explorer on This PC, showing your drives."
   },
   {
    "id": "explorer.explorer-to-downloads",
@@ -2043,7 +2109,8 @@
      "kind": "dword",
      "value": 3
     }
-   ]
+   ],
+   "description": "Opens File Explorer on your Downloads folder."
   },
   {
    "id": "explorer.explorer-to-one-drive",
@@ -2065,7 +2132,8 @@
      "kind": "dword",
      "value": 4
     }
-   ]
+   ],
+   "description": "Opens File Explorer on your OneDrive folder."
   },
   {
    "id": "explorer.show-known-file-ext",
@@ -2089,7 +2157,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Shows file types like .exe and .txt, which makes disguised files easier to spot."
   },
   {
    "id": "explorer.show-hidden-folders",
@@ -2111,7 +2180,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows files and folders that Windows normally hides."
   },
   {
    "id": "explorer.hide-home",
@@ -2203,7 +2273,8 @@
      "kind": "string",
      "value": "System.IsPinnedToNameSpaceTree"
     }
-   ]
+   ],
+   "description": "Removes Home from File Explorer's left panel."
   },
   {
    "id": "explorer.hide-gallery",
@@ -2288,7 +2359,8 @@
      "kind": "string",
      "value": "System.IsPinnedToNameSpaceTree"
     }
-   ]
+   ],
+   "description": "Removes Gallery from File Explorer's left panel."
   },
   {
    "id": "appearance.disable-transparency",
@@ -2310,7 +2382,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Replaces see-through taskbar and menu effects with solid colours."
   },
   {
    "id": "appearance.disable-animations",
@@ -2332,7 +2405,8 @@
      "kind": "binary",
      "value": "9012078010000000"
     }
-   ]
+   ],
+   "description": "Turns off window and menu animations, so things appear straight away."
   },
   {
    "id": "update.disable-update-asap",
@@ -2354,7 +2428,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows installing new features as soon as they're released."
   },
   {
    "id": "update.prevent-update-auto-reboot",
@@ -2376,7 +2451,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Stops Windows restarting for updates while you're signed in."
   },
   {
    "id": "update.disable-device-auto-app-download",
@@ -2398,7 +2474,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Stops Windows downloading companion apps when you plug in a device."
   },
   {
    "id": "explorer.hide-onedrive",
@@ -2483,7 +2560,8 @@
      "kind": "string",
      "value": "System.IsPinnedToNameSpaceTree"
     }
-   ]
+   ],
+   "description": "Removes OneDrive from File Explorer's left panel. Your files aren't affected."
   },
   {
    "id": "explorer.add-folders-to-this-pc",
@@ -2583,7 +2661,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Puts Desktop, Documents, Downloads and similar folders back on This PC."
   },
   {
    "id": "browser.disable-brave-bloat",
@@ -2640,7 +2719,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Turns off Brave's built-in extras such as its wallet, VPN and rewards."
   },
   {
    "id": "explorer.show-drive-letters-first",
@@ -2662,7 +2742,8 @@
      "kind": "dword",
      "value": 4
     }
-   ]
+   ],
+   "description": "Shows drive letters before drive names."
   },
   {
    "id": "explorer.show-drive-letters-last",
@@ -2684,7 +2765,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Shows drive letters after drive names, the Windows default."
   },
   {
    "id": "explorer.show-network-drive-letters-first",
@@ -2706,7 +2788,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows the letter first for network drives only."
   },
   {
    "id": "explorer.hide-drive-letters",
@@ -2728,7 +2811,8 @@
      "kind": "dword",
      "value": 2
     }
-   ]
+   ],
+   "description": "Hides drive letters and shows only drive names."
   },
   {
    "id": "start-search.start-all-apps-category",
@@ -2756,7 +2840,8 @@
      "name": "NoStartMenuMorePrograms",
      "delete": true
     }
-   ]
+   ],
+   "description": "Shows All apps sorted into categories."
   },
   {
    "id": "start-search.start-all-apps-grid",
@@ -2784,7 +2869,8 @@
      "name": "NoStartMenuMorePrograms",
      "delete": true
     }
-   ]
+   ],
+   "description": "Shows All apps as a grid of icons."
   },
   {
    "id": "start-search.start-all-apps-list",
@@ -2812,7 +2898,8 @@
      "name": "NoStartMenuMorePrograms",
      "delete": true
     }
-   ]
+   ],
+   "description": "Shows All apps as a simple list."
   },
   {
    "id": "privacy.activity",
@@ -2850,7 +2937,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops Windows recording the apps and files you use for its activity history."
   },
   {
    "id": "start-search.revert-start-menu",
@@ -2872,7 +2960,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Goes back to the earlier Windows 11 Start menu layout."
   },
   {
    "id": "browser.edge-debloat",
@@ -2992,7 +3081,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Turns off Edge's shopping, sidebar and other built-in extras."
   },
   {
    "id": "privacy.consumer-features",
@@ -3016,7 +3106,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Stops Windows installing suggested apps and games on its own."
   },
   {
    "id": "update.delivery-optimization",
@@ -3040,13 +3131,14 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Stops your PC sharing Windows updates with other PCs over the internet."
   },
   {
    "id": "windows.ipv46",
    "title": "Prefer IPv4 over IPv6",
    "category": "windows",
-   "group": null,
+   "group": "ipv6-mode",
    "risk": "medium",
    "impact": "IPv6-only sites and services may connect more slowly.",
    "restart": "reboot",
@@ -3062,7 +3154,8 @@
      "kind": "dword",
      "value": 32
     }
-   ]
+   ],
+   "description": "Makes Windows prefer IPv4 when a site offers both. Can help on networks with poor IPv6."
   },
   {
    "id": "privacy.disable-bgapps",
@@ -3084,7 +3177,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Stops Store apps running in the background when you aren't using them."
   },
   {
    "id": "windows.detailed-bso-d",
@@ -3113,7 +3207,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows technical details on the blue crash screen, instead of only a sad face."
   },
   {
    "id": "taskbar.battery-percentage",
@@ -3135,7 +3230,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows the battery percentage beside the battery icon."
   },
   {
    "id": "windows.verbose-logon",
@@ -3157,7 +3253,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Shows what Windows is doing during startup, sign-in and shutdown."
   },
   {
    "id": "appearance.scrollbars",
@@ -3179,7 +3276,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Keeps scrollbars visible all the time instead of hiding them until you scroll."
   },
   {
    "id": "appearance.login-blur",
@@ -3201,7 +3299,8 @@
      "kind": "dword",
      "value": 0
     }
-   ]
+   ],
+   "description": "Keeps the sign-in background sharp instead of blurring it."
   },
   {
    "id": "windows.disable-lockscreen",
@@ -3223,7 +3322,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Skips the lock screen and goes straight to sign-in."
   },
   {
    "id": "gaming.game-mode",
@@ -3252,7 +3352,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "description": "Tells Windows to put your game first while you play."
   },
   {
    "id": "windows.long-paths",
@@ -3273,6 +3374,2250 @@
      "name": "LongPathsEnabled",
      "kind": "dword",
      "value": 1
+    }
+   ],
+   "description": "Lets apps that support it use file paths over 260 characters."
+  },
+  {
+   "id": "performance.disable-power-throttling",
+   "title": "Disable power throttling",
+   "category": "performance",
+   "group": null,
+   "risk": "medium",
+   "impact": "Laptops can use more battery.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows slowing down background apps to save power.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Power\\PowerThrottling",
+     "name": "PowerThrottlingOff",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "performance.foreground-priority",
+   "title": "Prioritize the active app",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Gives the window you're using a larger share of CPU time.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\PriorityControl",
+     "name": "Win32PrioritySeparation",
+     "kind": "dword",
+     "value": 38
+    }
+   ]
+  },
+  {
+   "id": "performance.multimedia-priority",
+   "title": "Prioritize games and media",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Reserves more CPU and GPU time for games and low-latency audio and video.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+     "name": "SystemResponsiveness",
+     "kind": "dword",
+     "value": 10
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+     "name": "GPU Priority",
+     "kind": "dword",
+     "value": 8
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+     "name": "Priority",
+     "kind": "dword",
+     "value": 6
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+     "name": "Scheduling Category",
+     "kind": "string",
+     "value": "High"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+     "name": "SFIO Priority",
+     "kind": "string",
+     "value": "High"
+    }
+   ]
+  },
+  {
+   "id": "performance.gpu-scheduling",
+   "title": "Turn on hardware-accelerated GPU scheduling",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Lets the graphics card manage its own memory, which can lower latency on newer cards.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers",
+     "name": "HwSchMode",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "performance.menu-delay",
+   "title": "Remove the menu delay",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Opens menus straight away when you hover over them.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "MenuShowDelay",
+     "kind": "string",
+     "value": "0"
+    }
+   ]
+  },
+  {
+   "id": "performance.hover-delay",
+   "title": "Remove the hover delay",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Shows previews and tooltips straight away when you hover.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Mouse",
+     "name": "MouseHoverTime",
+     "kind": "string",
+     "value": "0"
+    }
+   ]
+  },
+  {
+   "id": "performance.app-timeouts",
+   "title": "Close frozen apps faster",
+   "category": "performance",
+   "group": null,
+   "risk": "medium",
+   "impact": "Slow apps may be closed before they can save.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Shortens how long Windows waits before closing apps that stop responding.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "AutoEndTasks",
+     "kind": "string",
+     "value": "1"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "HungAppTimeout",
+     "kind": "string",
+     "value": "1000"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Desktop",
+     "name": "WaitToKillAppTimeout",
+     "kind": "string",
+     "value": "2000"
+    }
+   ]
+  },
+  {
+   "id": "performance.service-timeout",
+   "title": "Stop services faster at shutdown",
+   "category": "performance",
+   "group": null,
+   "risk": "medium",
+   "impact": "A slow service may be stopped before it saves its data.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Shortens how long Windows waits for services when shutting down.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control",
+     "name": "WaitToKillServiceTimeout",
+     "kind": "string",
+     "value": "2000"
+    }
+   ]
+  },
+  {
+   "id": "performance.shortcut-search",
+   "title": "Stop shortcuts searching for moved files",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows searching your drives when a shortcut's target has moved, which avoids long pauses.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoResolveSearch",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoResolveTrack",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "LinkResolveIgnoreLinkInfo",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "performance.low-disk-warning",
+   "title": "Disable low disk space warnings",
+   "category": "performance",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows checking for low disk space and showing its warning.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+     "name": "NoLowDiskSpaceChecks",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "performance.crash-dumps",
+   "title": "Disable crash memory dumps",
+   "category": "performance",
+   "group": null,
+   "risk": "medium",
+   "impact": "Crashes become much harder to diagnose.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows saving memory to disk after a blue screen, which saves disk space.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\CrashControl",
+     "name": "CrashDumpEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "advanced.svchost-split",
+   "title": "Group Windows services together",
+   "category": "advanced",
+   "group": null,
+   "risk": "medium",
+   "impact": "One failing service can take others down with it.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Runs services in fewer processes, which uses less memory on PCs with little RAM.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control",
+     "name": "SvcHostSplitThresholdInKB",
+     "kind": "dword",
+     "value": 67108864
+    }
+   ]
+  },
+  {
+   "id": "advanced.sysmain",
+   "title": "Disable SysMain",
+   "category": "advanced",
+   "group": null,
+   "risk": "medium",
+   "impact": "Apps may take longer to open, especially on hard drives.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the service that preloads your common apps into memory. Can reduce disk use on older drives.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters",
+     "name": "EnableSuperfetch",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\SysMain",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "advanced.prefetch",
+   "title": "Disable Prefetch",
+   "category": "advanced",
+   "group": null,
+   "risk": "medium",
+   "impact": "Windows and apps may start more slowly.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows learning which files to load early at startup.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters",
+     "name": "EnablePrefetcher",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "advanced.timer-resolution",
+   "title": "Global timer resolution",
+   "category": "advanced",
+   "group": null,
+   "risk": "medium",
+   "impact": "Can raise power use, and the benefit varies by PC.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Lets a timer request from one app apply to the whole system, as it did on older Windows. Some players use it for smoother timing.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel",
+     "name": "GlobalTimerResolutionRequests",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "advanced.large-system-cache",
+   "title": "Large system cache",
+   "category": "advanced",
+   "group": null,
+   "risk": "medium",
+   "impact": "Games and apps may have less memory available.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Tells Windows to favour file caching over app memory, which suits file servers more than gaming PCs.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+     "name": "LargeSystemCache",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "advanced.wpbt",
+   "title": "Block firmware-installed software (WPBT)",
+   "category": "advanced",
+   "group": null,
+   "risk": "high",
+   "impact": "Anti-theft tools and driver helpers from your PC maker may stop working.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows running programs placed in your PC's firmware by the manufacturer.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Session Manager",
+     "name": "DisableWpbtExecution",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "advanced.bitlocker-auto",
+   "title": "Stop automatic drive encryption",
+   "category": "advanced",
+   "group": null,
+   "risk": "high",
+   "impact": "New drives won't be protected if your PC is lost or stolen. Back up your recovery key first.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows encrypting drives by itself. Drives that are already encrypted stay encrypted.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\BitLocker",
+     "name": "PreventDeviceEncryption",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "gaming.fullscreen-optimizations",
+   "title": "Disable fullscreen optimizations everywhere",
+   "category": "gaming",
+   "group": null,
+   "risk": "medium",
+   "impact": "Alt+Tab can be slower, and some newer games run worse.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Runs games in true fullscreen where they support it. To change one game only, use its boosts on the Games tab.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "System\\GameConfigStore",
+     "name": "GameDVR_DXGIHonorFSEWindowsCompatible",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "System\\GameConfigStore",
+     "name": "GameDVR_FSEBehavior",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKCU",
+     "path": "System\\GameConfigStore",
+     "name": "GameDVR_FSEBehaviorMode",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKCU",
+     "path": "System\\GameConfigStore",
+     "name": "GameDVR_HonorUserFSEBehaviorMode",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "gaming.multiplane-overlay",
+   "title": "Disable multiplane overlay",
+   "category": "gaming",
+   "group": null,
+   "risk": "medium",
+   "impact": "Video playback can use slightly more power.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Can fix flickering and black screens on some graphics drivers.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\Dwm",
+     "name": "OverlayTestMode",
+     "kind": "dword",
+     "value": 5
+    }
+   ]
+  },
+  {
+   "id": "gaming.keyboard-latency",
+   "title": "Fastest keyboard repeat",
+   "category": "gaming",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Sets the shortest delay and fastest repeat rate when you hold a key.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Keyboard",
+     "name": "KeyboardDelay",
+     "kind": "string",
+     "value": "0"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Keyboard",
+     "name": "KeyboardSpeed",
+     "kind": "string",
+     "value": "31"
+    }
+   ]
+  },
+  {
+   "id": "network.throttling-index",
+   "title": "Disable network throttling",
+   "category": "network",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows limiting network traffic while media plays.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+     "name": "NetworkThrottlingIndex",
+     "kind": "dword",
+     "value": 4294967295
+    }
+   ]
+  },
+  {
+   "id": "network.disable-ipv6",
+   "title": "Disable IPv6",
+   "category": "network",
+   "group": "ipv6-mode",
+   "risk": "medium",
+   "impact": "Some apps, networks and Xbox features need it. Microsoft advises against this.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off IPv6 on all connections.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+     "name": "DisabledComponents",
+     "kind": "dword",
+     "value": 255
+    }
+   ]
+  },
+  {
+   "id": "network.disable-smb1",
+   "title": "Disable the SMBv1 sharing protocol",
+   "category": "network",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off an old, insecure file sharing protocol.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters",
+     "name": "SMB1",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.bluetooth-advertising",
+   "title": "Disable Bluetooth advertising",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops this PC announcing itself to nearby Bluetooth devices for advertising.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\PolicyManager\\current\\device\\Bluetooth",
+     "name": "AllowAdvertising",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.news-and-interests",
+   "title": "Disable news and interests",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the news and weather feed on the taskbar and in Widgets.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Dsh",
+     "name": "AllowNewsAndInterests",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds",
+     "name": "EnableFeeds",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.tailored-experiences",
+   "title": "Disable tailored experiences",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Microsoft using your diagnostic data for tips and recommendations.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+     "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.cloud-content",
+   "title": "Disable cloud-optimized content",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows downloading promotional content from Microsoft's cloud.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+     "name": "DisableCloudOptimizedContent",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.feedback-requests",
+   "title": "Disable feedback requests",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows asking for your feedback.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+     "name": "DoNotShowFeedbackNotifications",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.diagnostics-notice",
+   "title": "Hide the diagnostics notice",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops the notification asking you to review your diagnostic data settings.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Diagnostics\\DiagTrack",
+     "name": "ShowedToastAtLevel",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.handwriting-sharing",
+   "title": "Disable handwriting data sharing",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops your handwriting samples being sent to Microsoft.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\TabletPc",
+     "name": "PreventHandwritingDataSharing",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.typing-data",
+   "title": "Disable typing data collection",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows collecting what you type to improve language features.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\TextInput",
+     "name": "AllowLinguisticDataCollection",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.input-personalization",
+   "title": "Disable input personalization",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows building a personal dictionary from your typing, speech and handwriting.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\InputPersonalization",
+     "name": "AllowInputPersonalization",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.online-speech",
+   "title": "Disable online speech recognition",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Voice typing and Voice Access may stop working.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops your voice being sent to Microsoft for recognition.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+     "name": "HasAccepted",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.voice-activation",
+   "title": "Disable voice activation for apps",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops apps listening for a spoken keyword.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy",
+     "name": "LetAppsActivateWithVoice",
+     "kind": "dword",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": "privacy.safe-search",
+   "title": "Turn off SafeSearch in Windows Search",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off adult content filtering for web results in Windows Search.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+     "name": "SafeSearchMode",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.search-history",
+   "title": "Disable search history",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows saving your searches on this PC.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+     "name": "IsDeviceSearchHistoryEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.clipboard-sync",
+   "title": "Disable clipboard sync",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops your clipboard syncing across your devices.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "AllowCrossDeviceClipboard",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.clipboard-history",
+   "title": "Disable clipboard history",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the Win+V list of things you've copied.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "AllowClipboardHistory",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Clipboard",
+     "name": "EnableClipboardHistory",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.message-sync",
+   "title": "Disable message sync",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops text messages backing up to the cloud.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Messaging",
+     "name": "AllowMessageSync",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.setting-sync",
+   "title": "Disable settings sync",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Your settings won't follow you to other PCs.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops your app settings and saved credentials syncing through your Microsoft account.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\SettingSync",
+     "name": "DisableCredentialsSettingSync",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\SettingSync",
+     "name": "DisableCredentialsSettingSyncUserOverride",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\SettingSync",
+     "name": "DisableApplicationSettingSync",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\SettingSync",
+     "name": "DisableApplicationSettingSyncUserOverride",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.connected-devices",
+   "title": "Disable connected devices platform",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Phone Link and Share with nearby devices may stop working.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops this PC linking with your phone and other devices.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+     "name": "EnableCdp",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.biometrics",
+   "title": "Disable biometrics",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "You'll need your PIN or password to sign in.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off fingerprint and face sign-in.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Biometrics",
+     "name": "Enabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.restart-sign-on",
+   "title": "Disable automatic sign-in after updates",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows signing you back in by itself after an update restart.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+     "name": "DisableAutomaticRestartSignOn",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.wifi-sense",
+   "title": "Disable Wi-Fi Sense",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows connecting to open hotspots and sharing hotspot reports.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\WcmSvc\\wifinetworkmanager\\config",
+     "name": "AutoConnectAllowedOEM",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\PolicyManager\\default\\WiFi\\AllowAutoConnectToWiFiSenseHotspots",
+     "name": "value",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\PolicyManager\\default\\WiFi\\AllowWiFiHotSpotReporting",
+     "name": "value",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.app-launch-tracking",
+   "title": "Disable app launch tracking",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows tracking which apps you open to personalize Start and search.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "Start_TrackProgs",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.error-reporting",
+   "title": "Disable error reporting",
+   "category": "privacy",
+   "group": null,
+   "risk": "medium",
+   "impact": "Microsoft can't offer fixes for your crashes.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows sending crash reports to Microsoft.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Error Reporting",
+     "name": "Disabled",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting",
+     "name": "Disabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.insider-program",
+   "title": "Disable the Insider program",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Blocks preview builds of Windows and hides the Insider page in Settings.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\PreviewBuilds",
+     "name": "AllowBuildPreview",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\PreviewBuilds",
+     "name": "EnableConfigFlighting",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\WindowsSelfHost\\UI\\Visibility",
+     "name": "HideInsiderPage",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "privacy.office-telemetry",
+   "title": "Disable Office telemetry",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Microsoft Office sending usage data and diagnostics.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Office\\16.0\\Common\\ClientTelemetry",
+     "name": "DisableTelemetry",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Office\\Common\\ClientTelemetry",
+     "name": "DisableTelemetry",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Office\\16.0\\OSM",
+     "name": "EnableLogging",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Office\\16.0\\OSM",
+     "name": "EnableUpload",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "privacy.visual-studio-telemetry",
+   "title": "Disable Visual Studio telemetry",
+   "category": "privacy",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Visual Studio sending usage data and turns off its feedback prompts.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\VisualStudio\\Telemetry",
+     "name": "TurnOffSwitch",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\VisualStudio\\Feedback",
+     "name": "DisableFeedbackDialog",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\VisualStudio\\SQM",
+     "name": "OptIn",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "browser.edge-telemetry",
+   "title": "Disable Edge telemetry",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Edge sending usage data and personalization data to Microsoft.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "MetricsReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "PersonalizationReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "UserFeedbackAllowed",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "browser.edge-background",
+   "title": "Stop Edge running in the background",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Edge staying in memory after you close it, and turns off Startup boost.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "StartupBoostEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "BackgroundModeEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "browser.edge-sidebar",
+   "title": "Disable the Edge sidebar",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Removes the sidebar and its Discover panel from Edge.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "HubsSidebarEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Edge",
+     "name": "StandaloneHubsSidebarEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "browser.chrome-telemetry",
+   "title": "Disable Chrome telemetry",
+   "category": "browser",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Chrome sending usage reports and feedback data to Google.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "MetricsReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "ChromeCleanupReportingEnabled",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Google\\Chrome",
+     "name": "UserFeedbackAllowed",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.autocomplete",
+   "title": "Turn on address autocomplete",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Completes paths as you type in File Explorer and the Run box.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoComplete",
+     "name": "Append Completion",
+     "kind": "string",
+     "value": "yes"
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\AutoComplete",
+     "name": "AutoSuggest",
+     "kind": "string",
+     "value": "yes"
+    }
+   ]
+  },
+  {
+   "id": "windows.disable-shake",
+   "title": "Disable title bar shake",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops other windows minimizing when you shake a window.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "DisallowShaking",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.quick-access-history",
+   "title": "Hide recent files in Quick Access",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops File Explorer showing your recent files and frequent folders.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowFrequent",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+     "name": "ShowRecent",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.compact-files",
+   "title": "Compact File Explorer view",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Fits more files on screen by reducing the space between rows.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+     "name": "UseCompactMode",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.copy-move-menu",
+   "title": "Add Copy To and Move To to the right-click menu",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Adds shortcuts to the right-click menu for copying or moving files to a folder you pick.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\AllFilesystemObjects\\shellex\\ContextMenuHandlers\\Copy To",
+     "name": "",
+     "kind": "string",
+     "value": "{C2FBB630-2971-11D1-A18C-00C04FD75D13}"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\AllFilesystemObjects\\shellex\\ContextMenuHandlers\\Move To",
+     "name": "",
+     "kind": "string",
+     "value": "{C2FBB631-2971-11D1-A18C-00C04FD75D13}"
+    }
+   ]
+  },
+  {
+   "id": "windows.open-terminal-here",
+   "title": "Add Command Prompt to the right-click menu",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Adds an option to open Command Prompt in the folder you're viewing.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\Directory\\Background\\shell\\TuneForgeCmdHere",
+     "name": "",
+     "kind": "string",
+     "value": "Open Command Prompt here"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\Directory\\Background\\shell\\TuneForgeCmdHere\\command",
+     "name": "",
+     "kind": "string",
+     "value": "cmd.exe /s /k pushd \"%V\""
+    }
+   ]
+  },
+  {
+   "id": "windows.copy-file-path",
+   "title": "Add Copy File Path to the right-click menu",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Adds an option to copy a file's full path.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeCopyPath",
+     "name": "",
+     "kind": "string",
+     "value": "Copy file path"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeCopyPath\\command",
+     "name": "",
+     "kind": "string",
+     "value": "cmd.exe /c echo \"%1\"| clip"
+    }
+   ]
+  },
+  {
+   "id": "windows.take-ownership",
+   "title": "Add Take Ownership to the right-click menu",
+   "category": "explorer",
+   "group": null,
+   "risk": "medium",
+   "impact": "Taking ownership of Windows files can break Windows.",
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Adds an option that gives administrators full control of a file or folder.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeOwnership",
+     "name": "",
+     "kind": "string",
+     "value": "Take ownership"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeOwnership",
+     "name": "HasLUAShield",
+     "kind": "string",
+     "value": ""
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeOwnership\\command",
+     "name": "IsolatedCommand",
+     "kind": "string",
+     "value": "cmd.exe /c takeown /f \"%1\" && icacls \"%1\" /grant administrators:F"
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Classes\\*\\shell\\TuneForgeOwnership\\command",
+     "name": "",
+     "kind": "string",
+     "value": "cmd.exe /c takeown /f \"%1\" && icacls \"%1\" /grant administrators:F"
+    }
+   ]
+  },
+  {
+   "id": "windows.remove-cast",
+   "title": "Remove Cast to Device from the right-click menu",
+   "category": "explorer",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "explorer",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Hides the Cast to Device option on media files.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked",
+     "name": "{7AD84985-87B4-4a16-BE58-8B72A5B390F7}",
+     "kind": "string",
+     "value": "Cast to Device"
+    }
+   ]
+  },
+  {
+   "id": "windows.windows-ink",
+   "title": "Disable Windows Ink",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the Windows Ink workspace for pens.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\WindowsInkWorkspace",
+     "name": "AllowWindowsInkWorkspace",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\WindowsInkWorkspace",
+     "name": "AllowSuggestedAppsInWindowsInkWorkspace",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.typing-helpers",
+   "title": "Disable typing helpers",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "Mistakes won't be fixed as you type on the touch keyboard.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off autocorrect, spell check and text suggestions on the touch keyboard.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\TabletTip\\1.7",
+     "name": "EnableAutocorrection",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\TabletTip\\1.7",
+     "name": "EnableSpellchecking",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\TabletTip\\1.7",
+     "name": "EnableTextPrediction",
+     "kind": "dword",
+     "value": 0
+    },
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Input\\Settings",
+     "name": "InsightsEnabled",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.lock-notifications",
+   "title": "Hide notifications on the lock screen",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops notifications appearing on the lock screen.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+     "name": "NoToastApplicationNotificationOnLockScreen",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.notifications",
+   "title": "Disable all app notifications",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "You'll miss messages, reminders and alerts, including TuneForge's.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops apps showing notification pop-ups.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+     "name": "NoToastApplicationNotification",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.notification-center",
+   "title": "Disable the notification center",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "You can't review notifications you missed.",
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Removes the notification panel from the taskbar.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Policies\\Microsoft\\Windows\\Explorer",
+     "name": "DisableNotificationCenter",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.suggested-actions",
+   "title": "Disable suggested actions",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows offering actions when you copy dates or phone numbers.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Software\\Microsoft\\Windows\\CurrentVersion\\SmartActionPlatform\\SmartClipboard",
+     "name": "Disabled",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.num-lock",
+   "title": "Turn on Num Lock at startup",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "signout",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Keeps the number pad on when Windows starts.",
+   "actions": [
+    {
+     "hive": "HKCU",
+     "path": "Control Panel\\Keyboard",
+     "name": "InitialKeyboardIndicators",
+     "kind": "string",
+     "value": "2"
+    }
+   ]
+  },
+  {
+   "id": "windows.time-as-utc",
+   "title": "Keep the hardware clock in UTC",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "On a Windows-only PC this can make the clock wrong after a restart.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Fixes the clock changing when you dual-boot with Linux.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation",
+     "name": "RealTimeIsUniversal",
+     "kind": "dword",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "windows.remote-assistance",
+   "title": "Disable Remote Assistance",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops people connecting to help you through Remote Assistance.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Control\\Remote Assistance",
+     "name": "fAllowToGetHelp",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "windows.remote-registry",
+   "title": "Disable Remote Registry",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops other PCs reading this PC's registry over the network.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\RemoteRegistry",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "windows.print-spooler",
+   "title": "Disable printing",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "You won't be able to print, including to PDF.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the print service, which saves a little memory if you never print.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\Spooler",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "windows.compatibility-assistant",
+   "title": "Disable the Compatibility Assistant",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "Windows won't offer fixes for older programs.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows watching older programs for compatibility problems.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\PcaSvc",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "windows.search-indexing",
+   "title": "Disable search indexing",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "File searches become much slower.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows indexing your files in the background, which reduces disk use.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\WSearch",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "windows.fax",
+   "title": "Disable the Fax service",
+   "category": "windows",
+   "group": null,
+   "risk": "low",
+   "impact": null,
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the fax service, which most PCs never use.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\Fax",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "windows.data-usage-monitor",
+   "title": "Disable the data usage monitor",
+   "category": "windows",
+   "group": null,
+   "risk": "medium",
+   "impact": "Settings won't show data usage per app.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Turns off the driver that tracks each app's network use. It can reduce memory use over long uptimes.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SYSTEM\\CurrentControlSet\\Services\\Ndu",
+     "name": "Start",
+     "kind": "dword",
+     "value": 4
+    }
+   ]
+  },
+  {
+   "id": "update.security-only",
+   "title": "Windows Update: security updates first",
+   "category": "update",
+   "group": "update-mode",
+   "risk": "medium",
+   "impact": "New Windows features reach you up to a year late.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Holds back feature updates for a year while security updates arrive as normal.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+     "name": "DeferFeatureUpdates",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+     "name": "DeferFeatureUpdatesPeriodInDays",
+     "kind": "dword",
+     "value": 365
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+     "name": "DeferQualityUpdates",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+     "name": "DeferQualityUpdatesPeriodInDays",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "update.ask-first",
+   "title": "Windows Update: ask before downloading",
+   "category": "update",
+   "group": "update-mode",
+   "risk": "medium",
+   "impact": "If you forget, your PC can miss security fixes.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Tells you when updates are available and waits for you to start them.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+     "name": "AUOptions",
+     "kind": "dword",
+     "value": 2
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+     "name": "NoAutoUpdate",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "update.exclude-drivers",
+   "title": "Stop driver updates through Windows Update",
+   "category": "update",
+   "group": null,
+   "risk": "medium",
+   "impact": "You'll need to keep drivers up to date yourself.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops Windows replacing your drivers, which suits people who install them from NVIDIA or AMD.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate",
+     "name": "ExcludeWUDriversInQualityUpdate",
+     "kind": "dword",
+     "value": 1
+    },
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DriverSearching",
+     "name": "SearchOrderConfig",
+     "kind": "dword",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "id": "update.store-auto-download",
+   "title": "Stop automatic Store app updates",
+   "category": "update",
+   "group": null,
+   "risk": "medium",
+   "impact": "You'll need to update Store apps yourself.",
+   "restart": "reboot",
+   "presets": [],
+   "minBuild": null,
+   "maxBuild": null,
+   "source": "Windows",
+   "description": "Stops the Microsoft Store updating apps by itself.",
+   "actions": [
+    {
+     "hive": "HKLM",
+     "path": "SOFTWARE\\Policies\\Microsoft\\WindowsStore",
+     "name": "AutoDownload",
+     "kind": "dword",
+     "value": 2
     }
    ]
   }

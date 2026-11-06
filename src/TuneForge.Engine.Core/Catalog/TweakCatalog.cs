@@ -43,7 +43,8 @@ public sealed record TweakItem(
     [property: JsonPropertyName("minBuild")] int? MinBuild,
     [property: JsonPropertyName("maxBuild")] int? MaxBuild,
     [property: JsonPropertyName("source")] string Source,
-    [property: JsonPropertyName("actions")] IReadOnlyList<RegistryAction> Actions)
+    [property: JsonPropertyName("actions")] IReadOnlyList<RegistryAction> Actions,
+    [property: JsonPropertyName("description")] string Description = "")
 {
     public bool RequiresAdmin => Actions.Any(action => action.Hive == "HKLM");
 
