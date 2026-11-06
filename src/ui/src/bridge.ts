@@ -210,10 +210,12 @@ export interface HealthCheck {
   title: string;
   status: "good" | "warn" | "bad" | "unknown";
   detail: string;
+  ignored: boolean;
 }
 
 export interface HealthReport {
   score: number;
+  fullScore: number;
   checks: HealthCheck[];
 }
 
@@ -513,6 +515,8 @@ export class Bridge {
   systemSummary = () => this.call<SystemSummary>("system.summary");
   monitorLive = () => this.call<LiveStats>("monitor.live");
   healthCheck = () => this.call<HealthReport>("health.check");
+  healthIgnore = (id: string, ignored: boolean) => this.call<HealthReport>("health.ignore", { id, ignored });
+  windowTheme = (color: string, dark: boolean) => this.call<boolean>("window.theme", { color, dark });
   storageRead = () => this.call<StorageReport>("storage.read");
   eventErrors = () => this.call<ErrorGroup[]>("events.errors");
   eventRead = (log: string, level: string) => this.call<WindowsEvent[]>("events.read", { log, level });

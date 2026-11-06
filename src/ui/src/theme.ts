@@ -20,6 +20,12 @@ export function loadTheme(): ThemeChoice {
   }
 }
 
+/** The window's title bar follows the page, so the two read as one surface. */
+export function titleBarColors(): { color: string; dark: boolean } | null {
+  const color = getComputedStyle(document.documentElement).getPropertyValue("--background").trim();
+  return /^#[0-9a-f]{6}$/i.test(color) ? { color, dark: document.documentElement.dataset.theme !== "light" } : null;
+}
+
 export function applyTheme(choice: ThemeChoice): void {
   const followsWindows = choice === "system";
   const dark = followsWindows && matchMedia("(prefers-color-scheme: dark)").matches;

@@ -62,6 +62,12 @@ public sealed class SettingsStore(string path)
         KnownStartup = choices.StartupWatch ? settings.KnownStartup : null,
     });
 
+    public AppSettings SetIgnoredCheck(string id, bool ignored) => Update(settings =>
+    {
+        var others = (settings.IgnoredChecks ?? []).Where(other => other != id);
+        return settings with { IgnoredChecks = (ignored ? others.Append(id) : others).ToList() };
+    });
+
     private static SettingsUpdate Limit(SettingsUpdate choices) => choices with
     {
         MemoryThreshold = Math.Clamp(choices.MemoryThreshold, MinThreshold, MaxThreshold),

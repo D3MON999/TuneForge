@@ -25,9 +25,10 @@ import { HistoryPage } from "./HistoryPage";
 import { MonitorPage } from "./MonitorPage";
 import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
+import { bridge } from "./bridge";
 import { Logo } from "./Logo";
 import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
-import { applyTheme, loadTheme, themeChoices, type ThemeChoice } from "./theme";
+import { applyTheme, loadTheme, themeChoices, titleBarColors, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
 import { UpdateCard } from "./UpdateCard";
 
@@ -116,7 +117,14 @@ export function App() {
   const [target, setTarget] = useState<SearchTarget | null>(null);
   const [guide, setGuide] = useState(guideShouldShow);
 
-  useEffect(() => applyTheme(theme), [theme]);
+  useEffect(() => {
+    applyTheme(theme);
+    const bar = titleBarColors();
+    if (bar) {
+      // The title bar is only decoration, so a failure here isn't worth showing.
+      bridge.windowTheme(bar.color, bar.dark).catch(() => undefined);
+    }
+  }, [theme]);
 
   function open(next: SearchTarget) {
     setTarget(next);

@@ -244,7 +244,10 @@ public static class HealthScorer
 {
     private const double Gigabyte = 1024d * 1024 * 1024;
 
-    public static HealthReport Score(HealthInput input)
+    public static readonly IReadOnlyList<string> CheckIds = ["disks", "space", "crashes", "errors", "startup", "memory", "uptime", "junk"];
+
+    /// <summary>Ignored checks can't lower the score, and they stay in the report with their real result.</summary>
+    public static HealthReport Score(HealthInput input, IReadOnlyCollection<string>? ignored = null)
     {
         var results = new List<(HealthCheck Check, int Lost)>
         {
@@ -258,9 +261,11 @@ public static class HealthScorer
             Junk(input.JunkBytes),
         };
 
+        var set = ignored ?? [];
         return new HealthReport(
-            Math.Clamp(100 - results.Sum(result => result.Lost), 0, 100),
-            results.Select(result => result.Check).ToList());
+            Math.Clamp(100 - results.Where(result => !set.Contains(result.Check.Id)).Sum(result => result.Lost), 0, 100),
+            results.Select(result => result.Check with { Ignored = set.Contains(result.Check.Id) }).ToList(),
+            Math.Clamp(100 - results.Sum(result => result.Lost), 0, 100));
     }
 
     private static (HealthCheck, int) Result(string id, string title, string status, string detail, int lost) =>
@@ -340,8 +345,21 @@ public sealed class HealthService(
     EventService events,
     StartupService startup,
     CleanupService cleanup,
-    ILiveProbe live)
+    ILiveProbe live,
+    SettingsStore? settings = null)
 {
+    /// <summary>Saves the choice and returns the fresh result, so the page needn't check twice.</summary>
+    public HealthReport SetIgnored(HealthIgnoreRequest request)
+    {
+        if (!HealthScorer.CheckIds.Contains(request.Id))
+        {
+            throw new CatalogRequestException("That health check doesn't exist.");
+        }
+
+        settings?.SetIgnoredCheck(request.Id, request.Ignored);
+        return Check();
+    }
+
     public HealthReport Check()
     {
         var errors = events.RecentErrors();
@@ -354,7 +372,8 @@ public sealed class HealthService(
             startup.List().Count(entry => entry.Enabled),
             total == 0 ? 0 : 100d * used / total,
             Environment.TickCount64 / 86_400_000d,
-            cleanup.Scan().Sum(category => category.Bytes)));
+            cleanup.Scan().Sum(category => category.Bytes)),
+            settings?.Load().IgnoredChecks);
     }
 
     public string BuildReport() => ReportWriter.Build(
@@ -381,10 +400,11 @@ public static class ReportWriter
         var culture = CultureInfo.InvariantCulture;
         text.AppendLine(culture, $"TuneForge PC report, {when:yyyy-MM-dd HH:mm}");
         text.AppendLine();
-        text.AppendLine(culture, $"Health score: {health.Score} out of 100");
+        var ignored = health.Checks.Any(check => check.Ignored);
+        text.AppendLine(culture, $"Health score: {health.Score} out of 100{(ignored ? $" ({health.FullScore} with everything counted)" : string.Empty)}");
         foreach (var check in health.Checks)
         {
-            text.AppendLine(culture, $"  [{check.Status}] {check.Title}: {check.Detail}");
+            text.AppendLine(culture, $"  [{check.Status}{(check.Ignored ? ", ignored" : string.Empty)}] {check.Title}: {check.Detail}");
         }
 
         text.AppendLine();

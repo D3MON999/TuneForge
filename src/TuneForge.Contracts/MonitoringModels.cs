@@ -35,9 +35,14 @@ public sealed record ErrorGroup(string Source, int EventId, int Count, string La
 
 public sealed record EventLogRequest(string Log, string Level);
 
-public sealed record HealthCheck(string Id, string Title, string Status, string Detail);
+public sealed record HealthCheck(string Id, string Title, string Status, string Detail, bool Ignored = false);
 
-public sealed record HealthReport(int Score, IReadOnlyList<HealthCheck> Checks);
+/// <summary>Score leaves out what the person chose to ignore. FullScore counts everything.</summary>
+public sealed record HealthReport(int Score, IReadOnlyList<HealthCheck> Checks, int FullScore = 100);
+
+public sealed record HealthIgnoreRequest(string Id, bool Ignored);
+
+public sealed record WindowThemeRequest(string Color, bool Dark);
 
 public sealed record ReportResult(bool Saved, string? Path);
 

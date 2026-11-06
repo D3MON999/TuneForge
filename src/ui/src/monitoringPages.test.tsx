@@ -12,6 +12,7 @@ vi.mock("./bridge", () => ({
     systemSummary: vi.fn(),
     monitorLive: vi.fn(),
     healthCheck: vi.fn(),
+    healthIgnore: vi.fn(),
     storageRead: vi.fn(),
     eventErrors: vi.fn(),
     eventRead: vi.fn(),
@@ -59,10 +60,17 @@ const system = {
 
 const health = {
   score: 85,
+  fullScore: 85,
   checks: [
-    { id: "disks", title: "Disk health", status: "good" as const, detail: "2 disks report no problems." },
-    { id: "space", title: "Free space", status: "warn" as const, detail: "Low." },
+    { id: "disks", title: "Disk health", status: "good" as const, detail: "2 disks report no problems.", ignored: false },
+    { id: "space", title: "Free space", status: "warn" as const, detail: "Low.", ignored: false },
   ],
+};
+
+const ignoredHealth = {
+  score: 100,
+  fullScore: 85,
+  checks: [health.checks[0], { ...health.checks[1], ignored: true }],
 };
 
 beforeEach(() => {
@@ -111,6 +119,55 @@ describe("DashboardPage", () => {
 
     await user.click(screen.getByRole("button", { name: "Save report" }));
     expect(await screen.findByText("Saved to C:\\report.txt")).toBeTruthy();
+  });
+
+  it("only offers Ignore on problems", async () => {
+    render(<DashboardPage />);
+
+    expect(await screen.findByRole("button", { name: "Ignore Free space" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Ignore Disk health" })).toBeNull();
+  });
+
+  it("moves an ignored check to its own group and says what the score would be", async () => {
+    const user = userEvent.setup();
+    api.healthIgnore.mockResolvedValue(ignoredHealth);
+    render(<DashboardPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Ignore Free space" }));
+
+    expect(api.healthIgnore).toHaveBeenCalledWith("space", true);
+    expect(await screen.findByRole("img", { name: "Health score 100 out of 100" })).toBeTruthy();
+    expect(screen.getByText("1 ignored · 85 if counted")).toBeTruthy();
+    expect(screen.getByText("Ignored (1)")).toBeTruthy();
+    expect(screen.getByText("Nothing needs a look right now.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Stop ignoring Free space" })).toBeTruthy();
+    expect(api.healthCheck).toHaveBeenCalledTimes(1);
+  });
+
+  it("can stop ignoring a check", async () => {
+    const user = userEvent.setup();
+    api.healthCheck.mockResolvedValue(ignoredHealth);
+    api.healthIgnore.mockResolvedValue(health);
+    render(<DashboardPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Stop ignoring Free space" }));
+
+    expect(api.healthIgnore).toHaveBeenCalledWith("space", false);
+    expect(await screen.findByRole("img", { name: "Health score 85 out of 100" })).toBeTruthy();
+    expect(screen.queryByText("Ignored (1)")).toBeNull();
+    expect(screen.queryByText(/if counted/)).toBeNull();
+  });
+
+  it("keeps a failing disk's warning readable even when it's ignored", async () => {
+    api.healthCheck.mockResolvedValue({
+      score: 100,
+      fullScore: 70,
+      checks: [{ id: "disks", title: "Disk health", status: "bad", detail: "SSD is failing. Back up your files now.", ignored: true }],
+    });
+    render(<DashboardPage />);
+
+    expect((await screen.findByText("SSD is failing. Back up your files now.")).className).toContain("text-destructive");
+    expect(screen.getByRole("img", { name: "Health score 100 out of 100" })).toBeTruthy();
   });
 
   it("can check again", async () => {

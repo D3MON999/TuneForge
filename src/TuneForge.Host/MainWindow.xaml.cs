@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Interop;
 using Microsoft.Web.WebView2.Core;
 using TuneForge.Contracts;
 using TuneForge.Engine.Core;
@@ -72,7 +73,7 @@ public partial class MainWindow : Window
         _winget = new WingetClient(_runner, AppCatalogs.LoadSoftware());
         var probe = new WindowsLiveProbe(_runner);
         _live = new LiveMonitor(probe);
-        _health = new HealthService(_storage, _events, _startup, _cleanup, probe);
+        _health = new HealthService(_storage, _events, _startup, _cleanup, probe, _settings);
         _trimmer = new WindowsMemoryTrimmer(probe);
         _plans = new WindowsPowerPlans(_runner);
         _gameScanner = new GameScanner(GameSources.Detect());
@@ -88,6 +89,9 @@ public partial class MainWindow : Window
 
         InitializeComponent();
         Web.DefaultBackgroundColor = System.Drawing.Color.Black;
+
+        // Black until the page loads and says which theme is on, so the bar doesn't flash white.
+        SourceInitialized += (_, _) => SetTitleBar(new WindowThemeRequest("#000000", true));
         Loaded += async (_, _) => await StartWebAsync();
         Closing += (_, e) =>
         {
@@ -98,6 +102,12 @@ public partial class MainWindow : Window
             }
         };
         Closed += (_, _) => ExitApp();
+    }
+
+    private bool SetTitleBar(WindowThemeRequest request)
+    {
+        TitleBar.Apply(new WindowInteropHelper(this).EnsureHandle(), request.Color, request.Dark);
+        return true;
     }
 
     public void ShowFromTray()
@@ -270,6 +280,8 @@ public partial class MainWindow : Window
         "system.summary" => await Task.Run(SystemInfoReader.Read),
         "monitor.live" => await Task.Run(_live.Sample),
         "health.check" => await Task.Run(_health.Check),
+        "health.ignore" => await Task.Run(() => _health.SetIgnored(Read<HealthIgnoreRequest>(payload))),
+        "window.theme" => SetTitleBar(Read<WindowThemeRequest>(payload)),
         "storage.read" => await Task.Run(_storage.Read),
         "events.errors" => await Task.Run(() => EventService.Group(_events.RecentErrors())),
         "events.read" => await Task.Run(() => _events.Read(Read<EventLogRequest>(payload))),

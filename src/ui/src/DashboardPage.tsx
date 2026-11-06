@@ -6,6 +6,7 @@ import {
   CircleX,
   Cpu,
   Download,
+  EyeOff,
   Gamepad2,
   Globe,
   HardDrive,
@@ -39,6 +40,8 @@ const quickActions: { page: string; icon: LucideIcon; title: string; note: strin
   { page: "apps", icon: Package, title: "Manage apps", note: "Install, update, remove" },
   { page: "repair", icon: Wrench, title: "Repair Windows", note: "Run repair tools" },
 ];
+
+const isProblem = (check: HealthCheck) => check.status === "warn" || check.status === "bad";
 
 /** The ring is a picture of the score. The number inside it is what people read. */
 function ScoreRing({ score }: { score: number }) {
@@ -206,7 +209,8 @@ function HealthHero({ report, error, onCheck }: { report: HealthReport | null; e
     }
   }
 
-  const issues = report?.checks.filter((check) => check.status === "warn" || check.status === "bad").length ?? 0;
+  const issues = report?.checks.filter((check) => !check.ignored && isProblem(check)).length ?? 0;
+  const ignored = report?.checks.filter((check) => check.ignored).length ?? 0;
   const problem = error ?? saveError;
   return (
     <section aria-labelledby="dashboard-title" className="hero flex flex-wrap items-center gap-6 p-6">
@@ -222,6 +226,11 @@ function HealthHero({ report, error, onCheck }: { report: HealthReport | null; e
               : `${issues} ${issues === 1 ? "thing" : "things"} could use a look.`
             : !error && "Checking this PC."}
         </p>
+        {report && ignored > 0 && (
+          <p className="mt-2 w-fit rounded-full border border-dashed border-muted-foreground px-3 py-0.5 text-sm">
+            {ignored} ignored{report.fullScore !== report.score && ` · ${report.fullScore} if counted`}
+          </p>
+        )}
         <div role="status">
           {saved && <p className="mt-2 font-medium">{saved}</p>}
           {problem && <p className="mt-2 font-medium">{problem}</p>}
@@ -249,30 +258,73 @@ function HealthHero({ report, error, onCheck }: { report: HealthReport | null; e
   );
 }
 
-function HealthChecks({ report }: { report: HealthReport }) {
+const smallButtonClass =
+  "min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-3 text-sm font-medium disabled:cursor-wait disabled:opacity-60";
+
+function HealthChecks({
+  report,
+  busy,
+  onIgnore,
+}: {
+  report: HealthReport;
+  busy: boolean;
+  onIgnore: (id: string, ignored: boolean) => void;
+}) {
+  const counted = report.checks.filter((item) => !item.ignored);
+  const ignored = report.checks.filter((item) => item.ignored);
   return (
     <section aria-labelledby="checks-title">
       <h2 id="checks-title" className="mb-2 font-semibold text-muted-foreground">
         Health checks
       </h2>
       <ul className="grid gap-2 lg:grid-cols-2">
-        {report.checks.map((item) => {
+        {counted.map((item) => {
           const style = statusStyles[item.status];
           const Icon = style.icon;
           return (
             <li key={item.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
               <Icon aria-hidden="true" className={`size-5 shrink-0 ${style.color}`} />
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="font-medium">
                   {item.title}
                   <span className="sr-only">: {style.label}</span>
                 </p>
                 <p className="text-sm text-muted-foreground">{item.detail}</p>
               </div>
+              {isProblem(item) && (
+                <button type="button" disabled={busy} aria-label={`Ignore ${item.title}`} onClick={() => onIgnore(item.id, true)} className={smallButtonClass}>
+                  Ignore
+                </button>
+              )}
             </li>
           );
         })}
       </ul>
+      {ignored.length > 0 && (
+        <>
+          <div className="mt-4 mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
+            <h3 className="font-semibold text-muted-foreground">Ignored ({ignored.length})</h3>
+            <p className="text-sm text-muted-foreground">Not counted in your score</p>
+          </div>
+          <ul className="grid gap-2 lg:grid-cols-2">
+            {ignored.map((item) => (
+              <li key={item.id} className="flex items-center gap-3 rounded-lg border border-dashed border-border p-3">
+                <EyeOff aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-muted-foreground">
+                    {item.title}
+                    <span className="sr-only">: Ignored, {statusStyles[item.status].label}</span>
+                  </p>
+                  <p className={`text-sm ${item.status === "bad" ? "font-medium text-destructive" : "text-muted-foreground"}`}>{item.detail}</p>
+                </div>
+                <button type="button" disabled={busy} aria-label={`Stop ignoring ${item.title}`} onClick={() => onIgnore(item.id, false)} className={smallButtonClass}>
+                  Stop ignoring
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   );
 }
@@ -353,6 +405,7 @@ function HardwareCard() {
 export function DashboardPage({ onNavigate = () => undefined }: { onNavigate?: (page: string) => void }) {
   const [report, setReport] = useState<HealthReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
   const check = useCallback(() => {
     setReport(null);
@@ -361,12 +414,25 @@ export function DashboardPage({ onNavigate = () => undefined }: { onNavigate?: (
   }, []);
   useEffect(check, [check]);
 
+  // The old result stays on screen until the new one arrives, so the page doesn't jump.
+  async function setIgnored(id: string, ignored: boolean) {
+    setBusy(true);
+    setError(null);
+    try {
+      setReport(await bridge.healthIgnore(id, ignored));
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-5">
       <HealthHero report={report} error={error} onCheck={check} />
       <LiveTiles />
       <QuickActions onNavigate={onNavigate} />
-      {report && <HealthChecks report={report} />}
+      {report && <HealthChecks report={report} busy={busy} onIgnore={setIgnored} />}
       <HardwareCard />
     </div>
   );
