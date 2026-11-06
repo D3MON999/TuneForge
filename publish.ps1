@@ -25,8 +25,17 @@ function Invoke-Git {
 if (& $git -C $root status --porcelain) { throw 'Commit or discard your changes first.' }
 
 # Uses the sign-in Git already saved. It's only sent to GitHub and is never shown or stored here.
-$OutputEncoding = New-Object Text.UTF8Encoding($false)
-$saved = "protocol=https", "host=github.com", "" | & $git credential fill
+$lookup = New-Object Diagnostics.ProcessStartInfo $git, 'credential fill'
+$lookup.UseShellExecute = $false
+$lookup.CreateNoWindow = $true
+$lookup.RedirectStandardInput = $true
+$lookup.RedirectStandardOutput = $true
+$process = [Diagnostics.Process]::Start($lookup)
+$request = [Text.Encoding]::ASCII.GetBytes("protocol=https`nhost=github.com`n`n")
+$process.StandardInput.BaseStream.Write($request, 0, $request.Length)
+$process.StandardInput.Close()
+$saved = $process.StandardOutput.ReadToEnd() -split "`r?`n"
+$process.WaitForExit()
 $token = ($saved | Where-Object { $_ -like 'password=*' }) -replace '^password=', ''
 if (-not $token) { throw 'Git has no GitHub sign-in. Push once to sign in, then try again.' }
 $headers = @{ Authorization = "Bearer $token"; Accept = 'application/vnd.github+json'; 'User-Agent' = 'TuneForge-publish' }
