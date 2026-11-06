@@ -303,6 +303,7 @@ export interface MemoryResult {
   totalBytes: number;
   processes: number;
   freedBytes: number;
+  skipped?: boolean;
 }
 
 export interface GameBoosts {

@@ -133,20 +133,20 @@ export function App() {
 
   return (
     <div className="flex h-full">
-      <nav aria-label="Main" className="flex w-56 shrink-0 flex-col overflow-y-auto bg-sidebar p-2">
+      <nav aria-label="Main" className="relative z-10 flex w-56 shrink-0 flex-col bg-sidebar p-2">
         <p className="flex items-center gap-2.5 px-3 pt-2 pb-4 text-[15px] font-semibold">
           <Flame aria-hidden="true" className="size-5 text-primary" />
           TuneForge
         </p>
         <GlobalSearch onOpen={open} />
-        <ul className="flex flex-col gap-0.5">
+        <ul className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto">
           {pages.slice(0, -1).map((item) => (
             <li key={item.id}>
               <NavItem item={item} current={item.id === active} onClick={() => navigate(item.id)} />
             </li>
           ))}
         </ul>
-        <div className="mt-auto pt-2">
+        <div className="pt-2">
           <NavItem item={settings} current={active === settings.id} onClick={() => navigate(settings.id)} />
         </div>
       </nav>

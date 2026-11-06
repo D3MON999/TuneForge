@@ -174,7 +174,8 @@ describe("GamingPage", () => {
 
     await user.click(screen.getByRole("tab", { name: "Anti-cheat" }));
     expect(screen.getByText(/haven't been tested against each anti-cheat/)).toBeTruthy();
-    expect(screen.getByText("Skipped")).toBeTruthy();
+    expect(screen.getAllByText("Skipped")).toHaveLength(2);
+    expect(screen.getByText("Locked")).toBeTruthy();
 
     await user.click(screen.getByRole("tab", { name: "Tweaks" }));
     expect(screen.getByText("Gaming tweaks")).toBeTruthy();

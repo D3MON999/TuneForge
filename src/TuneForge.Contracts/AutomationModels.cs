@@ -26,7 +26,7 @@ public sealed record AppSettings(
 
 public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
 
-public sealed record MemoryResult(long UsedBeforeBytes, long UsedAfterBytes, long TotalBytes, int Processes)
+public sealed record MemoryResult(long UsedBeforeBytes, long UsedAfterBytes, long TotalBytes, int Processes, bool Skipped = false)
 {
     public long FreedBytes => Math.Max(0, UsedBeforeBytes - UsedAfterBytes);
 }

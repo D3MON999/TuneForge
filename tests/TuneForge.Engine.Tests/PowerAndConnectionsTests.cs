@@ -33,6 +33,15 @@ public class PowerToolsTests
     }
 
     [Fact]
+    public void AsksForTheHiddenSetting()
+    {
+        var tool = new FakeTool(new ToolOutput(0, "Current AC Power Setting Index: 0x0000000a\r\nCurrent DC Power Setting Index: 0x00000005\r\n"));
+
+        Assert.Equal(10, new PowerTools(tool).ReadCoreParking().MinimumCoresPercent);
+        Assert.Equal("/qh", tool.Calls.Single().Arguments[0]);
+    }
+
+    [Fact]
     public void ReadsThePluggedInCoreValue()
     {
         const string text = """

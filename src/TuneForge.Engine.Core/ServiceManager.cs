@@ -111,7 +111,7 @@ public sealed partial class ServiceManager(IRegistryStore registry, IServiceSour
     }
 
     private static bool IsLocked(string name, string start) =>
-        Locked.Contains(name) || start is "boot" or "system" or "unknown";
+        Locked.Contains(name) || ProtectedProcesses.IsProtectedService(name) || start is "boot" or "system" or "unknown";
 
     [GeneratedRegex(@"^[\w.\-]{1,256}$")]
     private static partial Regex SafeName();

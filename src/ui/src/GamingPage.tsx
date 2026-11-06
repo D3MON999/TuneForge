@@ -340,7 +340,9 @@ const antiCheatRows: [string, string, string][] = [
   ["Fullscreen optimizations", "Allowed", "A Windows compatibility setting. The game isn't touched."],
   ["Power plan and notifications", "Allowed", "Changes Windows, not the game."],
   ["Closing other apps", "Allowed", "Only affects the apps you picked."],
-  ["High priority", "Skipped", "It targets the game's own process, so TuneForge leaves protected games alone."],
+  ["High priority", "Skipped", "It targets the game's own process, so TuneForge leaves protected games alone, and skips it while any anti-cheat is running."],
+  ["Free memory", "Skipped", "It touches other programs, so it won't run at all while a game or anti-cheat is open."],
+  ["Anti-cheat services and programs", "Locked", "TuneForge won't end, disable or close them."],
 ];
 
 function AntiCheatTab() {

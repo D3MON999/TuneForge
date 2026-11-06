@@ -421,6 +421,7 @@ public sealed class WindowsRunningApps : IRunningApps
 
     public IReadOnlyList<string> WindowedApps() => Each(process => process.MainWindowHandle != 0 ? process.ProcessName : null)
         .OfType<string>()
+        .Where(name => !ProtectedProcesses.IsProtected(name))
         .Except(NeverClose, StringComparer.OrdinalIgnoreCase)
         .Distinct(StringComparer.OrdinalIgnoreCase)
         .Order(StringComparer.OrdinalIgnoreCase)
@@ -450,7 +451,7 @@ public sealed class WindowsRunningApps : IRunningApps
     /// <summary>Asks politely, as the close button does, so apps can save work. Nothing is force-closed.</summary>
     public void CloseApps(IEnumerable<string> names)
     {
-        foreach (var name in names.Except(NeverClose, StringComparer.OrdinalIgnoreCase))
+        foreach (var name in names.Except(NeverClose, StringComparer.OrdinalIgnoreCase).Where(name => !ProtectedProcesses.IsProtected(name)))
         {
             foreach (var process in Process.GetProcessesByName(name))
             {
@@ -589,7 +590,8 @@ public sealed class GameBooster(
             apps.CloseApps(current.FocusApps ?? []);
         }
 
-        if (boosts.HighPriority && game.AntiCheat is null)
+        // A running anti-cheat counts too, in case the scan didn't spot one in this game's folder.
+        if (boosts.HighPriority && game.AntiCheat is null && !ProtectedProcesses.AnyRunning(apps.ProcessNames()))
         {
             apps.SetHighPriority(game.ProcessNames);
         }

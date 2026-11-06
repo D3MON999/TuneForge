@@ -225,6 +225,17 @@ public partial class MainWindow : Window
         {
             reply = new { id, ok = false, error = "The engine could not be reached." };
         }
+        catch (Exception exception)
+        {
+            // This handler is async void, so anything left uncaught here would close the whole app.
+            App.LogCrash(exception);
+            reply = new { id, ok = false, error = "Something went wrong reading that. Try again." };
+        }
+
+        if (_exiting)
+        {
+            return;
+        }
 
         Web.CoreWebView2.PostWebMessageAsJson(JsonSerializer.Serialize(reply, RpcProtocol.Json));
     }

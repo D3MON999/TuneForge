@@ -37,9 +37,11 @@ public sealed class StartupService(IRegistryStore registry, UserPaths user)
     {
         var source = Sources.FirstOrDefault(candidate => candidate.Id == request.Source)
             ?? throw new CatalogRequestException("Unknown startup location.");
-        if (!ReadSource(source).Any(entry => entry.Name == request.Name))
+        var found = ReadSource(source).FirstOrDefault(entry => entry.Name == request.Name)
+            ?? throw new CatalogRequestException("That startup item no longer exists.");
+        if (ProtectedProcesses.IsProtectedStartup(found.Name, found.Command))
         {
-            throw new CatalogRequestException("That startup item no longer exists.");
+            throw new CatalogRequestException($"{found.Name} is locked, because Riot games won't start without it.");
         }
 
         return new TweakItem(

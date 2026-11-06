@@ -350,13 +350,13 @@ public sealed class ProcessService
         return entries.OrderByDescending(entry => entry.MemoryBytes).ToList();
     }
 
-    public static bool IsLocked(string name) => Locked.Contains(name, StringComparer.OrdinalIgnoreCase);
+    public static bool IsLocked(string name) => Locked.Contains(name, StringComparer.OrdinalIgnoreCase) || ProtectedProcesses.IsProtected(name);
 
     public OperationResult End(ProcessEndRequest request)
     {
         if (IsLocked(request.Name))
         {
-            throw new CatalogRequestException($"{request.Name} is locked because Windows needs it.");
+            throw new CatalogRequestException($"{request.Name} is locked because Windows or a game's anti-cheat needs it.");
         }
 
         try

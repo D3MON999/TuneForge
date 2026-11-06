@@ -48,6 +48,7 @@ const string Usage = """
       tuneforge-cli limit <program.exe> <mbps>
       tuneforge-cli limit-remove <program.exe>
       tuneforge-cli limits
+      tuneforge-cli selftest
 
     apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
@@ -122,6 +123,7 @@ try
         "limit" when args.Length == 3 && long.TryParse(args[2], out var mbps) => Admin(() => Report(new BandwidthLimits(runner).Set(new BandwidthRule(args[1], mbps)))),
         "limit-remove" when args.Length == 2 => Admin(() => Report(new BandwidthLimits(runner).Remove(args[1]))),
         "limits" => Show(new BandwidthLimits(runner).List()),
+        "selftest" => SelfTest(),
         _ => Help(),
     };
 }
@@ -202,6 +204,67 @@ AdvancedService Advanced()
     }
 
     return new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings());
+}
+
+// Runs every read-only part of the app against this PC. Nothing here changes anything.
+int SelfTest()
+{
+    var power = new PowerTools(runner);
+    var plans = new WindowsPowerPlans(runner);
+    var checks = new (string Name, Func<object?> Read)[]
+    {
+        ("system info", SystemInfoReader.Read),
+        ("live usage", () => { var monitor = new LiveMonitor(liveProbe); monitor.Sample(); Thread.Sleep(1000); return monitor.Sample(); }),
+        ("health", health.Check),
+        ("report", health.BuildReport),
+        ("storage", new WindowsStorageReader().Read),
+        ("errors", () => EventService.Group(events.RecentErrors()).Count),
+        ("system log", () => events.Read(new EventLogRequest("System", "warnings")).Count),
+        ("application log", () => events.Read(new EventLogRequest("Application", "errors")).Count),
+        ("security", new WindowsSecurityReader().Read),
+        ("processes", () => new ProcessService().List().Count),
+        ("locked processes", () => new ProcessService().List().Count(item => item.Locked)),
+        ("windowed apps", () => new WindowsRunningApps().WindowedApps().Count),
+        ("connections", () => new ConnectionScanner(runner).Scan(_ => "x").Count),
+        ("games", () => new GameScanner(GameSources.Detect()).Scan([]).Count),
+        ("power plans", () => plans.List().Count),
+        ("core parking", power.ReadCoreParking),
+        ("display", new WindowsDisplayModes().Read),
+        ("gpu", () => GpuChecks.Read(runner)),
+        ("resize bar", () => ResizeBarCheck.Read(runner)),
+        ("features", () => features.List().Count),
+        ("startup", () => new StartupService(registry, UserPaths.For(identity.User!)).List().Count),
+        ("services", () => new ServiceManager(registry, new WindowsServiceSource()).List().Count),
+        ("cleanup scan", () => cleanup.Scan().Count),
+        ("tweak scan", () => new TweakScanner(catalog, registry, build).Scan().Count),
+        ("built-in apps", () => builtIn.List().Count),
+        ("winget software", () => winget.ListSoftware().Items.Count),
+        ("winget programs", () => winget.ListInstalled().Items.Count),
+        ("dns", () => dnsAdapters.ReadCurrent().Count),
+        ("advanced", () => Advanced().List().Count),
+        ("upload limits", () => new BandwidthLimits(runner).List().Count),
+        ("update key", () => UpdateService.LoadPublicKey().Length),
+    };
+
+    var failed = 0;
+    foreach (var (name, read) in checks)
+    {
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            var value = read();
+            var text = value is string or int ? value.ToString() : JsonSerializer.Serialize(value, RpcProtocol.Json);
+            Console.WriteLine($"ok   {clock.ElapsedMilliseconds,6} ms  {name}: {text?[..Math.Min(text.Length, 90)]}");
+        }
+        catch (Exception exception)
+        {
+            failed++;
+            Console.WriteLine($"FAIL {clock.ElapsedMilliseconds,6} ms  {name}: {exception.GetType().Name}: {exception.Message}");
+        }
+    }
+
+    Console.WriteLine($"{checks.Length - failed} of {checks.Length} passed");
+    return failed == 0 ? 0 : 1;
 }
 
 int Speed()

@@ -21,7 +21,7 @@ public partial class App : Application
         "Crash logs");
 
     /// <summary>Crash logs are off by default, stay on this PC, and are only ever shared by the person.</summary>
-    private static void LogCrash(Exception exception)
+    public static void LogCrash(Exception exception)
     {
         try
         {

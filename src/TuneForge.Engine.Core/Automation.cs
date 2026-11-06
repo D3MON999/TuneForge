@@ -149,7 +149,10 @@ public sealed class AutomationRunner(
 
         var result = actions.TrimMemory();
         store.Update(current => current with { LastMemoryUtc = Stamp() });
-        Tell(settings, "Memory cleaned", $"{result.FreedBytes / Megabyte:0} MB freed.");
+        if (!result.Skipped)
+        {
+            Tell(settings, "Memory cleaned", $"{result.FreedBytes / Megabyte:0} MB freed.");
+        }
     }
 
     private void Clean(AppSettings settings)
@@ -237,21 +240,27 @@ public sealed class WindowsMemoryTrimmer(ILiveProbe live) : IMemoryTrimmer
     public MemoryResult Trim()
     {
         var (before, total) = live.ReadMemory();
-        _ = GetWindowThreadProcessId(GetForegroundWindow(), out var active);
-        var trimmed = 0;
-        foreach (var process in Process.GetProcesses())
+        var running = Process.GetProcesses();
+        try
         {
-            using (process)
+            // Anti-cheat watches for programs opening other processes, so this doesn't run at all near one.
+            if (ProtectedProcesses.AnyRunning(running.Select(process => process.ProcessName)))
             {
-                if (process.Id != active && process.Id != 0 && TrimOne(process.Id))
-                {
-                    trimmed++;
-                }
+                return new MemoryResult(before, before, total, 0, Skipped: true);
+            }
+
+            _ = GetWindowThreadProcessId(GetForegroundWindow(), out var active);
+            var trimmed = running.Count(process => process.Id != active && process.Id != 0 && TrimOne(process.Id));
+            Thread.Sleep(SettleMs);
+            return new MemoryResult(before, live.ReadMemory().Used, total, trimmed);
+        }
+        finally
+        {
+            foreach (var process in running)
+            {
+                process.Dispose();
             }
         }
-
-        Thread.Sleep(SettleMs);
-        return new MemoryResult(before, live.ReadMemory().Used, total, trimmed);
     }
 
     private static bool TrimOne(int id)

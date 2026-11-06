@@ -146,7 +146,7 @@ export function AutomationSettings() {
         <div className="mt-3 flex flex-col gap-3">
           <Toggle
             label="Free memory when it runs low"
-            note="Runs at most every 30 minutes and leaves the active window alone. It helps only when memory is tight and won't raise FPS."
+            note="Runs at most every 30 minutes and leaves the active window alone. It won't run at all while a game or anti-cheat is open. It helps only when memory is tight and won't raise FPS."
             checked={choices.memoryAuto}
             onChange={toggle("memoryAuto")}
           />
@@ -243,7 +243,10 @@ export function MemoryCard() {
         </button>
       </div>
       <div role="status">
-        {result && (
+        {result?.skipped && (
+          <p className="mt-2 font-medium text-warning">Skipped, because a game or anti-cheat is running. TuneForge stays away from those.</p>
+        )}
+        {result && !result.skipped && (
           <p className="mt-2 font-medium text-success">
             Freed {formatBytes(result.freedBytes)}. Memory in use went from {formatBytes(result.usedBeforeBytes)} to{" "}
             {formatBytes(result.usedAfterBytes)}.

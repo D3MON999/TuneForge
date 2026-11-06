@@ -36,8 +36,9 @@ public sealed partial class PowerTools(IToolRunner runner)
             : new OperationResult(false, "The plan was created, but it couldn't be named.");
     }
 
+    /// <summary>Windows hides this setting, so only the /qh form of the query returns it.</summary>
     public CoreParkingStatus ReadCoreParking() =>
-        new(ParseMinimumCores(runner.Capture(Tool, ["/query", "SCHEME_CURRENT", "SUB_PROCESSOR", MinimumCores], Limit).Text));
+        new(ParseMinimumCores(runner.Capture(Tool, ["/qh", "SCHEME_CURRENT", "SUB_PROCESSOR", MinimumCores], Limit).Text));
 
     /// <summary>Windows prints the plugged-in value then the battery one, as hex at the end of each line.</summary>
     public static int? ParseMinimumCores(string text)
