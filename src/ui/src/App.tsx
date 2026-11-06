@@ -24,6 +24,7 @@ import { HistoryPage } from "./HistoryPage";
 import { MonitorPage } from "./MonitorPage";
 import { NetworkPage } from "./NetworkPage";
 import { RepairPage } from "./RepairPage";
+import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, type ThemeChoice } from "./theme";
 import { TweaksPage } from "./TweaksPage";
 import { UpdateCard } from "./UpdateCard";
@@ -152,7 +153,9 @@ export function App() {
               <EngineCard />
             </div>
           )}
+          {page.id === "privacy" && <SecurityCard />}
           {tweakPages[page.id] && <TweaksPage key={page.id} {...tweakPages[page.id]} />}
+          {page.id === "optimize" && <AdvancedSwitches />}
           {page.id === "history" && <HistoryPage />}
           {page.id === "cleanup" && (
             <>
@@ -161,7 +164,12 @@ export function App() {
             </>
           )}
           {page.id === "apps" && <AppsPage />}
-          {page.id === "repair" && <RepairPage />}
+          {page.id === "repair" && (
+            <>
+              <RepairPage />
+              <WindowsTools />
+            </>
+          )}
           {page.id === "gaming" && <GamingPage />}
           {page.id === "network" && <NetworkPage />}
           {page.id === "monitor" && <MonitorPage />}

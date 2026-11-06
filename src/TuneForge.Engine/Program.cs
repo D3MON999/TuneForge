@@ -28,7 +28,9 @@ var system = new SystemOperations(
     new FeatureService(runner, new WmiFeatureStateReader()),
     new RepairService(runner, new WindowsDirectoryMover()),
     new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn()),
-    new DnsService(runner, new WindowsDnsAdapters(), new FileDnsBackup(JournalLocation.DnsBackupPath)));
+    new DnsService(runner, new WindowsDnsAdapters(), new FileDnsBackup(JournalLocation.DnsBackupPath)),
+    new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings()),
+    new SecurityService(runner));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

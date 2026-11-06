@@ -66,6 +66,18 @@ public sealed class BuiltInAppService(IToolRunner runner, IReadOnlyList<BuiltInA
         return new BuiltInRemoveResult(removed, apps.Select(app => app.Id).Except(removed).ToList());
     }
 
+    /// <summary>Asks Windows to register App Installer again, which brings winget back.</summary>
+    public OperationResult RepairWinget()
+    {
+        var output = runner.Capture(
+            PowerShell,
+            ["-NoProfile", "-NonInteractive", "-Command", "Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe"],
+            ListLimit);
+        return output.ExitCode == 0
+            ? new OperationResult(true, "winget was repaired.")
+            : new OperationResult(false, "winget couldn't be repaired. Update App Installer from the Microsoft Store.");
+    }
+
     public BuiltInApp Find(string id)
     {
         var app = catalog.FirstOrDefault(item => item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))

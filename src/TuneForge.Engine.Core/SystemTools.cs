@@ -103,6 +103,8 @@ public sealed class RepairService(IProcessRunner runner, IDirectoryMover folders
         new("network", "Reset network", "Clears DNS and resets network settings. Wi-Fi may reconnect and you'll need to restart.", false),
         new("windows-update", "Reset Windows Update", "Clears Windows Update's cache when updates get stuck. Update history may look empty afterward.", false),
         new("time", "Fix the clock", "Syncs the time with Windows' time server.", false),
+        new("disk-check", "Check the Windows drive", "Looks for file system errors on your Windows drive without taking it offline.", true),
+        new("component-store", "Clean up Windows components", "Removes old copies of Windows files left behind by updates. This frees space, but those updates can't be uninstalled afterwards.", true),
     ];
 
     public OperationResult Run(RepairRequest request) => request.Id switch
@@ -112,8 +114,20 @@ public sealed class RepairService(IProcessRunner runner, IDirectoryMover folders
         "network" => Network(),
         "windows-update" => WindowsUpdate(),
         "time" => Time(),
+        "disk-check" => DiskCheck(),
+        "component-store" => ComponentStore(),
         _ => throw new CatalogRequestException($"Unknown repair: {request.Id}"),
     };
+
+    private OperationResult DiskCheck() =>
+        runner.Run("chkdsk.exe", [Path.GetPathRoot(Environment.SystemDirectory)!.TrimEnd('\\'), "/scan"], Long) == 0
+            ? new OperationResult(true, "No problems were found on your Windows drive.")
+            : new OperationResult(false, "Problems were found, or the check couldn't finish. Open a Windows tool below or restart and try again.");
+
+    private OperationResult ComponentStore() =>
+        runner.Run("dism.exe", ["/Online", "/Cleanup-Image", "/StartComponentCleanup"], Long) == 0
+            ? new OperationResult(true, "Old Windows components were cleaned up.")
+            : new OperationResult(false, "The cleanup couldn't finish. Try again after a restart.");
 
     private OperationResult SystemFiles() =>
         runner.Run("sfc.exe", ["/scannow"], Long) == 0

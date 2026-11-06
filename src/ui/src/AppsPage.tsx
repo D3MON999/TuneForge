@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BuiltInAppsTab, InstallAppsTab, InstalledAppsTab } from "./AppInstallTabs";
 import { bridge, type FeatureEntry, type OperationResult, type ServiceEntry, type StartupEntry } from "./bridge";
 import { matchesText } from "./selection";
+import { ProcessesTab } from "./SystemTools";
 
-type Tab = "startup" | "services" | "features" | "built-in" | "install" | "installed";
+type Tab = "startup" | "services" | "features" | "built-in" | "install" | "installed" | "processes";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "startup", label: "Startup" },
@@ -12,6 +13,7 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "built-in", label: "Built-in apps" },
   { id: "install", label: "Install apps" },
   { id: "installed", label: "Installed apps" },
+  { id: "processes", label: "Processes" },
 ];
 
 export function AppsPage() {
@@ -42,6 +44,7 @@ export function AppsPage() {
         {tab === "built-in" && <BuiltInAppsTab />}
         {tab === "install" && <InstallAppsTab />}
         {tab === "installed" && <InstalledAppsTab />}
+        {tab === "processes" && <ProcessesTab />}
       </div>
     </div>
   );

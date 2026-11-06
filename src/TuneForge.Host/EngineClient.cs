@@ -50,6 +50,12 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> SetDnsAsync(DnsSetRequest request) =>
         RunAsync<OperationResult>(RpcMethods.DnsSet, request, TimeSpan.FromMinutes(3));
 
+    public Task<OperationResult> SetAdvancedAsync(AdvancedSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.AdvancedSet, request, TimeSpan.FromMinutes(25));
+
+    public Task<OperationResult> SetSecurityAsync(SecuritySetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.SecuritySet, request, TimeSpan.FromMinutes(3));
+
     /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
     private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {

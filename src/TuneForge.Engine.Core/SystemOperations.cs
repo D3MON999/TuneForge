@@ -10,4 +10,6 @@ public sealed record SystemOperations(
     FeatureService Features,
     RepairService Repair,
     BuiltInAppService BuiltIn,
-    DnsService Dns);
+    DnsService Dns,
+    AdvancedService Advanced,
+    SecurityService Security);

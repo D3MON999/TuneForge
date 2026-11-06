@@ -341,6 +341,39 @@ export interface UpdateStatus {
   message: string;
 }
 
+export interface AdvancedEntry {
+  id: string;
+  title: string;
+  description: string;
+  warning: string;
+  risk: "low" | "medium" | "high";
+  restartNeeded: boolean;
+  reversible: boolean;
+  enabled: boolean;
+}
+
+export interface SecurityStatus {
+  antivirus?: boolean | null;
+  realTimeProtection?: boolean | null;
+  controlledFolderAccess?: boolean | null;
+  firewall?: boolean | null;
+  bitLocker?: boolean | null;
+}
+
+export interface ToolLink {
+  id: string;
+  title: string;
+  note: string;
+}
+
+export interface ProcessEntry {
+  id: number;
+  name: string;
+  memoryBytes: number;
+  hasWindow: boolean;
+  locked: boolean;
+}
+
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -452,6 +485,15 @@ export class Bridge {
   powerSet = (id: string) => this.call<OperationResult>("power.set", { id });
   powerUltimate = () => this.call<OperationResult>("power.ultimate");
   focusSave = (names: string[]) => this.call<OperationResult>("focus.save", { names });
+  advancedList = () => this.call<AdvancedEntry[]>("advanced.list");
+  advancedSet = (id: string, enabled: boolean) => this.call<OperationResult>("advanced.set", { id, enabled });
+  securityRead = () => this.call<SecurityStatus>("security.read");
+  securitySet = (id: string) => this.call<OperationResult>("security.set", { id });
+  toolsList = () => this.call<ToolLink[]>("tools.list");
+  toolsOpen = (id: string) => this.call<OperationResult>("tools.open", { id });
+  processList = () => this.call<ProcessEntry[]>("process.list");
+  processEnd = (id: number, name: string) => this.call<OperationResult>("process.end", { id, name });
+  wingetRepair = () => this.call<OperationResult>("winget.repair");
   updateCheck = () => this.call<UpdateStatus>("update.check");
   updateInstall = () => this.call<OperationResult>("update.install");
 }

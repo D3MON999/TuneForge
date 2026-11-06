@@ -39,6 +39,11 @@ public partial class MainWindow : Window
     private readonly WindowsPowerPlans _plans;
     private readonly GameScanner _gameScanner;
     private readonly WindowsRunningApps _apps = new();
+    private readonly ProcessService _processes = new();
+    private readonly AdvancedService _advanced = new(
+        new WindowsProcessRunner(),
+        new FileAdvancedState(JournalLocation.AdvancedStatePath),
+        new WindowsAdapterSettings());
     private readonly UpdateService _updates = new(
         new GitHubReleaseFeed(),
         UpdateService.CurrentVersion,
@@ -262,6 +267,15 @@ public partial class MainWindow : Window
         "power.set" => await Task.Run(() => SetPlan(Read<PowerPlanRequest>(payload).Id)),
         "power.ultimate" => await Task.Run(AddUltimatePlan),
         "focus.save" => await Task.Run(() => SaveFocusApps(Read<FocusAppsRequest>(payload).Names)),
+        "advanced.list" => await Task.Run(_advanced.List),
+        "advanced.set" => await _engine.SetAdvancedAsync(Read<AdvancedSetRequest>(payload)),
+        "security.read" => await Task.Run(new WindowsSecurityReader().Read),
+        "security.set" => await _engine.SetSecurityAsync(Read<SecuritySetRequest>(payload)),
+        "tools.list" => WindowsToolLinks.All.Select(tool => tool.Link).ToList(),
+        "tools.open" => OpenTool(Read<ToolOpenRequest>(payload).Id),
+        "process.list" => await Task.Run(_processes.List),
+        "process.end" => await Task.Run(() => _processes.End(Read<ProcessEndRequest>(payload))),
+        "winget.repair" => await Task.Run(_builtIn.RepairWinget),
         "update.check" => await Task.Run(_updates.Check),
         "update.install" => await InstallUpdateAsync(),
         _ => throw new EngineException("Unknown operation."),
@@ -310,6 +324,19 @@ public partial class MainWindow : Window
 
         _ = Dispatcher.BeginInvoke(ExitApp);
         return new OperationResult(true, "Installing the update.");
+    }
+
+    private static OperationResult OpenTool(string id)
+    {
+        try
+        {
+            WindowsToolLinks.Open(id);
+            return new OperationResult(true, "Opened.");
+        }
+        catch (Win32Exception)
+        {
+            return new OperationResult(false, "That tool couldn't be opened.");
+        }
     }
 
     private IReadOnlyList<GameEntry> ScanGames()
