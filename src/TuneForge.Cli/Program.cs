@@ -122,6 +122,7 @@ int Apply(string[] options)
         Console.WriteLine($"{item.Status,-12} {item.Id} {item.Message}");
     }
 
+    ShellRefresh.RunAsync().GetAwaiter().GetResult();
     Console.WriteLine($"Change number {result.ChangeSetId}. Restore point: {result.RestorePoint}.");
     return result.Results.Any(item => item.Status == "failed") ? 1 : 0;
 }
@@ -140,6 +141,7 @@ int Undo(string[] options)
         Console.WriteLine(problem);
     }
 
+    ShellRefresh.RunAsync().GetAwaiter().GetResult();
     Console.WriteLine($"Restored {result.Restored} settings.");
     return result.Problems.Count == 0 ? 0 : 1;
 }

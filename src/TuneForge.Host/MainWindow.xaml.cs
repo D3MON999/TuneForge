@@ -111,11 +111,19 @@ public partial class MainWindow : Window
         "engine.connect" => await _engine.PingAsync(),
         "tweaks.scan" => await Task.Run(_scanner.Scan),
         "tweaks.preview" => await Task.Run(() => _scanner.Preview(Read<PreviewPayload>(payload).Ids)),
-        "tweaks.apply" => await _engine.ApplyAsync(Read<ApplyRequest>(payload)),
+        "tweaks.apply" => await RefreshAfter(_engine.ApplyAsync(Read<ApplyRequest>(payload))),
         "history.list" => await Task.Run(ReadHistory),
-        "history.undo" => await _engine.UndoAsync(Read<UndoRequest>(payload).ChangeSetId),
+        "history.undo" => await RefreshAfter(_engine.UndoAsync(Read<UndoRequest>(payload).ChangeSetId)),
         _ => throw new EngineException("Unknown operation."),
     };
+
+    /// <summary>Runs in this process, so the refresh reaches the user's own Explorer windows.</summary>
+    private static async Task<T> RefreshAfter<T>(Task<T> work)
+    {
+        var result = await work;
+        await ShellRefresh.RunAsync();
+        return result;
+    }
 
     private static T Read<T>(JsonElement payload) =>
         payload.Deserialize<T>(RpcProtocol.Json) ?? throw new EngineException("Invalid request.");

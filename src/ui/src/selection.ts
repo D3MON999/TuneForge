@@ -49,7 +49,7 @@ export function strongestRestart(needs: readonly RestartNeed[]): RestartNeed {
 
 export const restartText: Record<RestartNeed, string> = {
   none: "These changes take effect right away.",
-  explorer: "Some changes appear after File Explorer restarts or you sign out.",
+  explorer: "These should appear right away. If one doesn't, sign out and back in.",
   signout: "Some changes need you to sign out and back in.",
   reboot: "Some changes need a restart.",
 };
