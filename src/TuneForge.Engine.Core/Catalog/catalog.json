@@ -3768,7 +3768,7 @@
    "title": "Global timer resolution",
    "category": "advanced",
    "group": null,
-   "risk": "medium",
+   "risk": "high",
    "impact": "Can raise power use, and the benefit varies by PC.",
    "restart": "reboot",
    "presets": [],
@@ -3784,7 +3784,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "hazard": true
   },
   {
    "id": "advanced.large-system-cache",
@@ -3830,7 +3831,8 @@
      "kind": "dword",
      "value": 1
     }
-   ]
+   ],
+   "hazard": true
   },
   {
    "id": "advanced.bitlocker-auto",

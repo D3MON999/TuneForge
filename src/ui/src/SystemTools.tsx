@@ -2,6 +2,7 @@ import { CircleAlert, CircleCheck, CircleHelp } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type AdvancedEntry, type OperationResult, type ProcessEntry, type SecurityStatus, type ToolLink } from "./bridge";
 import { formatBytes } from "./format";
+import { HazardDialog, hazardLabel } from "./Hazard";
 import { matchesText } from "./selection";
 
 const buttonClass =
@@ -33,7 +34,8 @@ export function AdvancedSwitches() {
     setPending(null);
     setBusy(item.id);
     try {
-      setResult(await bridge.advancedSet(item.id, !item.enabled));
+      const accepted = Boolean(item.hazard) && !item.enabled;
+      setResult(await bridge.advancedSet(item.id, !item.enabled, accepted));
       reload();
     } catch (reason) {
       setResult((reason as Error).message);
@@ -58,7 +60,11 @@ export function AdvancedSwitches() {
               <div className="min-w-0">
                 <p className="flex flex-wrap items-center gap-2 font-medium">
                   {item.title}
-                  {item.risk !== "low" && <span className={`text-sm ${riskColor[item.risk]}`}>{riskText[item.risk]}</span>}
+                  {item.hazard ? (
+                    <span className="text-sm font-semibold text-destructive">{hazardLabel}</span>
+                  ) : (
+                    item.risk !== "low" && <span className={`text-sm ${riskColor[item.risk]}`}>{riskText[item.risk]}</span>
+                  )}
                   {item.enabled && <span className="text-sm text-success">On</span>}
                 </p>
                 <p className="text-sm text-muted-foreground">{item.description}</p>
@@ -75,7 +81,10 @@ export function AdvancedSwitches() {
                 {busy === item.id ? "Working" : item.enabled ? "Turn off" : item.reversible ? "Turn on" : "Remove"}
               </button>
             </div>
-            {pending?.id === item.id && (
+            {pending?.id === item.id && item.hazard && !item.enabled && (
+              <HazardDialog title={item.title} description={item.description} onCancel={() => setPending(null)} onConfirm={() => change(item)} />
+            )}
+            {pending?.id === item.id && !(item.hazard && !item.enabled) && (
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <span className="font-medium">{item.reversible ? "Are you sure?" : "This can't be undone here. Are you sure?"}</span>
                 <button

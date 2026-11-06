@@ -40,6 +40,12 @@ public sealed class WindowsProcessRunner : IProcessRunner, IToolRunner
             start.ArgumentList.Add(argument);
         }
 
+        // PowerShell would otherwise load modules from the user's Documents, even when running as admin.
+        if (Path.GetFileName(path).Equals("powershell.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            start.Environment["PSModulePath"] = Path.Combine(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "Modules");
+        }
+
         try
         {
             using var process = Process.Start(start);

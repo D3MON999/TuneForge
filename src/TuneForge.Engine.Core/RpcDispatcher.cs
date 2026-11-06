@@ -37,7 +37,7 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                 RpcMethods.Undo when tweaks is not null =>
                     Success(request.Id, tweaks.Undo(Parameters<UndoRequest>(request).ChangeSetId)),
                 RpcMethods.Cleanup when system is not null =>
-                    Success(request.Id, system.Cleanup.Clean(Parameters<CleanupRequest>(request).Ids, elevated: true)),
+                    Success(request.Id, system.Cleanup.CleanWithAdminRights(Parameters<CleanupRequest>(request).Ids)),
                 RpcMethods.StartupSet when system is not null && tweaks is not null =>
                     Success(request.Id, tweaks.ApplyBuilt(system.Startup.BuildChange(Parameters<StartupSetRequest>(request)))),
                 RpcMethods.ServiceSet when system is not null && tweaks is not null =>

@@ -18,7 +18,8 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
                 .Select(action => (action, before: registry.Read(action.Hive, action.Path, action.Name)))
                 .Where(pair => !Matches(pair.before, pair.action.Target))
                 .Select(pair => new TweakChange(pair.action.Display, Show(pair.before), Show(pair.action.Target)))
-                .ToList()))
+                .ToList(),
+            item.Hazard))
         .ToList();
 
     private TweakStatus ToStatus(TweakItem item)
@@ -39,7 +40,8 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
             item.Presets,
             item.RequiresAdmin,
             state,
-            item.Description);
+            item.Description,
+            item.Hazard);
     }
 
     internal static bool Matches(RegistryValue? current, RegistryValue? target) =>
@@ -61,6 +63,13 @@ public sealed class TweakEngine(
     public ApplyResult Apply(ApplyRequest request)
     {
         var items = catalog.Resolve(request.Ids);
+
+        // Checked here too, so no preset, file or screen can reach these without an explicit yes.
+        if (!request.AcceptHazards && items.FirstOrDefault(item => item.Hazard) is { } hazard)
+        {
+            throw new CatalogRequestException($"{hazard.Title} needs confirming, because it's extremely hazardous for Riot Vanguard.");
+        }
+
         var restorePoint = request.CreateRestorePoint ? restorePoints.Create("TuneForge changes") : "skipped";
         var changeSetId = journal.BeginChangeSet(userSid, osBuild, appVersion, restorePoint);
 

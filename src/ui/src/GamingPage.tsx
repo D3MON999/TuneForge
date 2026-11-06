@@ -343,6 +343,7 @@ const antiCheatRows: [string, string, string][] = [
   ["High priority", "Skipped", "It targets the game's own process, so TuneForge leaves protected games alone, and skips it while any anti-cheat is running."],
   ["Free memory", "Skipped", "It touches other programs, so it won't run at all while a game or anti-cheat is open."],
   ["Anti-cheat services and programs", "Locked", "TuneForge won't end, disable or close them."],
+  ["Boot, timer and firmware switches", "Off, with a warning", "Platform tick, dynamic tick, legacy boot menu, WPBT and global timer resolution work where Vanguard runs. They stay off unless you confirm in a warning window."],
 ];
 
 function AntiCheatTab() {

@@ -128,6 +128,12 @@ public sealed class CleanupService(IReadOnlyList<CleanupDefinition> definitions,
 
     public bool NeedsAdmin(string id) => Find(id).NeedsAdmin;
 
+    /// <summary>The engine only cleans admin categories. Folders you own are cleaned without admin rights.</summary>
+    public CleanupResult CleanWithAdminRights(IReadOnlyList<string> ids) =>
+        ids.All(NeedsAdmin)
+            ? Clean(ids, elevated: true)
+            : throw new CatalogRequestException("That category doesn't need admin rights.");
+
     public CleanupResult Clean(IEnumerable<string> ids, bool elevated)
     {
         long freed = 0, files = 0, skipped = 0;
@@ -154,9 +160,15 @@ public sealed class CleanupService(IReadOnlyList<CleanupDefinition> definitions,
                     try
                     {
                         var size = file.Length;
-                        file.Delete();
-                        freed += size;
-                        files++;
+                        if (SafeDelete.Delete(file.FullName, root.FullName))
+                        {
+                            freed += size;
+                            files++;
+                        }
+                        else
+                        {
+                            skipped++;
+                        }
                     }
                     catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                     {

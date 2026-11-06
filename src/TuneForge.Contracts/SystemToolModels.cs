@@ -8,9 +8,10 @@ public sealed record AdvancedEntry(
     string Risk,
     bool RestartNeeded,
     bool Reversible,
-    bool Enabled);
+    bool Enabled,
+    bool Hazard = false);
 
-public sealed record AdvancedSetRequest(string Id, bool Enabled);
+public sealed record AdvancedSetRequest(string Id, bool Enabled, bool AcceptHazard = false);
 
 public sealed record SecurityStatus(
     bool? Antivirus,

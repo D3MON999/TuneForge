@@ -78,7 +78,7 @@ public class AdvancedServiceTests
     {
         _calls.Code = 5;
 
-        Assert.False(Service().Set(new AdvancedSetRequest("dynamic-tick", true)).Ok);
+        Assert.False(Service().Set(new AdvancedSetRequest("dynamic-tick", true, AcceptHazard: true)).Ok);
         Assert.Empty(_state.Ids);
     }
 

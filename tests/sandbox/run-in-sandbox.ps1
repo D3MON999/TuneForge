@@ -22,7 +22,7 @@ $pass = 0; $fail = 0; $skip = 0
 foreach ($id in ($states.Keys | Sort-Object)) {
     if ($states[$id] -ne 'not-applied') { $skip++; continue }
 
-    $applied = & $cli apply $id --no-restore-point
+    $applied = & $cli apply $id --no-restore-point --accept-riot-risk
     if ($LASTEXITCODE -ne 0) { $fail++; Log "APPLY-FAIL $id :: $($applied -join ' | ')"; continue }
 
     $now = (& $cli list) -match "\s$([regex]::Escape($id))$"

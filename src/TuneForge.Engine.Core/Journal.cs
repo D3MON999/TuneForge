@@ -39,7 +39,9 @@ public static class JournalLocation
     /// <summary>Creates the folder with admin-only write access. Call only from the elevated engine.</summary>
     public static void EnsureProtected()
     {
+        var admins = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
         var security = new DirectorySecurity();
+        security.SetOwner(admins);
         security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
         const InheritanceFlags inherit = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
         foreach (var (sid, rights) in new[]
@@ -57,7 +59,14 @@ public static class JournalLocation
                 AccessControlType.Allow));
         }
 
+        // Any user can create folders in ProgramData, so one made early can't be trusted or reused.
         var folder = new DirectoryInfo(Folder);
+        if (folder.Exists && !IsTrusted(folder))
+        {
+            folder.MoveTo($"{Folder}.untrusted-{DateTime.UtcNow:yyyyMMddHHmmss}");
+            folder = new DirectoryInfo(Folder);
+        }
+
         if (!folder.Exists)
         {
             folder.Create(security);
@@ -65,6 +74,15 @@ public static class JournalLocation
 
         folder.SetAccessControl(security);
     }
+
+    private static bool IsTrusted(DirectoryInfo folder) =>
+        !folder.Attributes.HasFlag(FileAttributes.ReparsePoint)
+        && folder.GetAccessControl().GetOwner(typeof(SecurityIdentifier)) is SecurityIdentifier owner
+        && IsTrustedOwner(owner);
+
+    /// <summary>Only owners who could already write here anyway. An owner can always rewrite a folder's permissions.</summary>
+    public static bool IsTrustedOwner(SecurityIdentifier owner) =>
+        owner.IsWellKnown(WellKnownSidType.BuiltinAdministratorsSid) || owner.IsWellKnown(WellKnownSidType.LocalSystemSid);
 }
 
 /// <summary>Records every change before it's made, so each one can be undone.</summary>

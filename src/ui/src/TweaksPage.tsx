@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type Tweak } from "./bridge";
+import { HazardDialog, hazardLabel } from "./Hazard";
 import { profileChoices, profileIds } from "./profiles";
 import { ReviewDialog } from "./ReviewDialog";
 import { matchesSearch, type Preset, presetOrder, presetSelection, toggle } from "./selection";
@@ -86,6 +87,16 @@ export function TweaksPage({
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState(initialQuery);
   const [reviewing, setReviewing] = useState<string[] | null>(null);
+  const [confirming, setConfirming] = useState<Tweak | null>(null);
+
+  /** Turning a hazardous tweak on goes through a confirmation window first. Turning it off never does. */
+  function change(tweak: Tweak) {
+    if (tweak.hazard && !selected.has(tweak.id)) {
+      setConfirming(tweak);
+    } else {
+      setSelected(toggle(selected, tweak, tweaks ?? []));
+    }
+  }
 
   const load = useCallback(() => {
     setError(null);
@@ -168,7 +179,7 @@ export function TweaksPage({
                   key={tweak.id}
                   tweak={tweak}
                   checked={selected.has(tweak.id)}
-                  onToggle={() => setSelected(toggle(selected, tweak, tweaks))}
+                  onToggle={() => change(tweak)}
                 />
               ))}
               {[...new Set(section.items.flatMap((tweak) => (tweak.group ? [tweak.group] : [])))].map((group) => (
@@ -206,6 +217,18 @@ export function TweaksPage({
         </div>
       )}
 
+      {confirming && (
+        <HazardDialog
+          title={confirming.title}
+          description={confirming.description}
+          onCancel={() => setConfirming(null)}
+          onConfirm={() => {
+            setSelected(toggle(selected, confirming, tweaks));
+            setConfirming(null);
+          }}
+        />
+      )}
+
       {reviewing && (
         <ReviewDialog
           ids={reviewing}
@@ -231,7 +254,11 @@ function Badges({ tweak }: { tweak: Tweak }) {
     <>
       {tweak.state === "applied" && <span className="text-sm text-success">Applied</span>}
       {tweak.risk === "medium" && <span className="text-sm text-warning">Medium risk</span>}
-      {tweak.risk === "high" && <span className="text-sm font-medium text-destructive">High risk</span>}
+      {tweak.hazard ? (
+        <span className="text-sm font-semibold text-destructive">{hazardLabel}</span>
+      ) : (
+        tweak.risk === "high" && <span className="text-sm font-medium text-destructive">High risk</span>
+      )}
     </>
   );
 }

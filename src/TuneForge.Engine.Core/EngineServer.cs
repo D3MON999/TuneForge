@@ -9,7 +9,11 @@ public sealed record EngineOptions(
     string PipeName,
     SecurityIdentifier ClientSid,
     string ExpectedClientPath,
-    TimeSpan ConnectTimeout);
+    TimeSpan ConnectTimeout)
+{
+    /// <summary>How long admin rights stay available with nothing to do.</summary>
+    public TimeSpan IdleLimit { get; init; } = TimeSpan.FromMinutes(5);
+}
 
 /// <summary>Serves one verified client over a locked-down pipe, then stops.</summary>
 public sealed class EngineServer(EngineOptions options, TweakEngine? tweaks = null, SystemOperations? system = null)
@@ -43,15 +47,22 @@ public sealed class EngineServer(EngineOptions options, TweakEngine? tweaks = nu
         var dispatcher = new RpcDispatcher(session.Cancel, tweaks, system);
         try
         {
-            while (await channel.ReadLineAsync(session.Token).ConfigureAwait(false) is { } line)
+            while (true)
             {
+                using var idle = CancellationTokenSource.CreateLinkedTokenSource(session.Token);
+                idle.CancelAfter(options.IdleLimit);
+                if (await channel.ReadLineAsync(idle.Token).ConfigureAwait(false) is not { } line)
+                {
+                    break;
+                }
+
                 var reply = dispatcher.Handle(line);
                 await channel.WriteLineAsync(reply, CancellationToken.None).ConfigureAwait(false);
             }
         }
-        catch (OperationCanceledException) when (session.IsCancellationRequested)
+        catch (OperationCanceledException)
         {
-            // Shutdown was requested. Closing the pipe ends the session.
+            // Shutdown was requested or the client went quiet. Closing the pipe ends the session.
         }
         catch (MessageTooLargeException)
         {

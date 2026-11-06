@@ -14,7 +14,7 @@ Log "switches=$(@($items).Count)"
 foreach ($item in $items) {
     $id = $item.id
     if ($id -eq 'remove-onedrive' -or $id -eq 'openssh-server') { Log "skip $id"; continue }
-    $on = & $cli advanced on $id 2>&1
+    $on = & $cli advanced on $id --accept-riot-risk 2>&1
     $onCode = $LASTEXITCODE
     $off = & $cli advanced off $id 2>&1
     $offCode = $LASTEXITCODE

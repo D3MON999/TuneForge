@@ -118,7 +118,7 @@ try
         "power" when args.Length == 2 && args[1] == "add-ultimate" => Report(new OperationResult(new WindowsPowerPlans(runner).AddUltimate(), "Done.")),
         "boost-test" when args.Length == 3 => BoostTest(args[1], args[2]),
         "advanced" when args.Length == 2 && args[1] == "list" => Show(Advanced().List()),
-        "advanced" when args.Length == 3 && args[1] is "on" or "off" => Admin(() => Report(Advanced().Set(new AdvancedSetRequest(args[2], args[1] == "on")))),
+        "advanced" when args.Length >= 3 && args[1] is "on" or "off" => Admin(() => Report(Advanced().Set(new AdvancedSetRequest(args[2], args[1] == "on", args.Contains("--accept-riot-risk"))))),
         "speedtest" => Speed(),
         "limit" when args.Length == 3 && long.TryParse(args[2], out var mbps) => Admin(() => Report(new BandwidthLimits(runner).Set(new BandwidthRule(args[1], mbps)))),
         "limit-remove" when args.Length == 2 => Admin(() => Report(new BandwidthLimits(runner).Remove(args[1]))),
@@ -439,12 +439,16 @@ int Apply(string[] options)
 {
     var ids = new List<string>();
     var restorePoint = true;
+    var acceptHazards = false;
     for (var index = 0; index < options.Length; index++)
     {
         switch (options[index])
         {
             case "--no-restore-point":
                 restorePoint = false;
+                break;
+            case "--accept-riot-risk":
+                acceptHazards = true;
                 break;
             case "--preset" when index + 1 < options.Length:
                 ids.AddRange(catalog.PresetIds(options[++index]));
@@ -462,7 +466,7 @@ int Apply(string[] options)
 
     JournalLocation.EnsureProtected();
     using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
-    var result = OpenEngine(journal).Apply(new ApplyRequest(ids, restorePoint));
+    var result = OpenEngine(journal).Apply(new ApplyRequest(ids, restorePoint, acceptHazards));
     foreach (var item in result.Results)
     {
         Console.WriteLine($"{item.Status,-12} {item.Id} {item.Message}");

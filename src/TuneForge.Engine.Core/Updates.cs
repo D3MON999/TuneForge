@@ -135,8 +135,11 @@ public sealed class UpdateService(IReleaseFeed feed, Version current, string pub
             : new UpdateStatus(Text(current), Text(latest.Version), false, "TuneForge is up to date.");
     }
 
-    /// <summary>Returns the path of a verified installer, or throws without leaving one behind.</summary>
-    public string Download()
+    /// <summary>
+    /// Returns a verified installer, or throws without leaving one behind. It stays locked against
+    /// changes until disposed, so nothing can swap the file between the check and running it.
+    /// </summary>
+    public VerifiedInstaller Download()
     {
         var latest = feed.Latest() ?? throw new CatalogRequestException("No update has been published yet.");
         if (!Newer(latest))
@@ -153,22 +156,31 @@ public sealed class UpdateService(IReleaseFeed feed, Version current, string pub
         var path = Path.Combine(folder, $"TuneForge-Setup-{Text(latest.Version)}.exe");
         feed.Download(latest.InstallerUrl, path);
         var signature = feed.DownloadBytes(latest.SignatureUrl);
-        if (!Verify(path, signature))
+        var locked = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+        if (!Verify(locked, signature))
         {
+            locked.Dispose();
             File.Delete(path);
             throw new CatalogRequestException("The update failed its signature check, so it wasn't installed.");
         }
 
-        return path;
+        return new VerifiedInstaller(path, locked);
     }
 
     private bool Newer(ReleaseInfo release) => release.Version > current;
 
-    private bool Verify(string path, byte[] signature)
+    private bool Verify(FileStream stream, byte[] signature)
     {
         using var key = ECDsa.Create();
         key.ImportFromPem(publicKeyPem);
-        using var stream = File.OpenRead(path);
         return key.VerifyData(stream, signature, HashAlgorithmName.SHA256);
     }
+}
+
+/// <summary>Holds the installer open so it can be read and run, but not changed or replaced.</summary>
+public sealed class VerifiedInstaller(string path, FileStream locked) : IDisposable
+{
+    public string Path => path;
+
+    public void Dispose() => locked.Dispose();
 }

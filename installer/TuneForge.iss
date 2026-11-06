@@ -9,6 +9,8 @@ AppName=TuneForge
 AppVersion={#AppVersion}
 AppPublisher=TuneForge
 DefaultDirName={autopf}\TuneForge
+; The engine only runs from Program Files, so the install folder can't be changed.
+DisableDirPage=yes
 DisableProgramGroupPage=yes
 PrivilegesRequired=admin
 ArchitecturesAllowed=x64compatible

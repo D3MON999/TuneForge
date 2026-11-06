@@ -1,6 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { type ApplyResult, bridge, type TweakPreview } from "./bridge";
+import { HazardConfirmTick, HazardNotice } from "./Hazard";
 import { restartText, strongestRestart } from "./selection";
 
 interface ReviewDialogProps {
@@ -25,6 +26,7 @@ export function ReviewDialog({ ids, onClose }: ReviewDialogProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [stage, setStage] = useState<Stage>({ kind: "loading" });
   const [restorePoint, setRestorePoint] = useState(true);
+  const [understood, setUnderstood] = useState(false);
 
   useEffect(() => {
     dialog.current?.showModal();
@@ -37,13 +39,17 @@ export function ReviewDialog({ ids, onClose }: ReviewDialogProps) {
   async function apply(previews: TweakPreview[]) {
     setStage({ kind: "applying", previews });
     try {
-      setStage({ kind: "done", result: await bridge.apply(ids, restorePoint), previews });
+      const result = previews.some((preview) => preview.hazard)
+        ? await bridge.apply(ids, restorePoint, true)
+        : await bridge.apply(ids, restorePoint);
+      setStage({ kind: "done", result, previews });
     } catch (error) {
       setStage({ kind: "failed", message: (error as Error).message, previews });
     }
   }
 
   const busy = stage.kind === "applying";
+  const hazardous = stage.kind === "review" || stage.kind === "applying" ? stage.previews.filter((preview) => preview.hazard) : [];
   const changed = stage.kind === "done" && stage.result.results.some((item) => item.status === "applied");
 
   return (
@@ -66,6 +72,13 @@ export function ReviewDialog({ ids, onClose }: ReviewDialogProps) {
 
       {(stage.kind === "review" || stage.kind === "applying") && (
         <>
+          {hazardous.length > 0 && (
+            <div className="mt-4">
+              <HazardNotice />
+              <p className="mt-2 text-sm">Included: {hazardous.map((preview) => preview.title).join(", ")}.</p>
+              <HazardConfirmTick checked={understood} onChange={setUnderstood} />
+            </div>
+          )}
           <ul className="mt-4 flex flex-col gap-2">
             {stage.previews.map((preview) => (
               <li key={preview.id} className="rounded-md border border-border p-3">
@@ -124,7 +137,7 @@ export function ReviewDialog({ ids, onClose }: ReviewDialogProps) {
             </button>
             <button
               type="button"
-              disabled={busy}
+              disabled={busy || (hazardous.length > 0 && !understood)}
               aria-busy={busy}
               onClick={() => apply(stage.previews)}
               className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md bg-primary px-4 font-medium text-on-primary disabled:cursor-wait disabled:opacity-60"

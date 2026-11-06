@@ -10,9 +10,32 @@ if (arguments is null)
     return 2;
 }
 
+if (EngineChecks.UnsafeEnvironment(name => Environment.GetEnvironmentVariable(name)))
+{
+    return 4;
+}
+
+#if !DEBUG
+// An installed engine sits in Program Files, where only admins can change it or its files.
+if (!EngineChecks.InProtectedFolder(AppContext.BaseDirectory, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)))
+{
+    return 5;
+}
+#endif
+
 var hostPath = Path.Combine(AppContext.BaseDirectory, "TuneForge.exe");
 using var stop = new CancellationTokenSource();
-using var parent = Process.GetProcessById(arguments.Value.ParentPid);
+Process parent;
+try
+{
+    parent = Process.GetProcessById(arguments.Value.ParentPid);
+}
+catch (ArgumentException)
+{
+    return 6;
+}
+
+using var _ = parent;
 parent.EnableRaisingEvents = true;
 parent.Exited += (_, _) => stop.Cancel();
 

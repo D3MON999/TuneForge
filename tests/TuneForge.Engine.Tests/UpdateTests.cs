@@ -85,10 +85,24 @@ public sealed class UpdateServiceTests : IDisposable
     [Fact]
     public void Download_KeepsACorrectlySignedInstaller()
     {
-        var path = Service(new FakeFeed(Release("2.0.0"), Installer, Sign(Installer))).Download();
+        using var installer = Service(new FakeFeed(Release("2.0.0"), Installer, Sign(Installer))).Download();
 
-        Assert.Equal(Installer, File.ReadAllBytes(path));
-        Assert.EndsWith("TuneForge-Setup-2.0.0.exe", path);
+        Assert.Equal(Installer, File.ReadAllBytes(installer.Path));
+        Assert.EndsWith("TuneForge-Setup-2.0.0.exe", installer.Path);
+    }
+
+    [Fact]
+    public void Download_LocksTheInstallerUntilItHasRun()
+    {
+        string path;
+        using (var installer = Service(new FakeFeed(Release("2.0.0"), Installer, Sign(Installer))).Download())
+        {
+            path = installer.Path;
+            Assert.ThrowsAny<IOException>(() => File.WriteAllText(path, "swapped"));
+            Assert.ThrowsAny<IOException>(() => File.Delete(path));
+        }
+
+        File.WriteAllText(path, "free again");
     }
 
     [Fact]

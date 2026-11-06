@@ -20,6 +20,7 @@ export interface Tweak {
   requiresAdmin: boolean;
   state: TweakState;
   description: string;
+  hazard?: boolean;
 }
 
 export interface TweakPreview {
@@ -28,6 +29,7 @@ export interface TweakPreview {
   restart: RestartNeed;
   impact: string | null;
   changes: { setting: string; before: string; after: string }[];
+  hazard?: boolean;
 }
 
 export interface ApplyResult {
@@ -353,6 +355,7 @@ export interface AdvancedEntry {
   restartNeeded: boolean;
   reversible: boolean;
   enabled: boolean;
+  hazard?: boolean;
 }
 
 export interface SecurityStatus {
@@ -483,8 +486,8 @@ export class Bridge {
   connectEngine = () => this.call<PingResult>("engine.connect");
   scan = () => this.call<Tweak[]>("tweaks.scan");
   preview = (ids: string[]) => this.call<TweakPreview[]>("tweaks.preview", { ids });
-  apply = (ids: string[], createRestorePoint: boolean) =>
-    this.call<ApplyResult>("tweaks.apply", { ids, createRestorePoint });
+  apply = (ids: string[], createRestorePoint: boolean, acceptHazards = false) =>
+    this.call<ApplyResult>("tweaks.apply", { ids, createRestorePoint, acceptHazards });
   history = () => this.call<ChangeSet[]>("history.list");
   undo = (changeSetId: number) => this.call<UndoResult>("history.undo", { changeSetId });
   cleanupScan = () => this.call<CleanupCategory[]>("cleanup.scan");
@@ -531,7 +534,8 @@ export class Bridge {
   powerUltimate = () => this.call<OperationResult>("power.ultimate");
   focusSave = (names: string[]) => this.call<OperationResult>("focus.save", { names });
   advancedList = () => this.call<AdvancedEntry[]>("advanced.list");
-  advancedSet = (id: string, enabled: boolean) => this.call<OperationResult>("advanced.set", { id, enabled });
+  advancedSet = (id: string, enabled: boolean, acceptHazard = false) =>
+    this.call<OperationResult>("advanced.set", { id, enabled, acceptHazard });
   securityRead = () => this.call<SecurityStatus>("security.read");
   securitySet = (id: string) => this.call<OperationResult>("security.set", { id });
   toolsList = () => this.call<ToolLink[]>("tools.list");

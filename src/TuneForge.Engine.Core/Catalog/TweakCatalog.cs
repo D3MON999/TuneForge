@@ -44,7 +44,8 @@ public sealed record TweakItem(
     [property: JsonPropertyName("maxBuild")] int? MaxBuild,
     [property: JsonPropertyName("source")] string Source,
     [property: JsonPropertyName("actions")] IReadOnlyList<RegistryAction> Actions,
-    [property: JsonPropertyName("description")] string Description = "")
+    [property: JsonPropertyName("description")] string Description = "",
+    [property: JsonPropertyName("hazard")] bool Hazard = false)
 {
     public bool RequiresAdmin => Actions.Any(action => action.Hive == "HKLM");
 

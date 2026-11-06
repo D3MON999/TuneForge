@@ -108,11 +108,11 @@ public sealed class AdvancedService(IProcessRunner runner, IAdvancedState state,
             [Step("powercfg.exe", "/setacvalueindex", "SCHEME_CURRENT", UsbSubgroup, UsbSuspend, "0"), Step("powercfg.exe", "/setdcvalueindex", "SCHEME_CURRENT", UsbSubgroup, UsbSuspend, "0"), Step("powercfg.exe", "/setactive", "SCHEME_CURRENT")],
             [Step("powercfg.exe", "/setacvalueindex", "SCHEME_CURRENT", UsbSubgroup, UsbSuspend, "1"), Step("powercfg.exe", "/setdcvalueindex", "SCHEME_CURRENT", UsbSubgroup, UsbSuspend, "1"), Step("powercfg.exe", "/setactive", "SCHEME_CURRENT")]),
         new("hpet", "Prefer the platform tick", "Changes which hardware timer Windows uses. Some players report lower latency.", "Results vary by PC, and it can lower performance. Back up with a restore point first.", "high", true, true,
-            [Step("bcdedit.exe", "/set", "useplatformtick", "yes")], [Step("bcdedit.exe", "/deletevalue", "useplatformtick")]),
+            [Step("bcdedit.exe", "/set", "useplatformtick", "yes")], [Step("bcdedit.exe", "/deletevalue", "useplatformtick")]) { Hazard = true },
         new("dynamic-tick", "Disable dynamic tick", "Keeps the system timer running steadily instead of pausing it when the PC is idle.", "Uses more power, and can shorten laptop battery life.", "high", true, true,
-            [Step("bcdedit.exe", "/set", "disabledynamictick", "yes")], [Step("bcdedit.exe", "/deletevalue", "disabledynamictick")]),
-        new("legacy-boot-menu", "Legacy F8 boot menu", "Brings back the old boot menu, so F8 opens Safe Mode during startup.", "Startup takes a little longer. It may not appear on PCs with very fast boot.", "medium", true, true,
-            [Step("bcdedit.exe", "/set", "{current}", "bootmenupolicy", "legacy")], [Step("bcdedit.exe", "/set", "{current}", "bootmenupolicy", "standard")]),
+            [Step("bcdedit.exe", "/set", "disabledynamictick", "yes")], [Step("bcdedit.exe", "/deletevalue", "disabledynamictick")]) { Hazard = true },
+        new("legacy-boot-menu", "Legacy F8 boot menu", "Brings back the old boot menu, so F8 opens Safe Mode during startup.", "Startup takes a little longer. It may not appear on PCs with very fast boot.", "high", true, true,
+            [Step("bcdedit.exe", "/set", "{current}", "bootmenupolicy", "legacy")], [Step("bcdedit.exe", "/set", "{current}", "bootmenupolicy", "standard")]) { Hazard = true },
         new("ntfs-tuning", "NTFS tuning", "Stops Windows updating last-opened times and creating short 8.3 file names, which reduces disk writes.", "Very old programs that need short file names may break.", "medium", true, true,
             [Step("fsutil.exe", "behavior", "set", "disablelastaccess", "1"), Step("fsutil.exe", "behavior", "set", "disable8dot3", "1")],
             [Step("fsutil.exe", "behavior", "set", "disablelastaccess", "2"), Step("fsutil.exe", "behavior", "set", "disable8dot3", "2")]),
@@ -139,7 +139,7 @@ public sealed class AdvancedService(IProcessRunner runner, IAdvancedState state,
     public IReadOnlyList<AdvancedEntry> List()
     {
         var enabled = state.Enabled();
-        return Definitions.Select(item => new AdvancedEntry(item.Id, item.Title, item.Description, item.Warning, item.Risk, item.Restart, item.Reversible, enabled.Contains(item.Id))).ToList();
+        return Definitions.Select(item => new AdvancedEntry(item.Id, item.Title, item.Description, item.Warning, item.Risk, item.Restart, item.Reversible, enabled.Contains(item.Id), item.Hazard)).ToList();
     }
 
     public OperationResult Set(AdvancedSetRequest request)
@@ -149,6 +149,12 @@ public sealed class AdvancedService(IProcessRunner runner, IAdvancedState state,
         if (!request.Enabled && !item.Reversible)
         {
             throw new CatalogRequestException($"{item.Title} can't be turned back on here.");
+        }
+
+        // Turning one of these off is always allowed. Only turning it on needs an explicit yes.
+        if (item.Hazard && request.Enabled && !request.AcceptHazard)
+        {
+            throw new CatalogRequestException($"{item.Title} needs confirming, because it's extremely hazardous for Riot Vanguard.");
         }
 
         item.Adapter?.Invoke(adapters, request.Enabled);
@@ -189,6 +195,9 @@ public sealed class AdvancedService(IProcessRunner runner, IAdvancedState state,
         ToolStep[] Off)
     {
         public bool IgnoreFailures { get; init; }
+
+        /// <summary>Works at the boot level, where Vanguard runs too. Off by default, and needs an explicit yes.</summary>
+        public bool Hazard { get; init; }
 
         public Action<IAdapterSettings, bool>? Adapter { get; init; }
     }

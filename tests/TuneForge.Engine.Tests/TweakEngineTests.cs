@@ -104,7 +104,7 @@ public sealed class TweakEngineTests : IDisposable
         var item = _catalog.Items.Single(candidate => candidate.Id == id);
         if (!item.Supports(Build))
         {
-            var skipped = _engine.Apply(new ApplyRequest([id], false));
+            var skipped = _engine.Apply(new ApplyRequest([id], false, AcceptHazards: true));
             Assert.Equal(TweakStates.Unsupported, skipped.Results.Single().Status);
             return;
         }
@@ -114,7 +114,7 @@ public sealed class TweakEngineTests : IDisposable
         var original = new RegistryValue("dword", "12345");
         _registry.Write(seed.Hive, seed.Path, seed.Name, original);
 
-        var first = _engine.Apply(new ApplyRequest([id], false));
+        var first = _engine.Apply(new ApplyRequest([id], false, AcceptHazards: true));
         Assert.Equal(TweakStates.Applied, first.Results.Single().Status);
         Assert.Equal(TweakStates.Applied, Status(id).State);
 
@@ -122,7 +122,7 @@ public sealed class TweakEngineTests : IDisposable
         Assert.Empty(undo.Problems);
         Assert.Equal(original, _registry.Read(seed.Hive, seed.Path, seed.Name));
 
-        var again = _engine.Apply(new ApplyRequest([id], false));
+        var again = _engine.Apply(new ApplyRequest([id], false, AcceptHazards: true));
         Assert.Equal(TweakStates.Applied, again.Results.Single().Status);
         Assert.Equal(TweakStates.Applied, Status(id).State);
     }
@@ -225,6 +225,18 @@ public sealed class TweakEngineTests : IDisposable
     {
         _journal.Dispose();
         Directory.Delete(_folder, recursive: true);
+    }
+}
+
+public sealed class HazardEngineTests
+{
+    [Fact]
+    public void TheEngineRefusesHazardousTweaksWithoutAYes()
+    {
+        var catalog = TweakCatalog.LoadEmbedded();
+        var id = catalog.Items.First(item => item.Hazard).Id;
+
+        Assert.Throws<CatalogRequestException>(() => new TweakEngine(catalog, null!, null!, null!, "S-1-5-21-1", 26000, "1").Apply(new ApplyRequest([id], false)));
     }
 }
 

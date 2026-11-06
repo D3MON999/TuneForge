@@ -343,7 +343,7 @@ public partial class MainWindow : Window
     /// <summary>Windows asks for admin permission, then the installer replaces and reopens the app.</summary>
     private async Task<OperationResult> InstallUpdateAsync()
     {
-        string installer;
+        VerifiedInstaller installer;
         try
         {
             installer = await Task.Run(_updates.Download);
@@ -353,17 +353,20 @@ public partial class MainWindow : Window
             return new OperationResult(false, "The update couldn't be downloaded. Try again.");
         }
 
-        try
+        using (installer)
         {
-            using var _ = Process.Start(new ProcessStartInfo(installer)
+            try
             {
-                UseShellExecute = true,
-                Arguments = UpdateService.SilentArguments,
-            });
-        }
-        catch (Win32Exception)
-        {
-            return new OperationResult(false, "The update was cancelled.");
+                using var _ = Process.Start(new ProcessStartInfo(installer.Path)
+                {
+                    UseShellExecute = true,
+                    Arguments = UpdateService.SilentArguments,
+                });
+            }
+            catch (Win32Exception)
+            {
+                return new OperationResult(false, "The update was cancelled.");
+            }
         }
 
         _ = Dispatcher.BeginInvoke(ExitApp);
@@ -381,7 +384,13 @@ public partial class MainWindow : Window
     {
         var game = _games.FirstOrDefault(item => item.Id == gameId && item.Launcher == "Steam")
             ?? throw new CatalogRequestException("Unknown game.");
-        using var _ = Process.Start(new ProcessStartInfo($"steam://validate/{game.Id["steam-".Length..]}") { UseShellExecute = true });
+        var appId = game.Id["steam-".Length..];
+        if (!appId.All(char.IsAsciiDigit))
+        {
+            throw new CatalogRequestException("Unknown game.");
+        }
+
+        using var _ = Process.Start(new ProcessStartInfo($"steam://validate/{appId}") { UseShellExecute = true });
         return new OperationResult(true, "Steam is checking the game's files.");
     }
 
