@@ -1,63 +1,129 @@
-# TuneForge
+<p align="center">
+  <img src="assets/readme/banner.png" alt="TuneForge: tune, clean and take control of Windows" width="100%">
+</p>
 
-All-in-one Windows optimizer with tweaks you can undo, cleanup, app management, game boosts and network tools.
+<p align="center">
+  <a href="https://github.com/D3MON999/TuneForge/releases/latest"><img src="https://img.shields.io/github/v/release/D3MON999/TuneForge?style=for-the-badge&color=ffffff&labelColor=111111&label=Latest" alt="Latest version"></a>
+  <a href="https://github.com/D3MON999/TuneForge/releases"><img src="https://img.shields.io/github/downloads/D3MON999/TuneForge/total?style=for-the-badge&color=ffffff&labelColor=111111&label=Downloads" alt="Downloads"></a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-ffffff?style=for-the-badge&labelColor=111111" alt="Windows 10 and 11">
+</p>
 
-## Build
+<h3 align="center">
+  <a href="https://github.com/D3MON999/TuneForge/releases/latest">Download TuneForge</a>
+</h3>
 
-Needs the .NET 10 SDK, Node.js 24 and the WebView2 runtime.
+<p align="center">
+  An all-in-one Windows optimizer that shows you every change before it happens and lets you undo your tweaks.
+</p>
 
-```powershell
-./build.ps1
-```
+<br>
 
-The app is written to `artifacts\app\Debug\TuneForge.exe`.
+<p align="center">
+  <img src="assets/readme/dashboard.png" alt="The TuneForge dashboard with a health score, live usage and quick actions" width="100%">
+</p>
 
-## Release
+## Why TuneForge
 
-```powershell
-./release.ps1
-```
+- **You stay in control.** See exactly what each tweak changes before you apply it, then undo it later from History.
+- **One app instead of ten.** Tweaks, cleanup, app management, game boosts, network tools and repairs all live in one place.
+- **Plain English.** Every setting explains what it does and warns you about any downside.
+- **Built with anti-cheat in mind.** TuneForge leaves anti-cheat software alone, and anything risky for Riot Vanguard stays off until you confirm it.
+- **Nothing extra.** There are no accounts, ads or telemetry, and nothing keeps running unless you ask it to.
 
-This runs every test, then writes the signed installer to `artifacts\release`. It needs Inno Setup 6 and the signing key at `%LOCALAPPDATA%\TuneForgeTools\release-key.pem`. Keep a backup of that key and never commit it, because installed copies only accept updates signed with it. To release, publish the `.exe` and `.exe.sig` to a GitHub release tagged `vX.Y.Z` in the public releases repository.
+## What it does
 
-## Real-system testing
+<table>
+  <tr>
+    <td width="50%">
+      <h3>Optimize</h3>
+      177 tweaks for performance, privacy, Windows, the taskbar, Explorer and more. Pick them one at a time or start from a preset.
+    </td>
+    <td width="50%">
+      <img src="assets/readme/optimize.png" alt="The Optimize page with a list of tweaks and presets">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="assets/readme/gaming.png" alt="The Gaming page with per-game boosts">
+    </td>
+    <td width="50%">
+      <h3>Gaming</h3>
+      Set up boosts for each game, and they're put back when it closes. Turbo mode, power plans and focus tools are here too.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>Cleanup</h3>
+      Clear temporary files, caches and crash reports, and see how much space each one takes first.
+    </td>
+    <td width="50%">
+      <img src="assets/readme/cleanup.png" alt="The Cleanup page showing how much each category can free">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="assets/readme/apps.png" alt="The Apps page with startup programs and app tools">
+    </td>
+    <td width="50%">
+      <h3>Apps</h3>
+      Install, update and remove programs, remove built-in Windows apps, and manage startup programs and services.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>Monitor and repair</h3>
+      Check disks, graphics and Windows errors, then run Windows' own repair tools. The network tools add a speed test, ping, trace and a DNS changer.
+    </td>
+    <td width="50%">
+      <img src="assets/readme/monitor.png" alt="The Monitor page showing graphics and disk health">
+    </td>
+  </tr>
+</table>
 
-`tests/sandbox/run-in-sandbox.ps1` applies and undoes every tweak on a real registry inside Windows Sandbox, then runs presets, cleanup and repairs. It refuses to run anywhere else.
+## Safe by design
 
-Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run the script with `wsb exec -r System`. Use `wsb` rather than a `.wsb` file, because the Sandbox window can crash on this PC while the VM itself works.
+<p align="center">
+  <img src="assets/readme/riot.png" alt="A warning window explaining the risk of a setting for Riot Vanguard" width="80%">
+</p>
 
-`tests/sandbox/run-apps-in-sandbox.ps1` removes a real built-in app and runs winget install, update and uninstall. Headless Sandbox has no logged-in user, so run it from a scheduled task under a throwaway local admin. It sets up winget itself and needs internet. The Store source doesn't work in Sandbox, so reinstalling from the Store has to be tested on a real PC.
+- **Review first.** Nothing changes until you've seen the list and clicked Apply.
+- **Undo.** Each tweak is recorded before it's made, so you can undo it from History.
+- **Restore points.** TuneForge can create a Windows restore point before applying tweaks.
+- **Admin rights only when needed.** The app runs without them, and Windows asks you each time a change needs them.
+- **Signed updates.** TuneForge asks before updating, and only installs updates signed by the developer.
+- **Riot warnings.** Settings that touch startup, timers or firmware are marked as extremely hazardous for Riot Vanguard. They're off by default, left out of every preset, and need your confirmation.
 
-`tests/sandbox/run-network-in-sandbox.ps1` changes DNS for real and checks restore and automatic. Run it with `wsb exec -r System`.
+No tool can promise what an anti-cheat will do, so if you play ranked, leave anything marked as a risk switched off.
 
-`tests/sandbox/run-automation-in-sandbox.ps1` checks the memory cleaner and Start with Windows. Run it with `wsb exec -r System`.
+## Make it yours
 
-`tests/sandbox/run-gaming-in-sandbox.ps1` boosts a stand-in game and checks everything is undone. Run it from a scheduled task under a throwaway standard user. That user needs the Performance Log Users group to run a task, and has no admin rights.
+Choose from five themes, or match your Windows light or dark mode.
 
-`tests/sandbox/run-install-in-sandbox.ps1` installs the real installer, checks it, then uninstalls it. Map `artifacts\release` to `C:\tf\installer` and run it with `wsb exec -r System`.
+<table>
+  <tr>
+    <td><img src="assets/readme/theme-fluent.png" alt="Fluent theme"><p align="center">Fluent</p></td>
+    <td><img src="assets/readme/theme-hero.png" alt="Hero theme"><p align="center">Hero</p></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/theme-forge.png" alt="Forge theme"><p align="center">Forge</p></td>
+    <td><img src="assets/readme/theme-light.png" alt="Light theme"><p align="center">Light</p></td>
+  </tr>
+</table>
 
-## Layout
+Obsidian, the black theme shown at the top, is the default.
 
-| Folder | Purpose |
-|---|---|
-| `src/TuneForge.Host` | Desktop window, runs without admin rights |
-| `src/ui` | React interface |
-| `src/TuneForge.Engine` | Admin process, started on request |
-| `src/TuneForge.Engine.Core` | Engine logic and pipe server |
-| `src/TuneForge.Contracts` | Messages shared by host and engine |
-| `src/TuneForge.Cli` | Command-line tool |
-| `installer` | Inno Setup script |
-| `tools/TuneForge.ReleaseTool` | Makes and uses the update signing key, not shipped |
-| `design-system` | Design rules |
+## Install
 
-## Rules
+1. Download `TuneForge-Setup` from the [latest release](https://github.com/D3MON999/TuneForge/releases/latest).
+2. Run it. Windows will show an unknown publisher warning because the app has no paid certificate, so choose **More info**, then **Run anyway**.
+3. Open TuneForge. A short guide walks you through the basics.
 
-- Record every third-party component in `THIRD_PARTY_NOTICES.md`.
+You'll need 64-bit Windows 10 or 11 and the Microsoft Edge WebView2 Runtime, which most PCs already have.
 
-## Releasing
+## Credits
 
-1. Commit and push in GitHub Desktop.
-2. Double-click `Release.cmd`. It raises the version, tests, builds and signs, then opens the release page and the folder with the files.
-3. Drag in the three `TuneForge-Setup` files and click **Publish release**.
+Some tweak and app data comes from [Win11Debloat](https://github.com/Raphire/Win11Debloat) and [WinUtil](https://github.com/ChrisTitusTech/winutil), both MIT licensed. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
 
-Installed copies offer the update within 6 hours. Add `[important]` to the release notes to bring it on screen on PCs where TuneForge is only in the tray.
+Screenshots use sample data.
+
+Building it yourself? See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
