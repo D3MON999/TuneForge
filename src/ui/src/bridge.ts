@@ -302,6 +302,37 @@ export interface MemoryResult {
   freedBytes: number;
 }
 
+export interface GameBoosts {
+  highPriority: boolean;
+  highPerformanceGpu: boolean;
+  disableFullscreenOptimizations: boolean;
+  powerBoost: boolean;
+  focus: boolean;
+}
+
+export interface GameEntry {
+  id: string;
+  title: string;
+  launcher: string;
+  folder: string;
+  executable: string;
+  antiCheat?: string | null;
+  boosts: GameBoosts;
+}
+
+export interface PowerPlan {
+  id: string;
+  name: string;
+  active: boolean;
+}
+
+export interface GamingOverview {
+  resizeBar: "on" | "off" | "unknown";
+  plans: PowerPlan[];
+  focusApps: string[];
+  runningApps: string[];
+}
+
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -407,6 +438,12 @@ export class Bridge {
   settingsGet = () => this.call<AppSettings>("settings.get");
   settingsSave = (choices: SettingsChoices) => this.call<AppSettings>("settings.save", choices);
   memoryClean = () => this.call<MemoryResult>("memory.clean");
+  gamesList = () => this.call<GameEntry[]>("games.list");
+  gamesSave = (gameId: string, boosts: GameBoosts) => this.call<OperationResult>("games.save", { gameId, boosts });
+  gamingOverview = () => this.call<GamingOverview>("gaming.overview");
+  powerSet = (id: string) => this.call<OperationResult>("power.set", { id });
+  powerUltimate = () => this.call<OperationResult>("power.ultimate");
+  focusSave = (names: string[]) => this.call<OperationResult>("focus.save", { names });
 }
 
 export const bridge = new Bridge(window.chrome?.webview);

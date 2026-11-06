@@ -37,6 +37,11 @@ const string Usage = """
       tuneforge-cli dns custom <primary> [secondary]
       tuneforge-cli memory clean
       tuneforge-cli autostart status|on|off
+      tuneforge-cli games
+      tuneforge-cli power list
+      tuneforge-cli power use <id>
+      tuneforge-cli power add-ultimate
+      tuneforge-cli boost-test <process> <settings-file>
 
     apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
@@ -100,6 +105,11 @@ try
             new DnsSetRequest("custom", null, args[2], args.ElementAtOrDefault(3)))),
         "memory" when args.Length == 2 && args[1] == "clean" => Show(new WindowsMemoryTrimmer(liveProbe).Trim()),
         "autostart" when args.Length == 2 && args[1] is "status" or "on" or "off" => Autostart(args[1]),
+        "games" => Show(new GameScanner(GameSources.Detect()).Scan([])),
+        "power" when args.Length == 2 && args[1] == "list" => Show(new WindowsPowerPlans(runner).List()),
+        "power" when args.Length == 3 && args[1] == "use" => Report(new OperationResult(new WindowsPowerPlans(runner).Activate(args[2]), "Done.")),
+        "power" when args.Length == 2 && args[1] == "add-ultimate" => Report(new OperationResult(new WindowsPowerPlans(runner).AddUltimate(), "Done.")),
+        "boost-test" when args.Length == 3 => BoostTest(args[1], args[2]),
         _ => Help(),
     };
 }
@@ -140,6 +150,36 @@ int SetDns(DnsSetRequest request)
 {
     JournalLocation.EnsureProtected();
     return Report(new DnsService(runner, dnsAdapters, new FileDnsBackup(JournalLocation.DnsBackupPath)).Set(request));
+}
+
+// Boosts a running process as if it were a game, then undoes everything when it exits.
+int BoostTest(string process, string settingsFile)
+{
+    var plans = new WindowsPowerPlans(runner);
+    var gameSettings = new WindowsGameSettings();
+    var apps = new WindowsRunningApps();
+    var booster = new GameBooster(new SettingsStore(settingsFile), gameSettings, plans, apps, (_, message) => Console.WriteLine(message));
+    var executable = $@"C:\TuneForgeTest\{process}.exe";
+    void State(string label)
+    {
+        using var running = System.Diagnostics.Process.GetProcessesByName(process).FirstOrDefault();
+        Console.WriteLine($"{label}: plan={plans.List().FirstOrDefault(plan => plan.Active)?.Name} toasts={gameSettings.ReadToasts()?.ToString() ?? "unset"} priority={running?.PriorityClass.ToString() ?? "none"} gpu={gameSettings.ReadGpu(executable) ?? "unset"} fullscreen={gameSettings.ReadFullscreen(executable) ?? "unset"}");
+    }
+
+    var game = new GameEntry("test", process, "Test", @"C:\TuneForgeTest", executable, [process], null, new GameBoosts());
+    State("before");
+    booster.Save(game, new GameBoosts(true, true, true, true, true));
+    booster.Tick();
+    State("running");
+    while (apps.ProcessNames().Contains(process))
+    {
+        Thread.Sleep(500);
+    }
+
+    booster.Tick();
+    booster.Save(game, new GameBoosts());
+    State("after");
+    return 0;
 }
 
 int Autostart(string action)

@@ -18,6 +18,7 @@ import { AutomationSettings, MemoryCard } from "./AutomationPanels";
 import { CleanupPage } from "./CleanupPage";
 import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
+import { GamingPage } from "./GamingPage";
 import { HistoryPage } from "./HistoryPage";
 import { MonitorPage } from "./MonitorPage";
 import { NetworkPage } from "./NetworkPage";
@@ -52,7 +53,6 @@ const tweakPages: Record<string, { categories: string[]; showPresets?: boolean }
     showPresets: true,
   },
   privacy: { categories: ["privacy", "ai"] },
-  gaming: { categories: ["gaming"] },
 };
 
 const themes: { value: ThemeChoice; label: string }[] = [
@@ -133,6 +133,7 @@ export function App() {
           )}
           {page.id === "apps" && <AppsPage />}
           {page.id === "repair" && <RepairPage />}
+          {page.id === "gaming" && <GamingPage />}
           {page.id === "network" && <NetworkPage />}
           {page.id === "monitor" && <MonitorPage />}
         </div>

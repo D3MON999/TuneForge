@@ -33,6 +33,10 @@ public partial class MainWindow : Window
     private readonly WindowsAutostart _autostart = new();
     private readonly WindowsMemoryTrimmer _trimmer;
     private readonly TrayAgent _tray;
+    private readonly WindowsPowerPlans _plans;
+    private readonly GameScanner _gameScanner;
+    private readonly WindowsRunningApps _apps = new();
+    private volatile IReadOnlyList<GameEntry> _games = [];
     private bool _exiting;
     private WindowState _stateBeforeFullScreen;
     private WindowStyle _styleBeforeFullScreen;
@@ -53,7 +57,16 @@ public partial class MainWindow : Window
         _live = new LiveMonitor(probe);
         _health = new HealthService(_storage, _events, _startup, _cleanup, probe);
         _trimmer = new WindowsMemoryTrimmer(probe);
-        _tray = new TrayAgent(_settings, new AutomationActions(_cleanup, _startup, probe, _trimmer), ShowFromTray, ExitApp);
+        _plans = new WindowsPowerPlans(_runner);
+        _gameScanner = new GameScanner(GameSources.Detect());
+        _tray = new TrayAgent(
+            _settings,
+            new AutomationActions(_cleanup, _startup, probe, _trimmer),
+            new WindowsGameSettings(),
+            _plans,
+            _apps,
+            ShowFromTray,
+            ExitApp);
         _tray.Apply(ReadSettings().Choices);
 
         InitializeComponent();
@@ -234,6 +247,12 @@ public partial class MainWindow : Window
         "settings.get" => ReadSettings(),
         "settings.save" => SaveSettings(Read<SettingsUpdate>(payload)),
         "memory.clean" => await Task.Run(_trimmer.Trim),
+        "games.list" => await Task.Run(ScanGames),
+        "games.save" => await Task.Run(() => SaveGame(Read<GameProfileRequest>(payload))),
+        "gaming.overview" => await Task.Run(ReadGamingOverview),
+        "power.set" => await Task.Run(() => SetPlan(Read<PowerPlanRequest>(payload).Id)),
+        "power.ultimate" => await Task.Run(AddUltimatePlan),
+        "focus.save" => await Task.Run(() => SaveFocusApps(Read<FocusAppsRequest>(payload).Names)),
         _ => throw new EngineException("Unknown operation."),
     };
 
@@ -250,6 +269,46 @@ public partial class MainWindow : Window
             fromEngine.FreedBytes + mine.FreedBytes,
             fromEngine.Files + mine.Files,
             fromEngine.Skipped + mine.Skipped);
+    }
+
+    private IReadOnlyList<GameEntry> ScanGames()
+    {
+        _games = _gameScanner.Scan(_tray.Games.Profiles);
+        return _games;
+    }
+
+    /// <summary>Paths come from the scan, never from the interface.</summary>
+    private OperationResult SaveGame(GameProfileRequest request)
+    {
+        var game = _games.FirstOrDefault(item => item.Id == request.GameId)
+            ?? throw new CatalogRequestException("Unknown game.");
+        _tray.Games.Save(game, request.Boosts);
+        Dispatcher.Invoke(() => _tray.Apply(ReadSettings().Choices));
+        return new OperationResult(true, $"{game.Title} was saved.");
+    }
+
+    private GamingOverview ReadGamingOverview() => new(
+        ResizeBarCheck.Read(_runner),
+        _plans.List(),
+        _settings.Load().FocusApps ?? [],
+        _apps.WindowedApps());
+
+    private OperationResult SetPlan(string id) =>
+        !_plans.List().Any(plan => plan.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+            ? throw new CatalogRequestException("Unknown power plan.")
+            : _plans.Activate(id)
+                ? new OperationResult(true, "The power plan was changed.")
+                : new OperationResult(false, "Windows couldn't change the power plan.");
+
+    private OperationResult AddUltimatePlan() =>
+        _plans.AddUltimate()
+            ? new OperationResult(true, "Ultimate Performance was added.")
+            : new OperationResult(false, "Windows couldn't add Ultimate Performance.");
+
+    private OperationResult SaveFocusApps(IReadOnlyList<string> names)
+    {
+        _settings.Update(settings => settings with { FocusApps = names });
+        return new OperationResult(true, "Focus mode was saved.");
     }
 
     /// <summary>The report is only written where the person chooses, and never leaves the PC.</summary>

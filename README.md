@@ -22,6 +22,10 @@ Start Sandbox with `wsb start`, map the published CLI to `C:\tf\app`, then run t
 
 `tests/sandbox/run-network-in-sandbox.ps1` changes DNS for real and checks restore and automatic. Run it with `wsb exec -r System`.
 
+`tests/sandbox/run-automation-in-sandbox.ps1` checks the memory cleaner and Start with Windows. Run it with `wsb exec -r System`.
+
+`tests/sandbox/run-gaming-in-sandbox.ps1` boosts a stand-in game and checks everything is undone. Run it from a scheduled task under a throwaway standard user. That user needs the Performance Log Users group to run a task, and has no admin rights.
+
 ## Layout
 
 | Folder | Purpose |

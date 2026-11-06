@@ -16,7 +16,10 @@ public sealed record AppSettings(
     SettingsUpdate Choices,
     string? LastCleanUtc = null,
     string? LastMemoryUtc = null,
-    IReadOnlyList<string>? KnownStartup = null);
+    IReadOnlyList<string>? KnownStartup = null,
+    IReadOnlyList<GameProfile>? Profiles = null,
+    IReadOnlyList<string>? FocusApps = null,
+    ActiveBoost? Boost = null);
 
 public sealed record MemoryResult(long UsedBeforeBytes, long UsedAfterBytes, long TotalBytes, int Processes)
 {
