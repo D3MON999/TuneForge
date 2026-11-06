@@ -124,11 +124,3 @@ You'll need 64-bit Windows 10 or 11 and the Microsoft Edge WebView2 Runtime, whi
 ## License
 
 TuneForge is free and open source under the [GPL-3.0 license](LICENSE). You can use, change and share it, and anything you release from it must stay open source under the same license.
-
-## Credits
-
-Some tweak and app data comes from [Win11Debloat](https://github.com/Raphire/Win11Debloat) and [WinUtil](https://github.com/ChrisTitusTech/winutil), both MIT licensed. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for details.
-
-Screenshots use sample data.
-
-Building it yourself? See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
