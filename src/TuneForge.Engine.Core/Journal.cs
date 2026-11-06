@@ -266,6 +266,26 @@ public sealed class Journal : IDisposable
         return entries;
     }
 
+    /// <summary>Settings TuneForge wrote and hasn't undone, so anything else matching a tweak came from elsewhere.</summary>
+    public IReadOnlySet<string> ActiveWrites()
+    {
+        using var command = _connection.CreateCommand();
+        command.CommandText = """
+            SELECT i.hive, i.path, i.name
+            FROM change_item i JOIN change_set s ON s.id = i.change_set_id
+            WHERE i.status = 'applied' AND i.new_kind IS NOT NULL AND i.undone_utc IS NULL AND s.undone_utc IS NULL
+            """;
+
+        var written = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            written.Add(new Catalog.RegistryAction(reader.GetString(0), reader.GetString(1), reader.GetString(2)).Display);
+        }
+
+        return written;
+    }
+
     public IReadOnlyList<ChangeSetSummary> ListChangeSets(int limit = 100)
     {
         using var command = _connection.CreateCommand();

@@ -12,6 +12,7 @@ const string Usage = """
       tuneforge-cli apply <id>... [--preset minimal|standard|advanced] [--no-restore-point]
       tuneforge-cli history
       tuneforge-cli undo <change-number>
+      tuneforge-cli unlock <tweak>
       tuneforge-cli cleanup scan
       tuneforge-cli cleanup run <category>...
       tuneforge-cli features
@@ -50,7 +51,7 @@ const string Usage = """
       tuneforge-cli limits
       tuneforge-cli selftest
 
-    apply, undo, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
+    apply, undo, unlock, feature, repair, builtin remove, dns set, dns custom and admin cleanup categories need an administrator terminal.
     """;
 
 using var identity = WindowsIdentity.GetCurrent();
@@ -83,6 +84,7 @@ try
         "history" => History(),
         "apply" => Admin(() => Apply(args[1..])),
         "undo" => Admin(() => Undo(args[1..])),
+        "unlock" when args.Length == 2 => Admin(() => Unlock(args[1])),
         "cleanup" => Cleanup(args[1..]),
         "features" => Features(),
         "feature" when args.Length == 3 && args[2] is "on" or "off" =>
@@ -475,6 +477,13 @@ int Apply(string[] options)
     ShellRefresh.RunAsync().GetAwaiter().GetResult();
     Console.WriteLine($"Change number {result.ChangeSetId}. Restore point: {result.RestorePoint}.");
     return result.Results.Any(item => item.Status == "failed") ? 1 : 0;
+}
+
+int Unlock(string id)
+{
+    JournalLocation.EnsureProtected();
+    using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
+    return Report(OpenEngine(journal).RemoveLock(id));
 }
 
 int Undo(string[] options)

@@ -14,6 +14,10 @@ public sealed record RegistryAction(
 {
     public string Display => $@"{Hive}\{Path}\{(Name.Length == 0 ? "(Default)" : Name)}";
 
+    /// <summary>A Windows policy locks a setting. With the value gone, Windows goes back to its own default.</summary>
+    public bool IsPolicy =>
+        Path.Contains(@"\Policies\", StringComparison.OrdinalIgnoreCase) || Path.StartsWith(@"Policies\", StringComparison.OrdinalIgnoreCase);
+
     /// <summary>The value this action leaves behind, or null when it removes the value.</summary>
     public RegistryValue? Target
     {

@@ -9,6 +9,7 @@ export type TweakState = "applied" | "not-applied" | "unsupported";
 export type RestartNeed = "none" | "explorer" | "signout" | "reboot";
 
 export interface Tweak {
+  locked?: boolean;
   id: string;
   title: string;
   category: string;
@@ -500,6 +501,7 @@ export class Bridge {
     this.call<ApplyResult>("tweaks.apply", { ids, createRestorePoint, acceptHazards });
   history = () => this.call<ChangeSet[]>("history.list");
   undo = (changeSetId: number) => this.call<UndoResult>("history.undo", { changeSetId });
+  removeLock = (id: string) => this.call<OperationResult>("tweaks.removeLock", { id });
   cleanupScan = () => this.call<CleanupCategory[]>("cleanup.scan");
   cleanupRun = (ids: string[]) => this.call<CleanupResult>("cleanup.run", { ids });
   startupList = () => this.call<StartupEntry[]>("startup.list");

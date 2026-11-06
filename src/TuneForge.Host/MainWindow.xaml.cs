@@ -293,9 +293,10 @@ public partial class MainWindow : Window
     private async Task<object?> RunAsync(string op, JsonElement payload) => op switch
     {
         "engine.connect" => await _engine.PingAsync(),
-        "tweaks.scan" => await Task.Run(_scanner.Scan),
+        "tweaks.scan" => await Task.Run(ScanTweaks),
         "tweaks.preview" => await Task.Run(() => _scanner.Preview(Read<PreviewPayload>(payload).Ids)),
         "tweaks.apply" => await RefreshAfter(_engine.ApplyAsync(Read<ApplyRequest>(payload))),
+        "tweaks.removeLock" => await RefreshAfter(_engine.RemoveLockAsync(Read<RemoveLockRequest>(payload).Id)),
         "history.list" => await Task.Run(ReadHistory),
         "history.undo" => await RefreshAfter(_engine.UndoAsync(Read<UndoRequest>(payload).ChangeSetId)),
         "cleanup.scan" => await Task.Run(_cleanup.Scan),
@@ -466,7 +467,7 @@ public partial class MainWindow : Window
 
     private async Task<ReportResult> ExportSettingsAsync()
     {
-        var applied = (await Task.Run(_scanner.Scan)).Where(item => item.State == TweakStates.Applied).Select(item => item.Id);
+        var applied = (await Task.Run(ScanTweaks)).Where(item => item.State == TweakStates.Applied).Select(item => item.Id);
         var apps = _softwareIds.Intersect((await Task.Run(_winget.ListSoftware)).Items.Where(item => item.Installed).Select(item => item.Id));
         var text = SettingsFile.Build(applied, ReadSettings(), apps);
         var dialog = new Microsoft.Win32.SaveFileDialog
@@ -494,7 +495,7 @@ public partial class MainWindow : Window
         }
 
         var text = await File.ReadAllTextAsync(dialog.FileName);
-        var tweakIds = (await Task.Run(_scanner.Scan)).Select(item => item.Id).ToList();
+        var tweakIds = (await Task.Run(ScanTweaks)).Select(item => item.Id).ToList();
         var (file, result) = SettingsFile.Read(text, tweakIds, _softwareIds);
         if (file.Choices is not null)
         {
@@ -618,6 +619,12 @@ public partial class MainWindow : Window
 
     private static T Read<T>(JsonElement payload) =>
         payload.Deserialize<T>(RpcProtocol.Json) ?? throw new EngineException("Invalid request.");
+
+    private IReadOnlyList<TweakStatus> ScanTweaks()
+    {
+        using var journal = Journal.OpenForReading(JournalLocation.DatabasePath);
+        return _scanner.Scan(journal?.ActiveWrites());
+    }
 
     private static IReadOnlyList<ChangeSetSummary> ReadHistory()
     {

@@ -10,6 +10,7 @@ public static class RpcMethods
     public const string Shutdown = "engine.shutdown";
     public const string ApplyTweaks = "tweaks.apply";
     public const string Undo = "history.undo";
+    public const string RemoveLock = "tweaks.removeLock";
     public const string Cleanup = "cleanup.run";
     public const string StartupSet = "startup.set";
     public const string ServiceSet = "service.set";

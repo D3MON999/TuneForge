@@ -6,7 +6,8 @@ namespace TuneForge.Engine.Core;
 /// <summary>Reads tweak state without changing anything. Safe to run without admin rights.</summary>
 public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, int osBuild)
 {
-    public IReadOnlyList<TweakStatus> Scan() => catalog.Items.Select(ToStatus).ToList();
+    /// <summary>ours is what TuneForge wrote itself, which History can already undo.</summary>
+    public IReadOnlyList<TweakStatus> Scan(IReadOnlySet<string>? ours = null) => catalog.Items.Select(item => ToStatus(item, ours)).ToList();
 
     public IReadOnlyList<TweakPreview> Preview(IEnumerable<string> ids) =>
         catalog.Resolve(ids).Select(item => new TweakPreview(
@@ -22,7 +23,7 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
             item.Hazard))
         .ToList();
 
-    private TweakStatus ToStatus(TweakItem item)
+    private TweakStatus ToStatus(TweakItem item, IReadOnlySet<string>? ours)
     {
         var state = !item.Supports(osBuild) ? TweakStates.Unsupported
             : item.Actions.All(action => Matches(registry.Read(action.Hive, action.Path, action.Name), action.Target))
@@ -41,8 +42,12 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
             item.RequiresAdmin,
             state,
             item.Description,
-            item.Hazard);
+            item.Hazard,
+            item.Supports(osBuild) && item.Actions.Any(action => IsLocking(action) && ours?.Contains(action.Display) != true));
     }
+
+    private bool IsLocking(RegistryAction action) =>
+        action is { IsPolicy: true, Delete: false } && Matches(registry.Read(action.Hive, action.Path, action.Name), action.Target);
 
     internal static bool Matches(RegistryValue? current, RegistryValue? target) =>
         target is null ? current is null : target.SameAs(current);
@@ -92,6 +97,24 @@ public sealed class TweakEngine(
         return result.Status == TweakStates.Applied
             ? new OperationResult(true, "Saved. You can undo this from History.", item.Restart == "reboot")
             : new OperationResult(false, result.Message ?? "Windows refused this change.");
+    }
+
+    /// <summary>
+    /// Deletes the policy values this tweak would set, whoever set them, so Windows uses its own default again.
+    /// It's journaled like any other change, so History can put the lock back. Ordinary settings are left alone,
+    /// because the catalog only knows what a tweak sets, not what each PC had before.
+    /// </summary>
+    public OperationResult RemoveLock(string id)
+    {
+        var item = catalog.Resolve([id])[0];
+        var locks = item.Actions
+            .Where(action => action is { IsPolicy: true, Delete: false } && TweakScanner.Matches(registry.Read(action.Hive, action.Path, action.Name), action.Target))
+            .Select(action => action with { Kind = null, Value = null, Delete = true })
+            .ToList();
+
+        return locks.Count == 0
+            ? throw new CatalogRequestException("That setting isn't locked.")
+            : ApplyBuilt(item with { Id = $"remove-lock:{item.Id}", Actions = locks });
     }
 
     public UndoResult Undo(long changeSetId)

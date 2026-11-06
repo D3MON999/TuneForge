@@ -11,6 +11,7 @@ export const pageHelp: Record<string, string[]> = {
     "Presets and profiles pick a set of changes for you. Minimal is the safest start.",
     "Click Review changes to see exactly what will change, then Apply. Windows asks for permission once.",
     "Every change here can be undone from History. System switches at the bottom have their own off button.",
+    "Locked by another app means a different tool set a Windows policy, which is why Windows says the setting is managed by your organization. Remove lock clears only that policy, and you can undo it from History.",
   ],
   gaming: [
     "Games shows what TuneForge found. Open Boosts on a game to pick what happens for it.",
@@ -35,7 +36,7 @@ export const pageHelp: Record<string, string[]> = {
   ],
   privacy: [
     "Security status shows your protection. TuneForge can only turn protection on, never off.",
-    "The list below works like Optimize: turn on what you want, then review.",
+    "The list below works like Optimize: turn on what you want, then review. Remove lock clears a policy set by another tool.",
   ],
   repair: [
     "Start with Check system files if Windows is acting up. If it can't fix something, run Repair Windows image, then check again.",

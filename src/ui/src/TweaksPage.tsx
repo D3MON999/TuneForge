@@ -6,6 +6,7 @@ import {
   Gamepad2,
   Gauge,
   Globe,
+  Lock,
   type LucideIcon,
   Palette,
   PanelBottom,
@@ -17,7 +18,7 @@ import {
   Wifi,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { bridge, type Tweak } from "./bridge";
+import { bridge, type OperationResult, type Tweak } from "./bridge";
 import { HazardDialog, hazardLabel } from "./Hazard";
 import { profileChoices, profileIds } from "./profiles";
 import { ReviewDialog } from "./ReviewDialog";
@@ -110,6 +111,7 @@ export function TweaksPage({
     [tweaks, categories],
   );
   const visible = useMemo(() => inPage.filter((tweak) => matchesSearch(tweak, query)), [inPage, query]);
+  const locked = useMemo(() => visible.filter((tweak) => tweak.locked), [visible]);
 
   if (error) {
     return (
@@ -164,8 +166,10 @@ export function TweaksPage({
         )}
       </div>
 
+      <LockedGroup items={locked} onChanged={load} />
+
       {categories
-        .map((category) => ({ category, items: visible.filter((tweak) => tweak.category === category) }))
+        .map((category) => ({ category, items: visible.filter((tweak) => tweak.category === category && !tweak.locked) }))
         .filter((section) => section.items.length > 0)
         .map((section) => (
           <section key={section.category} className="mt-6">
@@ -242,6 +246,80 @@ export function TweaksPage({
         />
       )}
     </div>
+  );
+}
+
+/** Settings another tool set as a Windows policy. History has no record of them, so this is the way back. */
+function LockedGroup({ items, onChanged }: { items: Tweak[]; onChanged: () => void }) {
+  const [confirming, setConfirming] = useState<string | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [result, setResult] = useState<OperationResult | string | null>(null);
+
+  async function remove(tweak: Tweak) {
+    setConfirming(null);
+    setBusy(tweak.id);
+    setResult(null);
+    try {
+      setResult(await bridge.removeLock(tweak.id));
+      onChanged();
+    } catch (reason) {
+      setResult((reason as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const failed = typeof result === "string" || result?.ok === false;
+  const text = typeof result === "string" ? result : result?.message;
+  const status = <div role="status">{text && <p className={`mt-6 font-medium ${failed ? "text-destructive" : "text-success"}`}>{text}</p>}</div>;
+  if (items.length === 0) {
+    return status;
+  }
+
+  return (
+    <section aria-labelledby="locked-title" className="mt-6">
+      {status}
+      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
+        <h2 id="locked-title" className="font-semibold text-muted-foreground">
+          Locked by another app ({items.length})
+        </h2>
+        <p className="text-sm text-muted-foreground">Windows shows these as managed by your organization</p>
+      </div>
+      <ul className="flex flex-col gap-1.5">
+        {items.map((tweak) => (
+          <li key={tweak.id} className="rounded-lg border border-dashed border-border px-4 py-2.5">
+            <div className="flex items-center gap-3.5">
+              <Lock aria-hidden="true" className="size-5 shrink-0 text-warning" />
+              <div className="min-w-0 flex-1">
+                <p className="font-medium">{tweak.title}</p>
+                {tweak.description && <p className="text-sm text-muted-foreground">{tweak.description}</p>}
+              </div>
+              <button
+                type="button"
+                disabled={busy !== null}
+                aria-busy={busy === tweak.id}
+                aria-label={`Remove lock on ${tweak.title}`}
+                onClick={() => setConfirming(tweak.id)}
+                className="min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-4 font-medium disabled:cursor-wait disabled:opacity-60"
+              >
+                {busy === tweak.id ? "Working" : "Remove lock"}
+              </button>
+            </div>
+            {confirming === tweak.id && (
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <span className="font-medium">Remove this lock? Windows will ask for permission, and you can undo it from History.</span>
+                <button type="button" onClick={() => remove(tweak)} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
+                  Yes, remove it
+                </button>
+                <button type="button" onClick={() => setConfirming(null)} className="min-h-11 cursor-pointer rounded-md border border-border px-4 font-medium">
+                  Cancel
+                </button>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

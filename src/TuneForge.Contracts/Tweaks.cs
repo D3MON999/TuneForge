@@ -21,7 +21,11 @@ public sealed record TweakStatus(
     [property: JsonPropertyName("requiresAdmin")] bool RequiresAdmin,
     [property: JsonPropertyName("state")] string State,
     [property: JsonPropertyName("description")] string Description = "",
-    [property: JsonPropertyName("hazard")] bool Hazard = false);
+    [property: JsonPropertyName("hazard")] bool Hazard = false,
+    [property: JsonPropertyName("locked")] bool Locked = false);
+
+public sealed record RemoveLockRequest(
+    [property: JsonPropertyName("id")] string Id);
 
 public sealed record TweakChange(
     [property: JsonPropertyName("setting")] string Setting,
