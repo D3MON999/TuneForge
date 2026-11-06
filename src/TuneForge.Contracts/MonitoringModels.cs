@@ -35,7 +35,8 @@ public sealed record ErrorGroup(string Source, int EventId, int Count, string La
 
 public sealed record EventLogRequest(string Log, string Level);
 
-public sealed record HealthCheck(string Id, string Title, string Status, string Detail, bool Ignored = false);
+/// <summary>Worsened means it was ignored, then got more serious, so it counts again.</summary>
+public sealed record HealthCheck(string Id, string Title, string Status, string Detail, bool Ignored = false, bool Worsened = false);
 
 /// <summary>Score leaves out what the person chose to ignore. FullScore counts everything.</summary>
 public sealed record HealthReport(int Score, IReadOnlyList<HealthCheck> Checks, int FullScore = 100);

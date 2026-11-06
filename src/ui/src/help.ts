@@ -2,7 +2,7 @@
 export const pageHelp: Record<string, string[]> = {
   dashboard: [
     "The score starts at 100 and drops for each problem found. Health checks show the reason for every lost point.",
-    "Ignore a problem you already know about and it stops lowering your score. It moves to the Ignored list with its real result, and the top of the page still shows what the score would be with everything counted.",
+    "Ignore a problem you already know about and it stops lowering your score. It moves to the Ignored list with its real result, and the top of the page still shows what the score would be with everything counted. If it gets more serious later, it counts again until you ignore it again.",
     "Live numbers update every two seconds while this page is open.",
     "Save report writes a text file you can keep or send to someone helping you. It stays on this PC unless you send it.",
   ],

@@ -62,8 +62,8 @@ const health = {
   score: 85,
   fullScore: 85,
   checks: [
-    { id: "disks", title: "Disk health", status: "good" as const, detail: "2 disks report no problems.", ignored: false },
-    { id: "space", title: "Free space", status: "warn" as const, detail: "Low.", ignored: false },
+    { id: "disks", title: "Disk health", status: "good" as const, detail: "2 disks report no problems.", ignored: false, worsened: false },
+    { id: "space", title: "Free space", status: "warn" as const, detail: "Low.", ignored: false, worsened: false },
   ],
 };
 
@@ -158,11 +158,29 @@ describe("DashboardPage", () => {
     expect(screen.queryByText(/if counted/)).toBeNull();
   });
 
+  it("brings back a check that got worse and can ignore it again", async () => {
+    const user = userEvent.setup();
+    api.healthCheck.mockResolvedValue({
+      score: 70,
+      fullScore: 70,
+      checks: [{ id: "disks", title: "Disk health", status: "bad", detail: "SSD is failing.", ignored: false, worsened: true }],
+    });
+    api.healthIgnore.mockResolvedValue(ignoredHealth);
+    render(<DashboardPage />);
+
+    expect(await screen.findByText("Worse since you ignored it, so it counts again.")).toBeTruthy();
+    expect(screen.getByText("1 thing could use a look.")).toBeTruthy();
+    expect(screen.queryByText(/Ignored \(/)).toBeNull();
+
+    await user.click(screen.getByRole("button", { name: "Ignore Disk health" }));
+    expect(api.healthIgnore).toHaveBeenCalledWith("disks", true);
+  });
+
   it("keeps a failing disk's warning readable even when it's ignored", async () => {
     api.healthCheck.mockResolvedValue({
       score: 100,
       fullScore: 70,
-      checks: [{ id: "disks", title: "Disk health", status: "bad", detail: "SSD is failing. Back up your files now.", ignored: true }],
+      checks: [{ id: "disks", title: "Disk health", status: "bad", detail: "SSD is failing. Back up your files now.", ignored: true, worsened: false }],
     });
     render(<DashboardPage />);
 

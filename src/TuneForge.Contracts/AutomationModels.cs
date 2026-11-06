@@ -23,7 +23,8 @@ public sealed record AppSettings(
     IReadOnlyList<string>? FocusApps = null,
     ActiveBoost? Boost = null,
     string? LastBackupUtc = null,
-    IReadOnlyList<string>? IgnoredChecks = null);
+    IReadOnlyList<string>? IgnoredChecks = null,
+    IReadOnlyDictionary<string, string>? IgnoredLevels = null);
 
 public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message);
 

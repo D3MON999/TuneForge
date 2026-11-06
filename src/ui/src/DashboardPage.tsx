@@ -290,6 +290,7 @@ function HealthChecks({
                   <span className="sr-only">: {style.label}</span>
                 </p>
                 <p className="text-sm text-muted-foreground">{item.detail}</p>
+                {item.worsened && <p className="text-sm font-medium text-warning">Worse since you ignored it, so it counts again.</p>}
               </div>
               {isProblem(item) && (
                 <button type="button" disabled={busy} aria-label={`Ignore ${item.title}`} onClick={() => onIgnore(item.id, true)} className={smallButtonClass}>

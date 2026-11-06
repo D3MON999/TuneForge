@@ -211,6 +211,7 @@ export interface HealthCheck {
   status: "good" | "warn" | "bad" | "unknown";
   detail: string;
   ignored: boolean;
+  worsened: boolean;
 }
 
 export interface HealthReport {

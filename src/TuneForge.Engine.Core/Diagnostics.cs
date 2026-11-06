@@ -244,10 +244,22 @@ public static class HealthScorer
 {
     private const double Gigabyte = 1024d * 1024 * 1024;
 
+    public const string Warn = "warn";
+
     public static readonly IReadOnlyList<string> CheckIds = ["disks", "space", "crashes", "errors", "startup", "memory", "uptime", "junk"];
 
-    /// <summary>Ignored checks can't lower the score, and they stay in the report with their real result.</summary>
-    public static HealthReport Score(HealthInput input, IReadOnlyCollection<string>? ignored = null)
+    private static int Seriousness(string status) => status switch
+    {
+        "bad" => 2,
+        Warn => 1,
+        _ => 0,
+    };
+
+    /// <summary>
+    /// Ignored checks can't lower the score, and they stay in the report with their real result.
+    /// One that gets more serious than it was when ignored counts again, so a new danger can't hide behind an old choice.
+    /// </summary>
+    public static HealthReport Score(HealthInput input, IReadOnlyDictionary<string, string>? ignored = null)
     {
         var results = new List<(HealthCheck Check, int Lost)>
         {
@@ -261,10 +273,12 @@ public static class HealthScorer
             Junk(input.JunkBytes),
         };
 
-        var set = ignored ?? [];
+        bool Chosen(HealthCheck check) => ignored?.ContainsKey(check.Id) == true;
+        bool Holds(HealthCheck check) => Chosen(check) && Seriousness(check.Status) <= Seriousness(ignored![check.Id]);
+
         return new HealthReport(
-            Math.Clamp(100 - results.Where(result => !set.Contains(result.Check.Id)).Sum(result => result.Lost), 0, 100),
-            results.Select(result => result.Check with { Ignored = set.Contains(result.Check.Id) }).ToList(),
+            Math.Clamp(100 - results.Where(result => !Holds(result.Check)).Sum(result => result.Lost), 0, 100),
+            results.Select(result => result.Check with { Ignored = Holds(result.Check), Worsened = Chosen(result.Check) && !Holds(result.Check) }).ToList(),
             Math.Clamp(100 - results.Sum(result => result.Lost), 0, 100));
     }
 
@@ -356,15 +370,19 @@ public sealed class HealthService(
             throw new CatalogRequestException("That health check doesn't exist.");
         }
 
-        settings?.SetIgnoredCheck(request.Id, request.Ignored);
-        return Check();
+        var input = ReadInput();
+        var level = HealthScorer.Score(input).Checks.Single(check => check.Id == request.Id).Status;
+        settings?.SetIgnoredCheck(request.Id, request.Ignored, level);
+        return HealthScorer.Score(input, settings?.LoadIgnored());
     }
 
-    public HealthReport Check()
+    public HealthReport Check() => HealthScorer.Score(ReadInput(), settings?.LoadIgnored());
+
+    private HealthInput ReadInput()
     {
         var errors = events.RecentErrors();
         var (used, total) = live.ReadMemory();
-        return HealthScorer.Score(new HealthInput(
+        return new HealthInput(
             storage.Read(),
             Path.GetPathRoot(Environment.SystemDirectory) ?? "C:\\",
             EventService.CountCrashes(errors),
@@ -372,8 +390,7 @@ public sealed class HealthService(
             startup.List().Count(entry => entry.Enabled),
             total == 0 ? 0 : 100d * used / total,
             Environment.TickCount64 / 86_400_000d,
-            cleanup.Scan().Sum(category => category.Bytes)),
-            settings?.Load().IgnoredChecks);
+            cleanup.Scan().Sum(category => category.Bytes));
     }
 
     public string BuildReport() => ReportWriter.Build(
@@ -404,7 +421,8 @@ public static class ReportWriter
         text.AppendLine(culture, $"Health score: {health.Score} out of 100{(ignored ? $" ({health.FullScore} with everything counted)" : string.Empty)}");
         foreach (var check in health.Checks)
         {
-            text.AppendLine(culture, $"  [{check.Status}{(check.Ignored ? ", ignored" : string.Empty)}] {check.Title}: {check.Detail}");
+            var note = check.Ignored ? ", ignored" : check.Worsened ? ", worse since ignored" : string.Empty;
+            text.AppendLine(culture, $"  [{check.Status}{note}] {check.Title}: {check.Detail}");
         }
 
         text.AppendLine();

@@ -62,11 +62,28 @@ public sealed class SettingsStore(string path)
         KnownStartup = choices.StartupWatch ? settings.KnownStartup : null,
     });
 
-    public AppSettings SetIgnoredCheck(string id, bool ignored) => Update(settings =>
+    /// <summary>Remembers how serious the check was, so a later worsening can be noticed.</summary>
+    public AppSettings SetIgnoredCheck(string id, bool ignored, string level = HealthScorer.Warn) => Update(settings =>
     {
         var others = (settings.IgnoredChecks ?? []).Where(other => other != id);
-        return settings with { IgnoredChecks = (ignored ? others.Append(id) : others).ToList() };
+        var levels = new Dictionary<string, string>(settings.IgnoredLevels ?? new Dictionary<string, string>());
+        levels.Remove(id);
+        if (ignored)
+        {
+            levels[id] = level;
+        }
+
+        return settings with { IgnoredChecks = (ignored ? others.Append(id) : others).ToList(), IgnoredLevels = levels };
     });
+
+    /// <summary>A check saved before levels existed counts as a warning, so it can still come back if it turns serious.</summary>
+    public IReadOnlyDictionary<string, string> LoadIgnored()
+    {
+        var settings = Load();
+        return (settings.IgnoredChecks ?? []).ToDictionary(
+            id => id,
+            id => settings.IgnoredLevels?.GetValueOrDefault(id) ?? HealthScorer.Warn);
+    }
 
     private static SettingsUpdate Limit(SettingsUpdate choices) => choices with
     {

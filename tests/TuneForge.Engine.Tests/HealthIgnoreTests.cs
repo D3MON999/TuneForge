@@ -22,12 +22,14 @@ public sealed class HealthIgnoreTests : IDisposable
     private static HealthInput Input(StorageReport storage, int crashes = 0, int errors = 0, int startup = 3) =>
         new(storage, @"C:\", crashes, errors, startup, 40, 1, 0);
 
+    private static Dictionary<string, string> Ignored(string level, params string[] ids) => ids.ToDictionary(id => id, _ => level);
+
     public void Dispose() => Directory.Delete(_folder, recursive: true);
 
     [Fact]
     public void IgnoringEveryProblemGives100AndKeepsTheFullScore()
     {
-        var report = HealthScorer.Score(Input(Fine, crashes: 1, errors: 500, startup: 30), ["crashes", "errors", "startup"]);
+        var report = HealthScorer.Score(Input(Fine, crashes: 1, errors: 500, startup: 30), Ignored("warn", "crashes", "errors", "startup"));
 
         Assert.Equal(100, report.Score);
         Assert.Equal(80, report.FullScore);
@@ -37,22 +39,80 @@ public sealed class HealthIgnoreTests : IDisposable
     [Fact]
     public void AProblemThatIsNotIgnoredStillCounts()
     {
-        var report = HealthScorer.Score(Input(Fine, crashes: 1, errors: 500), ["errors"]);
+        var report = HealthScorer.Score(Input(Fine, crashes: 1, errors: 500), Ignored("warn", "errors"));
 
         Assert.Equal(90, report.Score);
         Assert.Equal(85, report.FullScore);
     }
 
     [Fact]
-    public void AnIgnoredCheckKeepsItsRealResultAndStaysAt100AsItWorsens()
+    public void ACheckThatGetsWorseCountsAgain()
     {
-        var report = HealthScorer.Score(Input(Failing), ["disks", "space"]);
+        var report = HealthScorer.Score(Input(Failing), Ignored("warn", "disks", "space"));
+
+        // The failing disk is worse than a warning. Low space is still only a warning, so it stays ignored.
+        Assert.Equal(70, report.Score);
+        Assert.Equal(60, report.FullScore);
+        var disk = report.Checks.Single(check => check.Id == "disks");
+        Assert.False(disk.Ignored);
+        Assert.True(disk.Worsened);
+        var space = report.Checks.Single(check => check.Id == "space");
+        Assert.True(space.Ignored);
+        Assert.False(space.Worsened);
+    }
+
+    [Fact]
+    public void IgnoringItAgainAtTheWorseLevelHolds()
+    {
+        var report = HealthScorer.Score(Input(Failing), Ignored("bad", "disks", "space"));
 
         Assert.Equal(100, report.Score);
         var disk = report.Checks.Single(check => check.Id == "disks");
         Assert.Equal("bad", disk.Status);
         Assert.Contains("failing", disk.Detail);
         Assert.True(disk.Ignored);
+        Assert.False(disk.Worsened);
+    }
+
+    [Fact]
+    public void ACheckThatImprovesStaysIgnored()
+    {
+        var report = HealthScorer.Score(Input(Fine, crashes: 1), Ignored("bad", "crashes"));
+
+        Assert.Equal(100, report.Score);
+        Assert.True(report.Checks.Single(check => check.Id == "crashes").Ignored);
+    }
+
+    [Fact]
+    public void ACheckThatRecoversIsIgnoredAgainWithoutAsking()
+    {
+        var worse = HealthScorer.Score(Input(Fine, crashes: 5), Ignored("warn", "crashes"));
+        var better = HealthScorer.Score(Input(Fine, crashes: 1), Ignored("warn", "crashes"));
+
+        Assert.Equal(80, worse.Score);
+        Assert.Equal(100, better.Score);
+    }
+
+    [Fact]
+    public void AChoiceSavedBeforeLevelsExistedActsLikeAWarning()
+    {
+        Store().Update(settings => settings with { IgnoredChecks = ["disks"] });
+
+        var ignored = Store().LoadIgnored();
+
+        Assert.Equal("warn", ignored["disks"]);
+        Assert.True(HealthScorer.Score(Input(Failing), ignored).Checks.Single(check => check.Id == "disks").Worsened);
+    }
+
+    [Fact]
+    public void TheLevelIsRememberedAndClearedWithTheChoice()
+    {
+        Store().SetIgnoredCheck("disks", true, "bad");
+        Assert.Equal("bad", Store().LoadIgnored()["disks"]);
+
+        Store().SetIgnoredCheck("disks", false);
+        Assert.Empty(Store().LoadIgnored());
+        Assert.Empty(Store().Load().IgnoredLevels!);
     }
 
     [Fact]
@@ -115,6 +175,19 @@ public sealed class HealthIgnoreTests : IDisposable
 
         Assert.Contains("Health score: 100 out of 100 (90 with everything counted)", text);
         Assert.Contains("[warn, ignored] Free space: Low.", text);
+    }
+
+    [Fact]
+    public void TheReportSaysWhatGotWorse()
+    {
+        var text = ReportWriter.Build(
+            DateTimeOffset.UnixEpoch,
+            new SystemSummary("PC", "Windows 11", "26300", "Board", "CPU", 8, 16, ["GPU"], 1L << 33, 60),
+            new HealthReport(70, [new HealthCheck("disks", "Disk health", "bad", "Failing.", Worsened: true)], 70),
+            Fine,
+            []);
+
+        Assert.Contains("[bad, worse since ignored] Disk health: Failing.", text);
     }
 
     [Theory]
