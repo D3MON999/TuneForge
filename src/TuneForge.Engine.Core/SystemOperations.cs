@@ -8,4 +8,5 @@ public sealed record SystemOperations(
     StartupService Startup,
     ServiceManager Services,
     FeatureService Features,
-    RepairService Repair);
+    RepairService Repair,
+    BuiltInAppService BuiltIn);

@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BuiltInAppsTab, InstallAppsTab, InstalledAppsTab } from "./AppInstallTabs";
 import { bridge, type FeatureEntry, type OperationResult, type ServiceEntry, type StartupEntry } from "./bridge";
 import { matchesText } from "./selection";
 
-type Tab = "startup" | "services" | "features";
+type Tab = "startup" | "services" | "features" | "built-in" | "install" | "installed";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "startup", label: "Startup" },
   { id: "services", label: "Services" },
   { id: "features", label: "Windows features" },
+  { id: "built-in", label: "Built-in apps" },
+  { id: "install", label: "Install apps" },
+  { id: "installed", label: "Installed apps" },
 ];
 
 export function AppsPage() {
@@ -15,7 +19,7 @@ export function AppsPage() {
 
   return (
     <div>
-      <div role="tablist" aria-label="Apps sections" className="flex gap-2">
+      <div role="tablist" aria-label="Apps sections" className="flex flex-wrap gap-2">
         {tabs.map((item) => (
           <button
             key={item.id}
@@ -35,6 +39,9 @@ export function AppsPage() {
         {tab === "startup" && <StartupTab />}
         {tab === "services" && <ServicesTab />}
         {tab === "features" && <FeaturesTab />}
+        {tab === "built-in" && <BuiltInAppsTab />}
+        {tab === "install" && <InstallAppsTab />}
+        {tab === "installed" && <InstalledAppsTab />}
       </div>
     </div>
   );

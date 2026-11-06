@@ -1,0 +1,1285 @@
+{
+    "schemaVersion":  1,
+    "items":  [
+                  {
+                      "id":  "Microsoft.3DBuilder",
+                      "title":  "3D Builder",
+                      "note":  "Basic 3D modeling software (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Microsoft3DViewer",
+                      "title":  "3D Viewer",
+                      "note":  "Viewer for 3D models (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AcerIncorporated.AcerCareCenterS",
+                      "title":  "Acer Care Center",
+                      "note":  "Acer device information, diagnostics, and maintenance tools",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AcerIncorporated.AcerRegistration",
+                      "title":  "Acer Product Registration",
+                      "note":  "Acer product registration app",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "ACGMediaPlayer",
+                      "title":  "ACG Player",
+                      "note":  "Play local audio and video with subtitles and DLNA streaming",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "ActiproSoftwareLLC",
+                      "title":  "Actipro apps (Code Writer)",
+                      "note":  "Actipro apps, including the Code Writer text and code editor",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AdobeSystemsIncorporated.AdobePhotoshopExpress",
+                      "title":  "Adobe Express Photos",
+                      "note":  "Edit photos, remove objects and backgrounds, and annotate screenshots",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Amazon.com.Amazon",
+                      "title":  "Amazon",
+                      "note":  "Amazon shopping app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Asphalt8Airborne",
+                      "title":  "Asphalt 8: Airborne",
+                      "note":  "Arcade racing with cars, motorcycles, and multiplayer races",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "B9ECED6F.Glidex",
+                      "title":  "ASUS GlideX",
+                      "note":  "ASUS app for screen sharing and file transfer between devices",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "B9ECED6F.ScreenPadMaster",
+                      "title":  "ASUS ScreenXpert",
+                      "note":  "ASUS window management and ScreenPad controls on supported models",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AutodeskSketchBook",
+                      "title":  "Autodesk SketchBook",
+                      "note":  "Legacy Autodesk drawing and sketching app (discontinued)",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "king.com.BubbleWitch3Saga",
+                      "title":  "Bubble Witch 3 Saga",
+                      "note":  "Bubble-shooting puzzle game with magical challenges",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "CaesarsSlotsFreeCasino",
+                      "title":  "Caesars Casino - Casino Slots Game",
+                      "note":  "Casino slot machine game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsCalculator",
+                      "title":  "Calculator",
+                      "note":  "Basic, scientific, and graphing calculations, plus unit conversions",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9WZDNCRFHVN5"
+                  },
+                  {
+                      "id":  "Microsoft.WindowsCamera",
+                      "title":  "Camera",
+                      "note":  "Take photos and record videos with a built-in or connected camera",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9WZDNCRFJBBG"
+                  },
+                  {
+                      "id":  "king.com.CandyCrushSaga",
+                      "title":  "Candy Crush Saga",
+                      "note":  "Match-three candy puzzle game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "king.com.CandyCrushSodaSaga",
+                      "title":  "Candy Crush Soda Saga",
+                      "note":  "Match-three candy puzzles with soda-themed levels and game modes",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsAlarms",
+                      "title":  "Clock",
+                      "note":  "App for alarms, timers, stopwatch, and focus sessions",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRFJ3PR"
+                  },
+                  {
+                      "id":  "COOKINGFEVER",
+                      "title":  "Cooking Fever",
+                      "note":  "Cooking and restaurant time-management game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Copilot",
+                      "title":  "Copilot",
+                      "note":  "Launches the Microsoft AI companion for contextual answers, creative writing assistance, and intelligent web search.",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9NHT9RB2F4HD"
+                  },
+                  {
+                      "id":  "Microsoft.Windows.AIHub",
+                      "title":  "Copilot+ AI Hub",
+                      "note":  "Explore AI features and apps for Copilot+ PCs",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.549981C3F5F10",
+                      "title":  "Cortana",
+                      "note":  "Microsoft Cortana voice assistant (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "CyberLinkMediaSuiteEssentials",
+                      "title":  "CyberLink Media Suite",
+                      "note":  "Multimedia software suite (often preinstalled by OEMs)",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "DellInc.DellDigitalDelivery",
+                      "title":  "Dell Digital Delivery",
+                      "note":  "Dell OEM software for delivering pre-purchased software (discontinued)",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "DellInc.DellMobileConnect",
+                      "title":  "Dell Mobile Connect",
+                      "note":  "Connect Android phones and iPhones to a Dell PC (discontinued)",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "DellInc.DellSupportAssistforPCs",
+                      "title":  "Dell SupportAssist",
+                      "note":  "Dell OEM support, diagnostic, and update tool",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Windows.DevHome",
+                      "title":  "Dev Home",
+                      "note":  "Developer dashboard and tool configuration utility (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9N8MHTPHNGVV"
+                  },
+                  {
+                      "id":  "DisneyMagicKingdoms",
+                      "title":  "Disney Magic Kingdoms",
+                      "note":  "Disney theme park building game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Disney.37853FC22B2CE",
+                      "title":  "Disney+",
+                      "note":  "Disney+ streaming service app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "DrawboardPDF",
+                      "title":  "Drawboard PDF",
+                      "note":  "View, edit, and annotate PDF documents with a pen, touch, or mouse",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Duolingo-LearnLanguagesforFree",
+                      "title":  "Duolingo",
+                      "note":  "Language learning app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "FACEBOOK.FACEBOOK",
+                      "title":  "Facebook",
+                      "note":  "Facebook social media app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MicrosoftCorporationII.MicrosoftFamily",
+                      "title":  "Family",
+                      "note":  "App for managing family screen time, content filters, and activity reports",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "FarmVille2CountryEscape",
+                      "title":  "FarmVille 2: Country Escape",
+                      "note":  "Farming simulation game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsFeedbackHub",
+                      "title":  "Feedback Hub",
+                      "note":  "App for providing feedback to Microsoft on Windows",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9NBLGGH4R32N"
+                  },
+                  {
+                      "id":  "Flipboard",
+                      "title":  "Flipboard",
+                      "note":  "News and social network aggregator styled as a magazine",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.XboxGamingOverlay",
+                      "title":  "Game Bar",
+                      "note":  "This app provides an in-game overlay and integration with Xbox services.",
+                      "group":  "Xbox",
+                      "safety":  "optional",
+                      "storeId":  "9NZKPSTSNW4P"
+                  },
+                  {
+                      "id":  "Microsoft.XboxSpeechToTextOverlay",
+                      "title":  "Game Speech Window",
+                      "note":  "Speech-to-text and text-to-speech for chat in supported games.",
+                      "group":  "Xbox",
+                      "safety":  "caution",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.GetHelp",
+                      "title":  "Get Help",
+                      "note":  "Required for some Windows 11 Troubleshooters and support interactions",
+                      "group":  "Microsoft",
+                      "safety":  "caution",
+                      "storeId":  "9PKDZBMV1H3T"
+                  },
+                  {
+                      "id":  "HiddenCity",
+                      "title":  "Hidden City: Hidden Object Adventure",
+                      "note":  "Hidden object puzzle adventure game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.myHP",
+                      "title":  "HP",
+                      "note":  "HP device settings, support, and printer features on supported devices",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPAIExperienceCenter",
+                      "title":  "HP AI Experience Center",
+                      "note":  "HP app preinstalled on select HP AI PCs",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPConnectedMusic",
+                      "title":  "HP Connected Music",
+                      "note":  "Legacy HP app for local music, iTunes libraries, and streaming services",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPConnectedPhotopoweredbySnapfish",
+                      "title":  "HP Connected Photo",
+                      "note":  "Legacy HP app for photo syncing, Snapfish sharing, and print orders",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPDesktopSupportUtilities",
+                      "title":  "HP Desktop Support Utilities",
+                      "note":  "Displays the HP PC model, serial number, and BIOS information",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPEasyClean",
+                      "title":  "HP Easy Clean",
+                      "note":  "Temporarily disables input devices for cleaning",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPFileViewer",
+                      "title":  "HP File Viewer",
+                      "note":  "HP file viewer; supported formats are unverified",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPJumpStarts",
+                      "title":  "HP JumpStarts",
+                      "note":  "HP PC setup, product registration, and app recommendations",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.OMENCommandCenter",
+                      "title":  "HP OMEN Gaming Hub",
+                      "note":  "HP gaming hub for performance monitoring and device settings",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPPCHardwareDiagnosticsWindows",
+                      "title":  "HP PC Hardware Diagnostics Windows",
+                      "note":  "Tests PC hardware, such as memory and storage, to help diagnose faults",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPPrivacySettings",
+                      "title":  "HP PC Privacy Settings",
+                      "note":  "Manage privacy and data-sharing preferences for HP apps",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPPowerManager",
+                      "title":  "HP Power Manager",
+                      "note":  "Monitor battery health and manage charging settings on supported HP laptops",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPQuickDrop",
+                      "title":  "HP QuickDrop",
+                      "note":  "HP OEM software for quick file transfer between devices (discontinued)",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPQuickTouch",
+                      "title":  "HP QuickTouch",
+                      "note":  "HP QuickTouch component; exact functionality is unverified",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPRegistration",
+                      "title":  "HP Registration",
+                      "note":  "HP OEM software for product registration",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPPrinterControl",
+                      "title":  "HP Smart",
+                      "note":  "Print, scan, and manage supported HP printers",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPSupportAssistant",
+                      "title":  "HP Support Assistant",
+                      "note":  "HP OEM software for support, updates, and troubleshooting",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPSureShieldAI",
+                      "title":  "HP Sure Shield AI",
+                      "note":  "HP utility; exact functionality is unverified",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPSystemInformation",
+                      "title":  "HP System Information",
+                      "note":  "Displays the HP PC model, serial number, and BIOS information",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPWelcome",
+                      "title":  "HP Welcome",
+                      "note":  "HP welcome and support app",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AD2F1837.HPWorkWell",
+                      "title":  "HP WorkWell",
+                      "note":  "Break reminders, stretching exercises, and tips for healthier PC use (discontinued)",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "HULULLC.HULUPLUS",
+                      "title":  "Hulu",
+                      "note":  "Hulu streaming service app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "iHeartRadio",
+                      "title":  "iHeart: Radio, Music, Podcasts",
+                      "note":  "Stream live radio, music, and podcasts",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Facebook.Instagram",
+                      "title":  "Instagram",
+                      "note":  "Instagram social media app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftJournal",
+                      "title":  "Journal",
+                      "note":  "Take handwritten notes and draw sketches with a digital pen",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "E0469640.SmartAppearance",
+                      "title":  "Lenovo Smart Appearance",
+                      "note":  "Lenovo camera effects and video call enhancements",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "E046963F.LenovoCompanion",
+                      "title":  "Lenovo Vantage",
+                      "note":  "Lenovo OEM hub app for device settings, updates, and support",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "LenovoCompanyLimited.LenovoVantageService",
+                      "title":  "Lenovo Vantage Service",
+                      "note":  "Background service component for Lenovo Vantage",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "LGElectronics.LGMonitorApp",
+                      "title":  "LG Monitor App Installer",
+                      "note":  "Installs compatible LG monitor utilities.",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "LinkedInforWindows",
+                      "title":  "LinkedIn",
+                      "note":  "LinkedIn professional networking app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.windowscommunicationsapps",
+                      "title":  "Mail and Calendar",
+                      "note":  "Mail and Calendar app suite (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsMaps",
+                      "title":  "Maps",
+                      "note":  "Maps and navigation app (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MarchofEmpires",
+                      "title":  "March of Empires",
+                      "note":  "Strategy game",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.ZuneMusic",
+                      "title":  "Media Player",
+                      "note":  "Play local audio and video files and organize your music library",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9WZDNCRFJ3PT"
+                  },
+                  {
+                      "id":  "Microsoft.M365Companions",
+                      "title":  "Microsoft 365 Companions",
+                      "note":  "Taskbar companions for Microsoft 365 calendars, people, and files (retiring)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftOfficeHub",
+                      "title":  "Microsoft 365 Copilot",
+                      "note":  "AI chat, content creation, file search, and access to Microsoft 365 apps",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRD29V9"
+                  },
+                  {
+                      "id":  "Microsoft.BingSearch",
+                      "title":  "Microsoft Bing",
+                      "note":  "This app integrates Web Search from Microsoft Bing into Windows Search",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9NZBF4GT040C"
+                  },
+                  {
+                      "id":  "Clipchamp.Clipchamp",
+                      "title":  "Microsoft Clipchamp",
+                      "note":  "Create and edit videos with trimming, captions, and audio",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9P1J8S7CCWWT"
+                  },
+                  {
+                      "id":  "MSTeams",
+                      "title":  "Microsoft Teams (New)",
+                      "note":  "Chat, calls, and meetings for work, school, and personal accounts",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  "XP8BT8DW290MPQ"
+                  },
+                  {
+                      "id":  "MicrosoftTeams",
+                      "title":  "Microsoft Teams (Old)",
+                      "note":  "Legacy Teams client for personal chats and calls",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Todos",
+                      "title":  "Microsoft To Do",
+                      "note":  "To-do list and task management app",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9NBLGGH5R558"
+                  },
+                  {
+                      "id":  "Microsoft.BingTranslator",
+                      "title":  "Microsoft Translator",
+                      "note":  "Translation app from Microsoft (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Whiteboard",
+                      "title":  "Microsoft Whiteboard",
+                      "note":  "Digital collaborative whiteboard app",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.MixedReality.Portal",
+                      "title":  "Mixed Reality Portal",
+                      "note":  "Portal for Windows Mixed Reality headsets (deprecated)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MicrosoftWindows.CrossDevice",
+                      "title":  "Mobile devices",
+                      "note":  "Mobile device integration with File Explorer and camera features",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9NTXGKQ8P7N0"
+                  },
+                  {
+                      "id":  "Microsoft.OneConnect",
+                      "title":  "Mobile Plans",
+                      "note":  "Choose a mobile data plan for a compatible PC with a supported SIM",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingFinance",
+                      "title":  "Money",
+                      "note":  "Finance news and tracking app from Microsoft",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.ZuneVideo",
+                      "title":  "Movies \u0026 TV",
+                      "note":  "App for playing purchased video content (new rentals and purchases have been discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRFJ3P2"
+                  },
+                  {
+                      "id":  "9426MICRO-STARINTERNATION.MSICenter",
+                      "title":  "MSI Center",
+                      "note":  "MSI device settings and performance monitoring",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "9426MICRO-STARINTERNATION.BusinessCenter",
+                      "title":  "MSI Center Pro",
+                      "note":  "MSI device settings, diagnostics, and performance optimization",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingFoodAndDrink",
+                      "title":  "MSN Food \u0026 Drink",
+                      "note":  "Recipes and food news (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingHealthAndFitness",
+                      "title":  "MSN Health \u0026 Fitness",
+                      "note":  "Health and fitness tracking/news (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingSports",
+                      "title":  "MSN Sports",
+                      "note":  "Sports news and scores (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingTravel",
+                      "title":  "MSN Travel",
+                      "note":  "Travel planning and news (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "B9ECED6F.ASUSPCAssistant",
+                      "title":  "MyASUS",
+                      "note":  "ASUS device settings, diagnostics, and support, including battery and fan controls on supported models",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "4DF9E0F8.Netflix",
+                      "title":  "Netflix",
+                      "note":  "Netflix streaming service app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.NetworkSpeedTest",
+                      "title":  "Network Speed Test",
+                      "note":  "Measure download and upload speeds and network latency",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingNews",
+                      "title":  "News",
+                      "note":  "Personalized news feeds and breaking-news alerts",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRFHVFW"
+                  },
+                  {
+                      "id":  "Microsoft.WindowsNotepad",
+                      "title":  "Notepad",
+                      "note":  "Create and edit plain-text files, notes, and scripts",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9MSMLRH6LZF3"
+                  },
+                  {
+                      "id":  "NYTCrossword",
+                      "title":  "NYT Crossword",
+                      "note":  "New York Times crossword puzzle app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "OneCalendar",
+                      "title":  "One Calendar",
+                      "note":  "View and manage calendars from multiple accounts in one place",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Office.OneNote",
+                      "title":  "OneNote for Windows 10",
+                      "note":  "Digital note-taking app (Universal Windows Platform version; discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Messaging",
+                      "title":  "Operator messages",
+                      "note":  "Receive data-plan and billing SMS on cellular-capable PCs; cannot send messages",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.OutlookForWindows",
+                      "title":  "Outlook",
+                      "note":  "Email and calendar app for Microsoft and other supported accounts",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9NRX63209R7B"
+                  },
+                  {
+                      "id":  "Microsoft.Paint",
+                      "title":  "Paint",
+                      "note":  "Draw, crop, resize, and edit images",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9PCFS5B6T72H"
+                  },
+                  {
+                      "id":  "Microsoft.MSPaint",
+                      "title":  "Paint 3D",
+                      "note":  "3D drawing app (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "PandoraMediaInc",
+                      "title":  "Pandora",
+                      "note":  "Pandora music streaming app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftPCManager",
+                      "title":  "PC Manager",
+                      "note":  "Microsoft PC Manager system cleanup and optimization tool (often preinstalled)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.PCManager",
+                      "title":  "PC Manager",
+                      "note":  "Microsoft PC Manager system cleanup and optimization tool (often preinstalled)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.People",
+                      "title":  "People",
+                      "note":  "Stores and organizes contacts for Mail and Calendar (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.YourPhone",
+                      "title":  "Phone Link",
+                      "note":  "Connect an Android phone or iPhone to receive notifications, view messages, and make calls on your PC",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9NMPJ99VJBWV"
+                  },
+                  {
+                      "id":  "Microsoft.Windows.Photos",
+                      "title":  "Photos",
+                      "note":  "View and organize photos and videos, and edit pictures",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9WZDNCRFJBH4"
+                  },
+                  {
+                      "id":  "PhototasticCollage",
+                      "title":  "Phototastic Collage",
+                      "note":  "Photo collage creation app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "PicsArt-PhotoStudio",
+                      "title":  "Picsart - Photo Studio",
+                      "note":  "Photo editing and creative app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "PolarrPhotoEditorAcademicEdition",
+                      "title":  "Polarr Pro Photo Editor",
+                      "note":  "Edit photos with filters, color adjustments, and selective masks",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.PowerAutomateDesktop",
+                      "title":  "Power Automate",
+                      "note":  "Automate repetitive PC tasks with desktop workflows",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9NFTCH6J7FHV"
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftPowerBIForWindows",
+                      "title":  "Power BI",
+                      "note":  "Business analytics service client (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "AmazonVideo.PrimeVideo",
+                      "title":  "Prime Video",
+                      "note":  "Amazon Prime Video streaming service app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Print3D",
+                      "title":  "Print 3D",
+                      "note":  "Prepare 3D models for printing (deprecated)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MicrosoftCorporationII.QuickAssist",
+                      "title":  "Quick Assist",
+                      "note":  "Screen sharing and remote control for PC troubleshooting",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9P7BP5VNWKX5"
+                  },
+                  {
+                      "id":  "Microsoft.RemoteDesktop",
+                      "title":  "Remote Desktop",
+                      "note":  "Remote Desktop client app (Microsoft Store version; discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "flaregamesGmbH.RoyalRevolt",
+                      "title":  "Royal Revolt! / Royal Revolt 2",
+                      "note":  "Lead troops and cast spells to conquer castles in action strategy battles",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.Bixby",
+                      "title":  "Samsung Bixby",
+                      "note":  "Voice commands for apps, files, and settings on supported Galaxy Books",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCoLtd.SamsungFlux",
+                      "title":  "Samsung Flow",
+                      "note":  "Samsung phone-to-PC connectivity, file sharing, and notification syncing",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.SamsungWelcome",
+                      "title":  "Samsung Galaxy Book Experience",
+                      "note":  "Samsung app launcher and feature guides for Galaxy Book",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.PCGallery",
+                      "title":  "Samsung Gallery",
+                      "note":  "Samsung photo and video gallery",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Sidia.LiveWallpaper",
+                      "title":  "Samsung Live Wallpaper",
+                      "note":  "Static and animated wallpapers for Samsung Galaxy Books",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCoLtd.MultiControl",
+                      "title":  "Samsung Multi control",
+                      "note":  "Samsung keyboard and mouse sharing across compatible Galaxy devices",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCoLtd.SamsungNotes",
+                      "title":  "Samsung Notes",
+                      "note":  "Notes, handwriting, and PDF annotation on supported Galaxy Books",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.PENUP",
+                      "title":  "Samsung PENUP",
+                      "note":  "Samsung drawing and coloring app",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCoLtd.SamsungQuickShare",
+                      "title":  "Samsung Quick Share",
+                      "note":  "Samsung app for file sharing between nearby devices",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.SamsungScreenRecording",
+                      "title":  "Samsung Screen recorder",
+                      "note":  "Record the screen and webcam on supported Galaxy Books",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCoLtd.SecondScreen",
+                      "title":  "Samsung Second screen",
+                      "note":  "Samsung app for using a compatible Galaxy tablet as an additional PC display",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.SmartThingsWindows",
+                      "title":  "Samsung SmartThings",
+                      "note":  "Samsung app for connecting, monitoring, and controlling smart home devices",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SAMSUNGELECTRONICSCO.LTD.SamsungStudio",
+                      "title":  "Samsung Studio",
+                      "note":  "Samsung video editing app",
+                      "group":  "Other apps",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.SkypeApp",
+                      "title":  "Skype",
+                      "note":  "Skype communication app, Universal Windows Platform version (discontinued)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "SlingTV",
+                      "title":  "Sling TV",
+                      "note":  "Live TV streaming service app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.ScreenSketch",
+                      "title":  "Snipping Tool",
+                      "note":  "Capture, annotate, save, and share screenshots",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9MZ95KL8MR0L"
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftSolitaireCollection",
+                      "title":  "Solitaire \u0026 Casual Games",
+                      "note":  "Collection of solitaire card games",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsSoundRecorder",
+                      "title":  "Sound Recorder",
+                      "note":  "Record and play audio from a microphone",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRFHWKN"
+                  },
+                  {
+                      "id":  "SpotifyAB.SpotifyMusic",
+                      "title":  "Spotify",
+                      "note":  "Stream music and podcasts and manage playlists",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.StartExperiencesApp",
+                      "title":  "Start Experiences App",
+                      "note":  "This app powers Windows Widgets (My Feed)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  "9PC1H9VN18CM"
+                  },
+                  {
+                      "id":  "Microsoft.MicrosoftStickyNotes",
+                      "title":  "Sticky Notes",
+                      "note":  "Create desktop notes and sync them across devices",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9NBLGGH4QGHW"
+                  },
+                  {
+                      "id":  "Microsoft.SurfaceHub",
+                      "title":  "Surface",
+                      "note":  "Surface device settings and support, including smart charging controls on supported models",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Office.Sway",
+                      "title":  "Sway",
+                      "note":  "Create and share interactive presentations, reports, and stories",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.WindowsTerminal",
+                      "title":  "Terminal",
+                      "note":  "Default terminal app in windows 11 (Command Prompt, PowerShell, WSL), WARNING: Do not remove if you launched Win11Debloat from Windows Te...",
+                      "group":  "Microsoft",
+                      "safety":  "caution",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "BytedancePte.Ltd.TikTok",
+                      "title":  "TikTok",
+                      "note":  "TikTok short-form video app",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.Getstarted",
+                      "title":  "Tips",
+                      "note":  "Tips and guides for using Windows features (deprecated)",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "TuneInRadio",
+                      "title":  "TuneIn Radio",
+                      "note":  "Stream live radio, sports, news, and podcasts",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.BingWeather",
+                      "title":  "Weather",
+                      "note":  "Weather forecast app from Microsoft",
+                      "group":  "Microsoft",
+                      "safety":  "recommended",
+                      "storeId":  "9WZDNCRFJ3Q2"
+                  },
+                  {
+                      "id":  "Microsoft.WidgetsPlatformRuntime",
+                      "title":  "Widgets Platform Runtime",
+                      "note":  "Runtime required for Windows Widgets to function",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MicrosoftCorporationII.Windows365",
+                      "title":  "Windows App",
+                      "note":  "Remote desktop and cloud PC client (replaces the Remote Desktop app)",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "MicrosoftWindows.Client.WebExperience",
+                      "title":  "Windows Widgets",
+                      "note":  "Helps deliver and update certain features, like Widgets, through the Microsoft Store",
+                      "group":  "Microsoft",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "WinZipUniversal",
+                      "title":  "WinZip Universal",
+                      "note":  "File compression and extraction utility (Universal Windows Platform version)",
+                      "group":  "Other apps",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.GamingApp",
+                      "title":  "XBOX",
+                      "note":  "Xbox gaming app for Windows, required to install some PC games",
+                      "group":  "Xbox",
+                      "safety":  "optional",
+                      "storeId":  "9MV0B5HZVK9Z"
+                  },
+                  {
+                      "id":  "Microsoft.XboxApp",
+                      "title":  "Xbox Console Companion",
+                      "note":  "Old Xbox Console Companion App (discontinued)",
+                      "group":  "Xbox",
+                      "safety":  "recommended",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.XboxGameOverlay",
+                      "title":  "Xbox Game Overlay",
+                      "note":  "Game overlay that\u0027s part of Xbox Game Bar.",
+                      "group":  "Xbox",
+                      "safety":  "optional",
+                      "storeId":  null
+                  },
+                  {
+                      "id":  "Microsoft.XboxIdentityProvider",
+                      "title":  "Xbox Identity Provider",
+                      "note":  "Xbox sign-in framework, required for some games and Xbox services",
+                      "group":  "Xbox",
+                      "safety":  "caution",
+                      "storeId":  "9WZDNCRD1HKW"
+                  },
+                  {
+                      "id":  "Microsoft.Xbox.TCUI",
+                      "title":  "Xbox Live (TCUI)",
+                      "note":  "Provides Xbox profile cards, invitations, and other in-game Xbox interfaces",
+                      "group":  "Xbox",
+                      "safety":  "caution",
+                      "storeId":  null
+                  }
+              ]
+}

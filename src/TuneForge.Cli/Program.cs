@@ -16,8 +16,14 @@ const string Usage = """
       tuneforge-cli features
       tuneforge-cli feature <id> on|off
       tuneforge-cli repair <id>
+      tuneforge-cli builtin list
+      tuneforge-cli builtin remove <id>...
+      tuneforge-cli software list
+      tuneforge-cli software install <id>
+      tuneforge-cli programs list
+      tuneforge-cli programs update|uninstall <id>
 
-    apply, undo, feature, repair and admin cleanup categories need an administrator terminal.
+    apply, undo, feature, repair, builtin remove and admin cleanup categories need an administrator terminal.
     """;
 
 using var identity = WindowsIdentity.GetCurrent();
@@ -28,6 +34,8 @@ var runner = new WindowsProcessRunner();
 var elevated = new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
 var cleanup = new CleanupService(CleanupService.Standard(UserPaths.For(identity.User!)), new WindowsRecycleBin());
 var features = new FeatureService(runner, new WmiFeatureStateReader());
+var builtIn = new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn());
+var winget = new WingetClient(runner, AppCatalogs.LoadSoftware());
 
 try
 {
@@ -43,6 +51,13 @@ try
             Admin(() => Report(features.Set(new FeatureSetRequest(args[1], args[2] == "on")))),
         "repair" when args.Length == 2 =>
             Admin(() => Report(new RepairService(runner, new WindowsDirectoryMover()).Run(new RepairRequest(args[1])))),
+        "builtin" when args.Length == 2 && args[1] == "list" => ListBuiltIn(),
+        "builtin" when args.Length > 2 && args[1] == "remove" => Admin(() => RemoveBuiltIn(args[2..])),
+        "software" when args.Length == 2 && args[1] == "list" => ListSoftware(),
+        "software" when args.Length == 3 && args[1] == "install" => Report(winget.Install(args[2])),
+        "programs" when args.Length == 2 && args[1] == "list" => ListPrograms(),
+        "programs" when args.Length == 3 && args[1] == "update" => ChangeProgram(winget.Update, args[2]),
+        "programs" when args.Length == 3 && args[1] == "uninstall" => ChangeProgram(winget.Uninstall, args[2]),
         _ => Help(),
     };
 }
@@ -56,6 +71,72 @@ int Report(OperationResult result)
 {
     Console.WriteLine(result.Message);
     return result.Ok ? 0 : 1;
+}
+
+int ListBuiltIn()
+{
+    foreach (var app in builtIn.List())
+    {
+        Console.WriteLine($"{(app.Installed ? "installed" : "removed"),-10} {app.Safety,-12} {app.Id}");
+    }
+
+    return 0;
+}
+
+int RemoveBuiltIn(string[] ids)
+{
+    var result = builtIn.Remove(ids);
+    foreach (var id in result.Removed)
+    {
+        Console.WriteLine($"removed {id}");
+    }
+
+    foreach (var id in result.Failed)
+    {
+        Console.WriteLine($"failed {id}");
+    }
+
+    return result.Failed.Count == 0 ? 0 : 1;
+}
+
+int ListSoftware()
+{
+    var list = winget.ListSoftware();
+    if (!list.WingetAvailable)
+    {
+        Console.Error.WriteLine("winget isn't available.");
+        return 1;
+    }
+
+    foreach (var item in list.Items)
+    {
+        Console.WriteLine($"{(item.Installed ? "installed" : "available"),-10} {item.Id}");
+    }
+
+    return 0;
+}
+
+int ListPrograms()
+{
+    var list = winget.ListInstalled();
+    if (!list.WingetAvailable)
+    {
+        Console.Error.WriteLine("winget isn't available.");
+        return 1;
+    }
+
+    foreach (var item in list.Items)
+    {
+        Console.WriteLine($"{(item.Locked ? "locked" : "open"),-7} {item.Available ?? "current",-16} {item.Id}");
+    }
+
+    return 0;
+}
+
+int ChangeProgram(Func<string, OperationResult> change, string id)
+{
+    winget.ListInstalled();
+    return Report(change(id));
 }
 
 int Cleanup(string[] options)

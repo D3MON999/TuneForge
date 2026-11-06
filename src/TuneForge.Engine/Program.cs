@@ -26,7 +26,8 @@ var system = new SystemOperations(
     new StartupService(registry, userPaths),
     new ServiceManager(registry, new WindowsServiceSource()),
     new FeatureService(runner, new WmiFeatureStateReader()),
-    new RepairService(runner, new WindowsDirectoryMover()));
+    new RepairService(runner, new WindowsDirectoryMover()),
+    new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn()));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

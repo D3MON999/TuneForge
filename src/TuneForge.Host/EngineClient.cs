@@ -44,6 +44,9 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> RepairAsync(RepairRequest request) =>
         RunAsync<OperationResult>(RpcMethods.Repair, request, TimeSpan.FromHours(2));
 
+    public Task<BuiltInRemoveResult> RemoveBuiltInAsync(BuiltInRemoveRequest request) =>
+        RunAsync<BuiltInRemoveResult>(RpcMethods.BuiltInRemove, request, TimeSpan.FromMinutes(35));
+
     /// <summary>Each job gets a fresh engine, so admin rights last only as long as the work.</summary>
     private async Task<T> RunAsync<T>(string method, object? parameters, TimeSpan timeLimit)
     {

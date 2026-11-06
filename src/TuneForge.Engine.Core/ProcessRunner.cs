@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text;
 
 namespace TuneForge.Engine.Core;
 
@@ -9,17 +10,30 @@ public interface IProcessRunner
     int Run(string tool, IReadOnlyList<string> arguments, TimeSpan timeLimit);
 }
 
-/// <summary>Runs tools from System32 by full path. Arguments are never joined into a shell command.</summary>
-public sealed class WindowsProcessRunner : IProcessRunner
+public sealed record ToolOutput(int ExitCode, string Text);
+
+public interface IToolRunner
 {
-    public int Run(string tool, IReadOnlyList<string> arguments, TimeSpan timeLimit)
+    /// <summary>Runs a program by full path and keeps its output. Exit code -1 means it couldn't finish.</summary>
+    ToolOutput Capture(string path, IReadOnlyList<string> arguments, TimeSpan timeLimit);
+}
+
+/// <summary>Arguments are never joined into a shell command.</summary>
+public sealed class WindowsProcessRunner : IProcessRunner, IToolRunner
+{
+    /// <summary>Runs a tool from System32.</summary>
+    public int Run(string tool, IReadOnlyList<string> arguments, TimeSpan timeLimit) =>
+        Capture(Path.Combine(Environment.SystemDirectory, tool), arguments, timeLimit).ExitCode;
+
+    public ToolOutput Capture(string path, IReadOnlyList<string> arguments, TimeSpan timeLimit)
     {
-        var start = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, tool))
+        var start = new ProcessStartInfo(path)
         {
             UseShellExecute = false,
             CreateNoWindow = true,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
+            StandardOutputEncoding = Encoding.UTF8,
         };
         foreach (var argument in arguments)
         {
@@ -31,26 +45,26 @@ public sealed class WindowsProcessRunner : IProcessRunner
             using var process = Process.Start(start);
             if (process is null)
             {
-                return -1;
+                return new ToolOutput(-1, string.Empty);
             }
 
-            // Drain output so a chatty tool can't fill the pipe and stall.
-            process.OutputDataReceived += (_, _) => { };
-            process.ErrorDataReceived += (_, _) => { };
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            // Reading both streams stops a chatty tool from filling the pipe and stalling.
+            var output = process.StandardOutput.ReadToEndAsync();
+            _ = process.StandardError.ReadToEndAsync();
 
-            if (process.WaitForExit(timeLimit))
+            if (!process.WaitForExit(timeLimit))
             {
-                return process.ExitCode;
+                process.Kill(entireProcessTree: true);
+                return new ToolOutput(-1, string.Empty);
             }
 
-            process.Kill(entireProcessTree: true);
-            return -1;
+            // An installer left running by a tool can hold the pipe open, so don't wait on it for long.
+            output.Wait(TimeSpan.FromSeconds(5));
+            return new ToolOutput(process.ExitCode, output.IsCompletedSuccessfully ? output.Result : string.Empty);
         }
         catch (Win32Exception)
         {
-            return -1;
+            return new ToolOutput(-1, string.Empty);
         }
     }
 }

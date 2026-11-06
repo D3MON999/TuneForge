@@ -20,6 +20,8 @@ public partial class MainWindow : Window
     private readonly StartupService _startup;
     private readonly ServiceManager _services;
     private readonly FeatureService _features;
+    private readonly BuiltInAppService _builtIn;
+    private readonly WingetClient _winget;
 
     public MainWindow()
     {
@@ -30,7 +32,10 @@ public partial class MainWindow : Window
         _cleanup = new CleanupService(CleanupService.Standard(paths), new WindowsRecycleBin());
         _startup = new StartupService(registry, paths);
         _services = new ServiceManager(registry, new WindowsServiceSource());
-        _features = new FeatureService(new WindowsProcessRunner(), new WmiFeatureStateReader());
+        var runner = new WindowsProcessRunner();
+        _features = new FeatureService(runner, new WmiFeatureStateReader());
+        _builtIn = new BuiltInAppService(runner, AppCatalogs.LoadBuiltIn());
+        _winget = new WingetClient(runner, AppCatalogs.LoadSoftware());
 
         InitializeComponent();
         Loaded += async (_, _) => await StartWebAsync();
@@ -135,6 +140,14 @@ public partial class MainWindow : Window
         "feature.set" => await _engine.SetFeatureAsync(Read<FeatureSetRequest>(payload)),
         "repair.list" => RepairService.Available,
         "repair.run" => await _engine.RepairAsync(Read<RepairRequest>(payload)),
+        "builtin.list" => await Task.Run(_builtIn.List),
+        "builtin.remove" => await _engine.RemoveBuiltInAsync(Read<BuiltInRemoveRequest>(payload)),
+        "builtin.reinstall" => await Task.Run(() => _winget.Reinstall(_builtIn.Find(Read<AppIdRequest>(payload).Id))),
+        "software.list" => await Task.Run(_winget.ListSoftware),
+        "software.install" => await Task.Run(() => _winget.Install(Read<AppIdRequest>(payload).Id)),
+        "programs.list" => await Task.Run(_winget.ListInstalled),
+        "programs.update" => await Task.Run(() => _winget.Update(Read<AppIdRequest>(payload).Id)),
+        "programs.uninstall" => await Task.Run(() => _winget.Uninstall(Read<AppIdRequest>(payload).Id)),
         _ => throw new EngineException("Unknown operation."),
     };
 

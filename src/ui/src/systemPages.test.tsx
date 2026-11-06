@@ -20,6 +20,14 @@ vi.mock("./bridge", () => ({
     featureSet: vi.fn(),
     repairList: vi.fn(),
     repairRun: vi.fn(),
+    builtInList: vi.fn(),
+    builtInRemove: vi.fn(),
+    builtInReinstall: vi.fn(),
+    softwareList: vi.fn(),
+    softwareInstall: vi.fn(),
+    programsList: vi.fn(),
+    programsUpdate: vi.fn(),
+    programsUninstall: vi.fn(),
   },
 }));
 
@@ -177,5 +185,156 @@ describe("AppsPage", () => {
     expect(api.featureSet).toHaveBeenCalledWith("sandbox", true);
     expect(screen.getByText("Not available")).toBeTruthy();
     expect(await screen.findByText("Restart to finish.")).toBeTruthy();
+  });
+});
+
+describe("Built-in apps", () => {
+  const apps = [
+    { id: "a.news", title: "News", note: "n", group: "Microsoft", safety: "recommended" as const, installed: true, canReinstall: true },
+    { id: "a.paint", title: "Paint", note: "n", group: "Microsoft", safety: "optional" as const, installed: true, canReinstall: false },
+    { id: "a.help", title: "Get Help", note: "n", group: "Microsoft", safety: "caution" as const, installed: true, canReinstall: true },
+    { id: "a.mail", title: "Mail", note: "n", group: "Microsoft", safety: "optional" as const, installed: false, canReinstall: true },
+  ];
+
+  async function open() {
+    const user = userEvent.setup();
+    api.builtInList.mockResolvedValue(apps);
+    render(<AppsPage />);
+    await user.click(screen.getByRole("tab", { name: "Built-in apps" }));
+    await screen.findByText("News");
+    return user;
+  }
+
+  it("selects only recommended apps and asks before removing", async () => {
+    api.builtInRemove.mockResolvedValue({ removed: ["a.news"], failed: [] });
+    const user = await open();
+
+    await user.click(screen.getByRole("button", { name: "Select recommended" }));
+    expect((screen.getByLabelText(/Paint/) as HTMLInputElement).checked).toBe(false);
+    expect((screen.getByLabelText(/Get Help/) as HTMLInputElement).checked).toBe(false);
+
+    await user.click(screen.getByRole("button", { name: "Remove 1 apps" }));
+    expect(api.builtInRemove).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Remove apps" }));
+    expect(api.builtInRemove).toHaveBeenCalledWith(["a.news"]);
+    expect(await screen.findByText("Removed 1 apps.")).toBeTruthy();
+    await waitFor(() => expect(api.builtInList).toHaveBeenCalledTimes(2));
+  });
+
+  it("warns about risky apps and names any failures", async () => {
+    api.builtInRemove.mockResolvedValue({ removed: [], failed: ["a.help"] });
+    const user = await open();
+
+    await user.click(screen.getByLabelText(/Get Help/));
+    await user.click(screen.getByRole("button", { name: "Remove 1 apps" }));
+    expect(screen.getByText(/These can break Windows features: Get Help/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Remove apps" }));
+    expect(await screen.findByText(/Windows wouldn't remove: Get Help/)).toBeTruthy();
+  });
+
+  it("reinstalls a removed app", async () => {
+    api.builtInReinstall.mockResolvedValue({ ok: true, message: "Mail was installed.", restartNeeded: false });
+    const user = await open();
+
+    await user.click(screen.getByRole("button", { name: "Reinstall Mail" }));
+
+    expect(api.builtInReinstall).toHaveBeenCalledWith("a.mail");
+    expect(await screen.findByText("Mail was installed.")).toBeTruthy();
+  });
+});
+
+describe("Install apps", () => {
+  const items = [
+    { id: "x.seven", title: "7-Zip", note: "Archiver", category: "Utilities", installed: false },
+    { id: "x.fox", title: "Firefox", note: "Browser", category: "Browsers", installed: false },
+    { id: "x.vlc", title: "VLC", note: "Player", category: "Multimedia", installed: true },
+  ];
+
+  it("installs the selected apps one at a time and skips installed ones", async () => {
+    const user = userEvent.setup();
+    api.softwareList.mockResolvedValue({ wingetAvailable: true, items });
+    api.softwareInstall.mockResolvedValueOnce({ ok: true, message: "7-Zip was installed.", restartNeeded: false });
+    api.softwareInstall.mockRejectedValueOnce(new Error("failed"));
+    render(<AppsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Install apps" }));
+    await user.click(await screen.findByLabelText(/7-Zip/));
+    await user.click(screen.getByLabelText(/Firefox/));
+    expect((screen.getByLabelText(/VLC/) as HTMLInputElement).disabled).toBe(true);
+
+    await user.click(screen.getByRole("button", { name: "Install 2 apps" }));
+
+    expect(await screen.findByText("7-Zip was installed.")).toBeTruthy();
+    expect(await screen.findByText("Firefox: failed")).toBeTruthy();
+    expect(api.softwareInstall.mock.calls).toEqual([["x.seven"], ["x.fox"]]);
+  });
+
+  it("filters by category and search", async () => {
+    const user = userEvent.setup();
+    api.softwareList.mockResolvedValue({ wingetAvailable: true, items });
+    render(<AppsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Install apps" }));
+    await user.selectOptions(await screen.findByLabelText("Category"), "Browsers");
+    expect(screen.queryByText("7-Zip")).toBeNull();
+
+    await user.selectOptions(screen.getByLabelText("Category"), "");
+    await user.type(screen.getByLabelText("Search apps to install"), "player");
+    expect(screen.queryByText("Firefox")).toBeNull();
+    expect(screen.getByText("VLC")).toBeTruthy();
+  });
+
+  it("explains when winget is missing", async () => {
+    const user = userEvent.setup();
+    api.softwareList.mockResolvedValue({ wingetAvailable: false, items: [] });
+    render(<AppsPage />);
+
+    await user.click(screen.getByRole("tab", { name: "Install apps" }));
+
+    expect(await screen.findByText(/winget isn't on this PC/)).toBeTruthy();
+  });
+});
+
+describe("Installed apps", () => {
+  const items = [
+    { name: "7-Zip", id: "x.seven", version: "24", available: "25", locked: false },
+    { name: "Discord", id: "x.discord", version: "1", available: "2", locked: false },
+    { name: "WebView2", id: "x.web", version: "1", available: null, locked: true },
+  ];
+
+  async function open() {
+    const user = userEvent.setup();
+    api.programsList.mockResolvedValue({ wingetAvailable: true, items });
+    render(<AppsPage />);
+    await user.click(screen.getByRole("tab", { name: "Installed apps" }));
+    await screen.findByText("7-Zip");
+    return user;
+  }
+
+  it("updates everything with an update", async () => {
+    api.programsUpdate.mockResolvedValue({ ok: true, message: "Updated.", restartNeeded: false });
+    const user = await open();
+
+    await user.click(screen.getByRole("button", { name: "Update all (2)" }));
+
+    await waitFor(() => expect(api.programsUpdate.mock.calls).toEqual([["x.seven"], ["x.discord"]]));
+    await waitFor(() => expect(api.programsList).toHaveBeenCalledTimes(2));
+  });
+
+  it("asks before uninstalling and locks what the app needs", async () => {
+    api.programsUninstall.mockResolvedValue({ ok: true, message: "Discord was uninstalled.", restartNeeded: false });
+    const user = await open();
+
+    expect(screen.queryByRole("button", { name: "Uninstall WebView2" })).toBeNull();
+    expect(screen.getByText("Locked")).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Uninstall Discord" }));
+    expect(api.programsUninstall).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Yes, uninstall" }));
+    expect(api.programsUninstall).toHaveBeenCalledWith("x.discord");
+    expect(await screen.findByText("Discord was uninstalled.")).toBeTruthy();
   });
 });

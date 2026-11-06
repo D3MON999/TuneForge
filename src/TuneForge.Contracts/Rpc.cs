@@ -15,6 +15,7 @@ public static class RpcMethods
     public const string ServiceSet = "service.set";
     public const string FeatureSet = "feature.set";
     public const string Repair = "repair.run";
+    public const string BuiltInRemove = "builtin.remove";
 }
 
 public static class RpcErrorCodes

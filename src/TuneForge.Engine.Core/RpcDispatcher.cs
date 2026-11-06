@@ -46,6 +46,8 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, system.Features.Set(Parameters<FeatureSetRequest>(request))),
                 RpcMethods.Repair when system is not null =>
                     Success(request.Id, system.Repair.Run(Parameters<RepairRequest>(request))),
+                RpcMethods.BuiltInRemove when system is not null =>
+                    Success(request.Id, system.BuiltIn.Remove(Parameters<BuiltInRemoveRequest>(request).Ids)),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),
             };
         }

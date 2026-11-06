@@ -101,6 +101,47 @@ export interface RepairInfo {
   longRunning: boolean;
 }
 
+export interface BuiltInApp {
+  id: string;
+  title: string;
+  note: string;
+  group: string;
+  safety: "recommended" | "optional" | "caution";
+  installed: boolean;
+  canReinstall: boolean;
+}
+
+export interface BuiltInRemoveResult {
+  removed: string[];
+  failed: string[];
+}
+
+export interface SoftwareEntry {
+  id: string;
+  title: string;
+  note: string;
+  category: string;
+  installed: boolean;
+}
+
+export interface SoftwareList {
+  wingetAvailable: boolean;
+  items: SoftwareEntry[];
+}
+
+export interface InstalledProgram {
+  name: string;
+  id: string;
+  version: string;
+  available?: string | null;
+  locked: boolean;
+}
+
+export interface InstalledList {
+  wingetAvailable: boolean;
+  items: InstalledProgram[];
+}
+
 interface BridgeReply {
   id: string;
   ok: boolean;
@@ -181,6 +222,14 @@ export class Bridge {
   featureSet = (id: string, enabled: boolean) => this.call<OperationResult>("feature.set", { id, enabled });
   repairList = () => this.call<RepairInfo[]>("repair.list");
   repairRun = (id: string) => this.call<OperationResult>("repair.run", { id });
+  builtInList = () => this.call<BuiltInApp[]>("builtin.list");
+  builtInRemove = (ids: string[]) => this.call<BuiltInRemoveResult>("builtin.remove", { ids });
+  builtInReinstall = (id: string) => this.call<OperationResult>("builtin.reinstall", { id });
+  softwareList = () => this.call<SoftwareList>("software.list");
+  softwareInstall = (id: string) => this.call<OperationResult>("software.install", { id });
+  programsList = () => this.call<InstalledList>("programs.list");
+  programsUpdate = (id: string) => this.call<OperationResult>("programs.update", { id });
+  programsUninstall = (id: string) => this.call<OperationResult>("programs.uninstall", { id });
 }
 
 export const bridge = new Bridge(window.chrome?.webview);

@@ -31,3 +31,26 @@ public sealed record FeatureSetRequest(string Id, bool Enabled);
 public sealed record RepairInfo(string Id, string Title, string Note, bool LongRunning);
 
 public sealed record RepairRequest(string Id);
+
+public sealed record BuiltInAppEntry(
+    string Id,
+    string Title,
+    string Note,
+    string Group,
+    string Safety,
+    bool Installed,
+    bool CanReinstall);
+
+public sealed record BuiltInRemoveRequest(IReadOnlyList<string> Ids);
+
+public sealed record BuiltInRemoveResult(IReadOnlyList<string> Removed, IReadOnlyList<string> Failed);
+
+public sealed record SoftwareEntry(string Id, string Title, string Note, string Category, bool Installed);
+
+public sealed record SoftwareList(bool WingetAvailable, IReadOnlyList<SoftwareEntry> Items);
+
+public sealed record InstalledProgram(string Name, string Id, string Version, string? Available, bool Locked);
+
+public sealed record InstalledList(bool WingetAvailable, IReadOnlyList<InstalledProgram> Items);
+
+public sealed record AppIdRequest(string Id);
