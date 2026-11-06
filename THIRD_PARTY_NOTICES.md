@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-TuneForge is private software. It uses these components under their own licences.
+TuneForge is licensed under GPL-3.0. It uses these components under their own licences.
 
 | Component | Used for | Licence |
 |---|---|---|
@@ -18,8 +18,6 @@ TuneForge is private software. It uses these components under their own licences
 | UI/UX Pro Max | Design guidance, not shipped | MIT |
 | Win11Debloat | Tweak data in `catalog.json`, app data in `builtin-apps.json` | MIT, notice below |
 | WinUtil | Tweak data in `catalog.json`, app data in `builtin-apps.json` and `software.json`, DNS provider addresses | MIT, notice below |
-
-Verify each licence again before the first release.
 
 The tweak and app catalogs are adapted from the two projects below. Tweak values were reviewed and some were changed.
 

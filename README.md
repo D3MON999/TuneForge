@@ -6,6 +6,7 @@
   <a href="https://github.com/D3MON999/TuneForge/releases/latest"><img src="https://img.shields.io/github/v/release/D3MON999/TuneForge?style=for-the-badge&color=ffffff&labelColor=111111&label=Latest" alt="Latest version"></a>
   <a href="https://github.com/D3MON999/TuneForge/releases"><img src="https://img.shields.io/github/downloads/D3MON999/TuneForge/total?style=for-the-badge&color=ffffff&labelColor=111111&label=Downloads" alt="Downloads"></a>
   <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-ffffff?style=for-the-badge&labelColor=111111" alt="Windows 10 and 11">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-ffffff?style=for-the-badge&labelColor=111111" alt="GPL-3.0 license"></a>
 </p>
 
 <h3 align="center">
@@ -119,6 +120,10 @@ Obsidian, the black theme shown at the top, is the default.
 3. Open TuneForge. A short guide walks you through the basics.
 
 You'll need 64-bit Windows 10 or 11 and the Microsoft Edge WebView2 Runtime, which most PCs already have.
+
+## License
+
+TuneForge is free and open source under the [GPL-3.0 license](LICENSE). You can use, change and share it, and anything you release from it must stay open source under the same license.
 
 ## Credits
 
