@@ -251,16 +251,17 @@ export function TweaksPage({
 
 /** Settings another tool set as a Windows policy. History has no record of them, so this is the way back. */
 function LockedGroup({ items, onChanged }: { items: Tweak[]; onChanged: () => void }) {
+  const ALL = "*all*";
   const [confirming, setConfirming] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [result, setResult] = useState<OperationResult | string | null>(null);
 
-  async function remove(tweak: Tweak) {
+  async function remove(key: string, ids: string[]) {
     setConfirming(null);
-    setBusy(tweak.id);
+    setBusy(key);
     setResult(null);
     try {
-      setResult(await bridge.removeLock(tweak.id));
+      setResult(await bridge.removeLocks(ids));
       onChanged();
     } catch (reason) {
       setResult((reason as Error).message);
@@ -276,16 +277,46 @@ function LockedGroup({ items, onChanged }: { items: Tweak[]; onChanged: () => vo
     return status;
   }
 
+  const confirmRow = (message: string, onYes: () => void) => (
+    <div className="mt-2 flex flex-wrap items-center gap-2">
+      <span className="font-medium">{message}</span>
+      <button type="button" onClick={onYes} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
+        Yes, remove {confirming === ALL ? "them" : "it"}
+      </button>
+      <button type="button" onClick={() => setConfirming(null)} className="min-h-11 cursor-pointer rounded-md border border-border px-4 font-medium">
+        Cancel
+      </button>
+    </div>
+  );
+
   return (
     <section aria-labelledby="locked-title" className="mt-6">
       {status}
-      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-4">
-        <h2 id="locked-title" className="font-semibold text-muted-foreground">
-          Locked by another app ({items.length})
-        </h2>
-        <p className="text-sm text-muted-foreground">Windows shows these as managed by your organization</p>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <div className="min-w-0">
+          <h2 id="locked-title" className="font-semibold text-muted-foreground">
+            Locked by another app ({items.length})
+          </h2>
+          <p className="text-sm text-muted-foreground">Windows shows these as managed by your organization</p>
+        </div>
+        {items.length > 1 && (
+          <button
+            type="button"
+            disabled={busy !== null}
+            aria-busy={busy === ALL}
+            onClick={() => setConfirming(ALL)}
+            className="min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-4 font-medium disabled:cursor-wait disabled:opacity-60"
+          >
+            {busy === ALL ? "Working" : `Remove all (${items.length})`}
+          </button>
+        )}
       </div>
-      <ul className="flex flex-col gap-1.5">
+      {confirming === ALL &&
+        confirmRow(
+          `Remove all ${items.length} locks? Windows will ask for permission once, and you can undo them together from History.`,
+          () => remove(ALL, items.map((tweak) => tweak.id)),
+        )}
+      <ul className="mt-2 flex flex-col gap-1.5">
         {items.map((tweak) => (
           <li key={tweak.id} className="rounded-lg border border-dashed border-border px-4 py-2.5">
             <div className="flex items-center gap-3.5">
@@ -305,17 +336,8 @@ function LockedGroup({ items, onChanged }: { items: Tweak[]; onChanged: () => vo
                 {busy === tweak.id ? "Working" : "Remove lock"}
               </button>
             </div>
-            {confirming === tweak.id && (
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="font-medium">Remove this lock? Windows will ask for permission, and you can undo it from History.</span>
-                <button type="button" onClick={() => remove(tweak)} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
-                  Yes, remove it
-                </button>
-                <button type="button" onClick={() => setConfirming(null)} className="min-h-11 cursor-pointer rounded-md border border-border px-4 font-medium">
-                  Cancel
-                </button>
-              </div>
-            )}
+            {confirming === tweak.id &&
+              confirmRow("Remove this lock? Windows will ask for permission, and you can undo it from History.", () => remove(tweak.id, [tweak.id]))}
           </li>
         ))}
       </ul>

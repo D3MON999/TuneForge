@@ -267,7 +267,7 @@ export function GpuCard() {
         <dt className="text-muted-foreground">Card</dt>
         <dd>{gpu.name}</dd>
         <dt className="text-muted-foreground">Driver</dt>
-        <dd>{gpu.driver}. Compare with the latest on NVIDIA's site or in the NVIDIA app.</dd>
+        <dd>{gpu.driver}</dd>
         <dt className="text-muted-foreground">Temperature</dt>
         <dd className={hot ? "font-medium text-warning" : ""}>
           {gpu.temperatureC == null ? "Not reported" : `${gpu.temperatureC} °C${hot ? ", running hot. Check its fans and dust." : ""}`}

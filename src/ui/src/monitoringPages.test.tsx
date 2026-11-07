@@ -13,6 +13,8 @@ vi.mock("./bridge", () => ({
     monitorLive: vi.fn(),
     healthCheck: vi.fn(),
     healthIgnore: vi.fn(),
+    driverRead: vi.fn(),
+    bootTimes: vi.fn(),
     storageRead: vi.fn(),
     eventErrors: vi.fn(),
     eventRead: vi.fn(),
@@ -80,6 +82,7 @@ beforeEach(() => {
   api.healthCheck.mockResolvedValue(health);
   api.gpuHealth.mockResolvedValue(null);
   api.bandwidthList.mockResolvedValue([]);
+  api.driverRead.mockResolvedValue([]);
 });
 
 afterEach(cleanup);

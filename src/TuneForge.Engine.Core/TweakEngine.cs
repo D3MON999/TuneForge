@@ -6,7 +6,10 @@ namespace TuneForge.Engine.Core;
 /// <summary>Reads tweak state without changing anything. Safe to run without admin rights.</summary>
 public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, int osBuild)
 {
-    /// <summary>ours is what TuneForge wrote itself, which History can already undo.</summary>
+    /// <summary>
+    /// ours is what TuneForge wrote itself, which History can already undo. Without it nothing is called locked,
+    /// because a setting TuneForge made itself would otherwise be offered for removal.
+    /// </summary>
     public IReadOnlyList<TweakStatus> Scan(IReadOnlySet<string>? ours = null) => catalog.Items.Select(item => ToStatus(item, ours)).ToList();
 
     public IReadOnlyList<TweakPreview> Preview(IEnumerable<string> ids) =>
@@ -43,7 +46,7 @@ public sealed class TweakScanner(TweakCatalog catalog, IRegistryStore registry, 
             state,
             item.Description,
             item.Hazard,
-            item.Supports(osBuild) && item.Actions.Any(action => IsLocking(action) && ours?.Contains(action.Display) != true));
+            ours is not null && item.Supports(osBuild) && item.Actions.Any(action => IsLocking(action) && !ours.Contains(action.Display)));
     }
 
     private bool IsLocking(RegistryAction action) =>
@@ -104,17 +107,72 @@ public sealed class TweakEngine(
     /// It's journaled like any other change, so History can put the lock back. Ordinary settings are left alone,
     /// because the catalog only knows what a tweak sets, not what each PC had before.
     /// </summary>
-    public OperationResult RemoveLock(string id)
+    public OperationResult RemoveLock(string id) => RemoveLocks([id]);
+
+    /// <summary>Several at once share one change, so one Windows prompt and one Undo in History.</summary>
+    public OperationResult RemoveLocks(IReadOnlyList<string> ids)
     {
-        var item = catalog.Resolve([id])[0];
-        var locks = item.Actions
-            .Where(action => action is { IsPolicy: true, Delete: false } && TweakScanner.Matches(registry.Read(action.Hive, action.Path, action.Name), action.Target))
-            .Select(action => action with { Kind = null, Value = null, Delete = true })
+        // One at a time, because Resolve refuses two choices from the same group, and both may be locked.
+        var built = ids.Distinct(StringComparer.Ordinal)
+            .Select(id => catalog.Resolve([id])[0])
+            .Select(item => item with
+            {
+                Id = $"remove-lock:{item.Id}",
+                Actions = item.Actions
+                    .Where(action => action is { IsPolicy: true, Delete: false } && TweakScanner.Matches(registry.Read(action.Hive, action.Path, action.Name), action.Target))
+                    .Select(action => action with { Kind = null, Value = null, Delete = true })
+                    .ToList(),
+            })
+            .Where(item => item.Actions.Count > 0)
             .ToList();
 
-        return locks.Count == 0
-            ? throw new CatalogRequestException("That setting isn't locked.")
-            : ApplyBuilt(item with { Id = $"remove-lock:{item.Id}", Actions = locks });
+        if (built.Count == 0)
+        {
+            throw new CatalogRequestException(ids.Count == 1 ? "That setting isn't locked." : "None of these settings are locked.");
+        }
+
+        var changeSetId = journal.BeginChangeSet(userSid, osBuild, appVersion, "skipped");
+        var failed = built.Select(item => ApplyItem(changeSetId, item)).Count(result => result.Status != TweakStates.Applied);
+        var removed = built.Count - failed;
+        if (removed == 0)
+        {
+            return new OperationResult(false, "Windows refused this change, so nothing was changed.");
+        }
+
+        var message = built.Count == 1 ? "Saved. You can undo this from History."
+            : failed == 0 ? $"Removed {removed} locks. You can undo them together from History."
+            : $"Removed {removed} of {built.Count} locks. Windows refused the rest. You can undo this from History.";
+        return new OperationResult(failed == 0, message, built.Any(item => item.Restart == "reboot"));
+    }
+
+    /// <summary>
+    /// Undoes every active change this user made, newest first, so later changes come off before earlier ones.
+    /// Anything another tool changed since is left alone and reported, as a single undo would.
+    /// </summary>
+    public UndoResult UndoAll()
+    {
+        var active = journal.ListChangeSets(int.MaxValue).Where(set => set.UndoneUtc is null).ToList();
+        if (active.Count == 0)
+        {
+            throw new CatalogRequestException("There's nothing to undo.");
+        }
+
+        var restored = 0;
+        var problems = new List<string>();
+        foreach (var set in active)
+        {
+            if (journal.GetSetUser(set.Id) != userSid)
+            {
+                problems.Add($"Change {set.Id} was made by another Windows user, so it was left alone.");
+                continue;
+            }
+
+            var result = Undo(set.Id);
+            restored += result.Restored;
+            problems.AddRange(result.Problems);
+        }
+
+        return new UndoResult(0, restored, problems);
     }
 
     public UndoResult Undo(long changeSetId)

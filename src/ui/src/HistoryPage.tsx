@@ -7,6 +7,25 @@ export function HistoryPage() {
   const [error, setError] = useState<string | null>(null);
   const [undoing, setUndoing] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<UndoResult | null>(null);
+  const [confirmingAll, setConfirmingAll] = useState(false);
+  const ALL = -1;
+
+  async function undoAll() {
+    setConfirmingAll(false);
+    setUndoing(ALL);
+    setError(null);
+    setOutcome(null);
+    try {
+      setOutcome(await bridge.undoAll());
+      load();
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      setUndoing(null);
+    }
+  }
+
+  const active = sets?.filter((set) => !set.undoneUtc && set.tweakIds.length > 0).length ?? 0;
 
   const load = useCallback(() => {
     bridge.history().then(setSets, (reason: Error) => setError(reason.message));
@@ -30,6 +49,39 @@ export function HistoryPage() {
 
   return (
     <div className="flex flex-col gap-3">
+      {active > 0 && (
+        <div className="rounded-md border border-border bg-card p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-medium">Put everything back</p>
+              <p className="text-sm text-muted-foreground">Undo every change TuneForge has made, newest first.</p>
+            </div>
+            <button
+              type="button"
+              disabled={undoing !== null}
+              aria-busy={undoing === ALL}
+              onClick={() => setConfirmingAll(true)}
+              className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-border px-4 font-medium disabled:cursor-wait disabled:opacity-60"
+            >
+              {undoing === ALL && <LoaderCircle aria-hidden="true" className="size-5 animate-spin" />}
+              {undoing === ALL ? "Undoing" : "Undo everything"}
+            </button>
+          </div>
+          {confirmingAll && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="font-medium">
+                {active === 1 ? "Undo your 1 change?" : `Undo all ${active} changes?`} This also puts back any locks you removed. Windows asks for permission once.
+              </span>
+              <button type="button" onClick={undoAll} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
+                Yes, undo everything
+              </button>
+              <button type="button" onClick={() => setConfirmingAll(false)} className="min-h-11 cursor-pointer rounded-md border border-border px-4 font-medium">
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       {error && (
         <p role="alert" className="font-medium text-destructive">
           {error}

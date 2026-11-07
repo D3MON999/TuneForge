@@ -36,8 +36,12 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, tweaks.Apply(Parameters<ApplyRequest>(request))),
                 RpcMethods.Undo when tweaks is not null =>
                     Success(request.Id, tweaks.Undo(Parameters<UndoRequest>(request).ChangeSetId)),
-                RpcMethods.RemoveLock when tweaks is not null =>
-                    Success(request.Id, tweaks.RemoveLock(Parameters<RemoveLockRequest>(request).Id)),
+                RpcMethods.UndoAll when tweaks is not null =>
+                    Success(request.Id, tweaks.UndoAll()),
+                RpcMethods.BootTimes =>
+                    Success(request.Id, BootHistory.Read()),
+                RpcMethods.RemoveLocks when tweaks is not null =>
+                    Success(request.Id, tweaks.RemoveLocks(Parameters<RemoveLocksRequest>(request).Ids)),
                 RpcMethods.Cleanup when system is not null =>
                     Success(request.Id, system.Cleanup.CleanWithAdminRights(Parameters<CleanupRequest>(request).Ids)),
                 RpcMethods.StartupSet when system is not null && tweaks is not null =>

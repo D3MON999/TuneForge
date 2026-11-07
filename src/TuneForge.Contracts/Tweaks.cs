@@ -24,8 +24,8 @@ public sealed record TweakStatus(
     [property: JsonPropertyName("hazard")] bool Hazard = false,
     [property: JsonPropertyName("locked")] bool Locked = false);
 
-public sealed record RemoveLockRequest(
-    [property: JsonPropertyName("id")] string Id);
+public sealed record RemoveLocksRequest(
+    [property: JsonPropertyName("ids")] IReadOnlyList<string> Ids);
 
 public sealed record TweakChange(
     [property: JsonPropertyName("setting")] string Setting,

@@ -39,6 +39,42 @@ export interface ApplyResult {
   results: { id: string; status: string; message: string | null }[];
 }
 
+export interface SpaceEntry {
+  name: string;
+  path: string;
+  bytes: number;
+  isFolder: boolean;
+}
+
+export interface SpaceReport {
+  path: string;
+  bytes: number;
+  items: SpaceEntry[];
+  largestFiles: SpaceEntry[];
+}
+
+export interface GraphicsDriver {
+  name: string;
+  vendor: string;
+  version: string;
+  friendlyVersion?: string | null;
+  dateUtc?: string | null;
+  ageDays?: number | null;
+  hasDownloadPage: boolean;
+}
+
+export interface BootRecord {
+  whenUtc: string;
+  totalMs: number;
+  mainPathMs: number;
+  afterSignInMs: number;
+}
+
+export interface BootReport {
+  boots: BootRecord[];
+  firstChangeUtc?: string | null;
+}
+
 export interface UndoResult {
   changeSetId: number;
   restored: number;
@@ -501,7 +537,13 @@ export class Bridge {
     this.call<ApplyResult>("tweaks.apply", { ids, createRestorePoint, acceptHazards });
   history = () => this.call<ChangeSet[]>("history.list");
   undo = (changeSetId: number) => this.call<UndoResult>("history.undo", { changeSetId });
-  removeLock = (id: string) => this.call<OperationResult>("tweaks.removeLock", { id });
+  undoAll = () => this.call<UndoResult>("history.undoAll");
+  spaceScan = (path: string) => this.call<SpaceReport | null>("space.scan", { path });
+  spaceShow = (path: string) => this.call<boolean>("space.show", { path });
+  driverRead = () => this.call<GraphicsDriver[]>("driver.read");
+  driverPage = (vendor: string) => this.call<boolean>("driver.page", { vendor });
+  bootTimes = () => this.call<BootReport>("boot.times");
+  removeLocks = (ids: string[]) => this.call<OperationResult>("tweaks.removeLocks", { ids });
   cleanupScan = () => this.call<CleanupCategory[]>("cleanup.scan");
   cleanupRun = (ids: string[]) => this.call<CleanupResult>("cleanup.run", { ids });
   startupList = () => this.call<StartupEntry[]>("startup.list");

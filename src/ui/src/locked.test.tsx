@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { bridge, type Tweak } from "./bridge";
 import { TweaksPage } from "./TweaksPage";
 
-vi.mock("./bridge", () => ({ bridge: { scan: vi.fn(), removeLock: vi.fn() } }));
+vi.mock("./bridge", () => ({ bridge: { scan: vi.fn(), removeLocks: vi.fn() } }));
 
 const api = vi.mocked(bridge);
 
@@ -46,16 +46,16 @@ describe("Locked group", () => {
 
   it("asks first, then removes the lock and refreshes the page", async () => {
     const user = userEvent.setup();
-    api.removeLock.mockResolvedValue({ ok: true, message: "Saved. You can undo this from History.", restartNeeded: false });
+    api.removeLocks.mockResolvedValue({ ok: true, message: "Saved. You can undo this from History.", restartNeeded: false });
     render(<TweaksPage categories={["privacy"]} />);
 
     await user.click(await screen.findByRole("button", { name: "Remove lock on Disable clipboard history" }));
-    expect(api.removeLock).not.toHaveBeenCalled();
+    expect(api.removeLocks).not.toHaveBeenCalled();
 
     api.scan.mockResolvedValue([{ ...tweak, state: "not-applied", locked: false }, normal]);
     await user.click(screen.getByRole("button", { name: "Yes, remove it" }));
 
-    expect(api.removeLock).toHaveBeenCalledWith("privacy.clipboard-history");
+    expect(api.removeLocks).toHaveBeenCalledWith(["privacy.clipboard-history"]);
     expect(await screen.findByText("Saved. You can undo this from History.")).toBeTruthy();
     await waitFor(() => expect(screen.getByRole("checkbox", { name: /Disable clipboard history/ })).toBeTruthy());
     expect(screen.queryByText(/Locked by another app \(/)).toBeNull();
@@ -68,13 +68,13 @@ describe("Locked group", () => {
     await user.click(await screen.findByRole("button", { name: "Remove lock on Disable clipboard history" }));
     await user.click(screen.getByRole("button", { name: "Cancel" }));
 
-    expect(api.removeLock).not.toHaveBeenCalled();
+    expect(api.removeLocks).not.toHaveBeenCalled();
     expect(screen.queryByRole("button", { name: "Yes, remove it" })).toBeNull();
   });
 
   it("keeps the setting listed and says why if it fails", async () => {
     const user = userEvent.setup();
-    api.removeLock.mockRejectedValue(new Error("The request was declined."));
+    api.removeLocks.mockRejectedValue(new Error("The request was declined."));
     render(<TweaksPage categories={["privacy"]} />);
 
     await user.click(await screen.findByRole("button", { name: "Remove lock on Disable clipboard history" }));
@@ -92,5 +92,29 @@ describe("Locked group", () => {
     await user.type(screen.getByRole("searchbox", { name: "Search tweaks" }), "something");
 
     expect(screen.queryByText(/Locked by another app/)).toBeNull();
+  });
+  it("removes every lock in one go after one confirmation", async () => {
+    const user = userEvent.setup();
+    const sync: Tweak = { ...tweak, id: "privacy.clipboard-sync", title: "Disable clipboard sync" };
+    api.scan.mockResolvedValue([tweak, sync, normal]);
+    api.removeLocks.mockResolvedValue({ ok: true, message: "Removed 2 locks. You can undo them together from History.", restartNeeded: false });
+    render(<TweaksPage categories={["privacy"]} />);
+
+    await user.click(await screen.findByRole("button", { name: "Remove all (2)" }));
+    expect(api.removeLocks).not.toHaveBeenCalled();
+    expect(screen.getByText(/Remove all 2 locks\?/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Yes, remove them" }));
+
+    expect(api.removeLocks).toHaveBeenCalledTimes(1);
+    expect(api.removeLocks).toHaveBeenCalledWith(["privacy.clipboard-history", "privacy.clipboard-sync"]);
+    expect(await screen.findByText("Removed 2 locks. You can undo them together from History.")).toBeTruthy();
+  });
+
+  it("only offers Remove all when there's more than one", async () => {
+    render(<TweaksPage categories={["privacy"]} />);
+    await group();
+
+    expect(screen.queryByRole("button", { name: /Remove all/ })).toBeNull();
   });
 });

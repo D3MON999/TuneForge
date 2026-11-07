@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { AppsPage } from "./AppsPage";
 import { AutomationSettings, MemoryCard } from "./AutomationPanels";
 import { CleanupPage } from "./CleanupPage";
+import { SpaceFinder } from "./Insights";
 import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
 import { RegistryBackupCard } from "./ExtraPanels";
@@ -120,12 +121,24 @@ export function App() {
   const { prompt, later } = useUpdatePrompt();
 
   useEffect(() => {
-    applyTheme(theme);
-    const bar = titleBarColors();
-    if (bar) {
-      // The title bar is only decoration, so a failure here isn't worth showing.
-      bridge.windowTheme(bar.color, bar.dark).catch(() => undefined);
+    function show() {
+      applyTheme(theme);
+      const bar = titleBarColors();
+      if (bar) {
+        // The title bar is only decoration, so a failure here isn't worth showing.
+        bridge.windowTheme(bar.color, bar.dark).catch(() => undefined);
+      }
     }
+
+    show();
+    if (theme !== "system") {
+      return undefined;
+    }
+
+    // Match Windows follows Windows while the app is open, not just when it starts.
+    const windows = matchMedia("(prefers-color-scheme: dark)");
+    windows.addEventListener("change", show);
+    return () => windows.removeEventListener("change", show);
   }, [theme]);
 
   function open(next: SearchTarget) {
@@ -134,6 +147,8 @@ export function App() {
   }
 
   function navigate(id: string) {
+    // Picking a page while the update page shows counts as Later, so the click always does something.
+    later();
     setTarget(null);
     setActive(id);
   }
@@ -191,6 +206,7 @@ export function App() {
             <>
               <CleanupPage />
               <MemoryCard />
+              <SpaceFinder />
             </>
           )}
           {page.id === "apps" && <AppsPage key={target?.tab} initialTab={target?.tab} />}

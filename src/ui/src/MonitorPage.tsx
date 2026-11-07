@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } fr
 import { bridge, type ErrorGroup, type StorageReport, type WindowsEvent } from "./bridge";
 import { ControllerTest, GpuCard, HeadsetTest, WebcamTest } from "./ExtraPanels";
 import { formatBytes } from "./format";
+import { DriverCard, StartupCard } from "./Insights";
 
 type Tab = "storage" | "errors" | "logs" | "tests";
 
@@ -17,6 +18,10 @@ export function MonitorPage({ initialTab }: { initialTab?: string }) {
 
   return (
     <div>
+      <div className="mb-5 grid gap-3 lg:grid-cols-2">
+        <StartupCard />
+        <DriverCard />
+      </div>
       <div role="tablist" aria-label="Monitor sections" className="flex flex-wrap gap-2">
         {tabs.map((item) => (
           <button

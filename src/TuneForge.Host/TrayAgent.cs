@@ -24,7 +24,14 @@ public sealed class TrayAgent : IDisposable
     {
         var menu = new ContextMenuStrip();
         menu.Items.Add("Open TuneForge", null, (_, _) => open());
+        menu.Items.Add(new ToolStripSeparator());
+        var turbo = new ToolStripMenuItem("Turbo mode");
+        turbo.Click += (_, _) => Guarded(() => _games!.SetTurbo(!_games.TurboOn));
+        menu.Items.Add(turbo);
+        menu.Items.Add("Clean memory", null, (_, _) => CleanMemory(actions));
+        menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, (_, _) => exit());
+        menu.Opening += (_, _) => turbo.Checked = _games?.TurboOn == true;
 
         using var image = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/TuneForge.ico")).Stream;
         _trayImage = new Icon(image, SystemInformation.SmallIconSize);
@@ -39,6 +46,19 @@ public sealed class TrayAgent : IDisposable
     }
 
     public GameBooster Games => _games;
+
+    /// <summary>Runs off the menu's thread, so the tray stays responsive while memory is trimmed.</summary>
+    private void CleanMemory(IAutomationActions actions) => Task.Run(() =>
+    {
+        try
+        {
+            Notify("Clean memory", TrayMessages.Memory(actions.TrimMemory()));
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or InvalidOperationException or System.ComponentModel.Win32Exception)
+        {
+            Notify("Clean memory", "Memory couldn't be cleaned this time.");
+        }
+    });
 
     /// <summary>The icon shows only while something needs it, and the checks only run then too.</summary>
     public void Apply(SettingsUpdate choices)

@@ -59,6 +59,7 @@ public partial class MainWindow : Window
     private static readonly TimeSpan BusyRetry = TimeSpan.FromMinutes(10);
     private readonly System.Windows.Threading.DispatcherTimer _updateTimer = new() { Interval = TimeSpan.FromMinutes(2) };
     private volatile UpdateStatus? _pendingUpdate;
+    private CancellationTokenSource? _spaceScan;
     private int _updateNudge;
     private bool _exiting;
     private WindowState _stateBeforeFullScreen;
@@ -96,6 +97,7 @@ public partial class MainWindow : Window
         Web.DefaultBackgroundColor = System.Drawing.Color.Black;
         _updateTimer.Tick += async (_, _) => await CheckForUpdateAsync();
         _updateTimer.Start();
+        _ = Task.Run(ClearOldUpdates);
 
         // Black until the page loads and says which theme is on, so the bar doesn't flash white.
         SourceInitialized += (_, _) => SetTitleBar(new WindowThemeRequest("#000000", true));
@@ -109,6 +111,27 @@ public partial class MainWindow : Window
             }
         };
         Closed += (_, _) => ExitApp();
+    }
+
+    /// <summary>A new start means any update has finished, so the downloaded installer is no longer needed.</summary>
+    private static void ClearOldUpdates()
+    {
+        try
+        {
+            if (!Directory.Exists(UpdateService.DefaultFolder))
+            {
+                return;
+            }
+
+            foreach (var file in Directory.EnumerateFiles(UpdateService.DefaultFolder))
+            {
+                File.Delete(file);
+            }
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // It's only disk space. The next download clears the folder anyway.
+        }
     }
 
     /// <summary>
@@ -296,9 +319,15 @@ public partial class MainWindow : Window
         "tweaks.scan" => await Task.Run(ScanTweaks),
         "tweaks.preview" => await Task.Run(() => _scanner.Preview(Read<PreviewPayload>(payload).Ids)),
         "tweaks.apply" => await RefreshAfter(_engine.ApplyAsync(Read<ApplyRequest>(payload))),
-        "tweaks.removeLock" => await RefreshAfter(_engine.RemoveLockAsync(Read<RemoveLockRequest>(payload).Id)),
+        "tweaks.removeLocks" => await RefreshAfter(_engine.RemoveLocksAsync(Read<RemoveLocksRequest>(payload).Ids)),
         "history.list" => await Task.Run(ReadHistory),
         "history.undo" => await RefreshAfter(_engine.UndoAsync(Read<UndoRequest>(payload).ChangeSetId)),
+        "history.undoAll" => await RefreshAfter(_engine.UndoAllAsync()),
+        "space.scan" => await ScanSpaceAsync(Read<SpaceRequest>(payload).Path),
+        "space.show" => ShowInExplorer(Read<SpaceRequest>(payload).Path),
+        "driver.read" => await Task.Run(GraphicsDrivers.Read),
+        "driver.page" => OpenDriverPage(Read<DriverPageRequest>(payload).Vendor),
+        "boot.times" => await ReadBootTimesAsync(),
         "cleanup.scan" => await Task.Run(_cleanup.Scan),
         "cleanup.run" => await CleanAsync(Read<CleanupRequest>(payload).Ids),
         "startup.list" => await Task.Run(_startup.List),
@@ -424,6 +453,46 @@ public partial class MainWindow : Window
 
         _ = Dispatcher.BeginInvoke(ExitApp);
         return new OperationResult(true, "Installing the update.");
+    }
+
+    /// <summary>A new scan replaces the last one, so clicking around quickly doesn't stack up disk reads.</summary>
+    private async Task<SpaceReport?> ScanSpaceAsync(string path)
+    {
+        var scan = new CancellationTokenSource();
+        Interlocked.Exchange(ref _spaceScan, scan)?.Cancel();
+        try
+        {
+            return await Task.Run(() => SpaceFinder.Scan(path, scan.Token), scan.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+    }
+
+    private static bool ShowInExplorer(string path)
+    {
+        if (!Path.IsPathFullyQualified(path) || path.Contains('"') || !(File.Exists(path) || Directory.Exists(path)))
+        {
+            throw new CatalogRequestException("That file or folder no longer exists.");
+        }
+
+        using var _ = Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"") { UseShellExecute = false });
+        return true;
+    }
+
+    private static bool OpenDriverPage(string vendor)
+    {
+        var page = GraphicsDrivers.DownloadPage(vendor) ?? throw new CatalogRequestException("There's no download page for that graphics card.");
+        using var _ = Process.Start(new ProcessStartInfo(page) { UseShellExecute = true });
+        return true;
+    }
+
+    private async Task<BootReport> ReadBootTimesAsync()
+    {
+        var boots = await _engine.BootTimesAsync();
+        var first = ReadHistory().Select(set => set.CreatedUtc).OrderBy(when => when, StringComparer.Ordinal).FirstOrDefault();
+        return new BootReport(boots, first);
     }
 
     private bool SetTurbo(bool on)
@@ -620,10 +689,21 @@ public partial class MainWindow : Window
     private static T Read<T>(JsonElement payload) =>
         payload.Deserialize<T>(RpcProtocol.Json) ?? throw new EngineException("Invalid request.");
 
+    /// <summary>If History can't be read right now, the list still loads, just without the locked check.</summary>
     private IReadOnlyList<TweakStatus> ScanTweaks()
     {
-        using var journal = Journal.OpenForReading(JournalLocation.DatabasePath);
-        return _scanner.Scan(journal?.ActiveWrites());
+        IReadOnlySet<string>? ours;
+        try
+        {
+            using var journal = Journal.OpenForReading(JournalLocation.DatabasePath);
+            ours = journal?.ActiveWrites() ?? new HashSet<string>();
+        }
+        catch (Exception exception) when (exception is Microsoft.Data.Sqlite.SqliteException or IOException or UnauthorizedAccessException)
+        {
+            ours = null;
+        }
+
+        return _scanner.Scan(ours);
     }
 
     private static IReadOnlyList<ChangeSetSummary> ReadHistory()

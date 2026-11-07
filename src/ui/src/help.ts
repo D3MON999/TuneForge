@@ -27,6 +27,7 @@ export const pageHelp: Record<string, string[]> = {
     "Sizes are measured first, and only files older than a day are removed from temporary folders.",
     "The safe categories are already on. Read the note on any other category before you turn it on.",
     "Files are deleted for good, so TuneForge asks you to confirm first.",
+    "Space finder shows what's using your drive. Click a folder to look inside it. It never deletes anything, and a whole drive can take a minute or two to scan.",
   ],
   apps: [
     "Startup and Services control what runs in the background. Startup changes can be undone from History.",
@@ -44,6 +45,8 @@ export const pageHelp: Record<string, string[]> = {
     "Windows tools opens Windows' own programs in a separate window.",
   ],
   monitor: [
+    "Startup time reads how long Windows took to start, as Windows measured it. Reading it needs admin rights, so Windows asks each time.",
+    "Graphics driver shows your driver's version and age. TuneForge can't tell if a newer one exists, so the button opens the maker's own download page.",
     "Disks shows the health Windows reports and how full each drive is.",
     "Windows errors groups repeated problems. Many are harmless, so look for ones that match when something went wrong.",
     "Hardware tests check your keyboard, mouse and monitor.",
@@ -51,6 +54,7 @@ export const pageHelp: Record<string, string[]> = {
   history: [
     "Each entry is one set of changes. Undo puts those settings back.",
     "If another program changed a setting since, TuneForge leaves it alone and tells you.",
+    "Undo everything puts back every change at once, newest first, including any locks you removed.",
   ],
   settings: [
     "Theme changes how TuneForge looks.",

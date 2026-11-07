@@ -26,11 +26,17 @@ public sealed class EngineClient : IDisposable
     public Task<ApplyResult> ApplyAsync(ApplyRequest request) =>
         RunAsync<ApplyResult>(RpcMethods.ApplyTweaks, request, TimeSpan.FromMinutes(5));
 
+    public Task<UndoResult> UndoAllAsync() =>
+        RunAsync<UndoResult>(RpcMethods.UndoAll, null, TimeSpan.FromMinutes(5));
+
+    public Task<IReadOnlyList<BootRecord>> BootTimesAsync() =>
+        RunAsync<IReadOnlyList<BootRecord>>(RpcMethods.BootTimes, null, TimeSpan.FromMinutes(1));
+
     public Task<UndoResult> UndoAsync(long changeSetId) =>
         RunAsync<UndoResult>(RpcMethods.Undo, new UndoRequest(changeSetId), TimeSpan.FromMinutes(2));
 
-    public Task<OperationResult> RemoveLockAsync(string id) =>
-        RunAsync<OperationResult>(RpcMethods.RemoveLock, new RemoveLockRequest(id), TimeSpan.FromMinutes(2));
+    public Task<OperationResult> RemoveLocksAsync(IReadOnlyList<string> ids) =>
+        RunAsync<OperationResult>(RpcMethods.RemoveLocks, new RemoveLocksRequest(ids), TimeSpan.FromMinutes(2));
 
     public Task<CleanupResult> CleanAsync(IReadOnlyList<string> ids) =>
         RunAsync<CleanupResult>(RpcMethods.Cleanup, new CleanupRequest(ids), TimeSpan.FromMinutes(30));

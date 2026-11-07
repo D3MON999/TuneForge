@@ -12,7 +12,7 @@ const string Usage = """
       tuneforge-cli apply <id>... [--preset minimal|standard|advanced] [--no-restore-point]
       tuneforge-cli history
       tuneforge-cli undo <change-number>
-      tuneforge-cli unlock <tweak>
+      tuneforge-cli unlock <tweak>...
       tuneforge-cli cleanup scan
       tuneforge-cli cleanup run <category>...
       tuneforge-cli features
@@ -84,7 +84,10 @@ try
         "history" => History(),
         "apply" => Admin(() => Apply(args[1..])),
         "undo" => Admin(() => Undo(args[1..])),
-        "unlock" when args.Length == 2 => Admin(() => Unlock(args[1])),
+        "unlock" when args.Length >= 2 => Admin(() => Unlock(args[1..])),
+        "space" when args.Length == 2 => Show(SpaceFinder.Scan(args[1])),
+        "drivers" => Show(GraphicsDrivers.Read()),
+        "boot" => Admin(() => Show(BootHistory.Read())),
         "cleanup" => Cleanup(args[1..]),
         "features" => Features(),
         "feature" when args.Length == 3 && args[2] is "on" or "off" =>
@@ -479,22 +482,24 @@ int Apply(string[] options)
     return result.Results.Any(item => item.Status == "failed") ? 1 : 0;
 }
 
-int Unlock(string id)
+int Unlock(string[] ids)
 {
     JournalLocation.EnsureProtected();
     using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
-    return Report(OpenEngine(journal).RemoveLock(id));
+    return Report(OpenEngine(journal).RemoveLocks(ids));
 }
 
 int Undo(string[] options)
 {
-    if (options.Length != 1 || !long.TryParse(options[0], CultureInfo.InvariantCulture, out var changeSetId))
+    var all = options is ["all"];
+    var changeSetId = 0L;
+    if (!all && (options.Length != 1 || !long.TryParse(options[0], CultureInfo.InvariantCulture, out changeSetId)))
     {
         return Help();
     }
 
     using var journal = Journal.OpenForWriting(JournalLocation.DatabasePath);
-    var result = OpenEngine(journal).Undo(changeSetId);
+    var result = all ? OpenEngine(journal).UndoAll() : OpenEngine(journal).Undo(changeSetId);
     foreach (var problem in result.Problems)
     {
         Console.WriteLine(problem);
