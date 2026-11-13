@@ -26,6 +26,9 @@ public static class RpcMethods
     public const string BandwidthRemove = "bandwidth.remove";
     public const string BiosRestart = "bios.restart";
     public const string BiosCancel = "bios.cancel";
+    public const string DriverRemove = "drivers.remove";
+    public const string DriverRestore = "drivers.restore";
+    public const string DriverBackupDelete = "drivers.deleteBackup";
 }
 
 public static class RpcErrorCodes

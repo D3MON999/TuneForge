@@ -14,4 +14,5 @@ public sealed record SystemOperations(
     AdvancedService Advanced,
     SecurityService Security,
     BandwidthLimits Bandwidth,
-    BiosRestart Bios);
+    BiosRestart Bios,
+    DisplayDriverRemover? DisplayDrivers = null);

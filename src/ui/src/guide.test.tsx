@@ -51,7 +51,7 @@ describe("PageHelp", () => {
   it("covers every page and opens on request", async () => {
     const user = userEvent.setup();
     expect(Object.keys(pageHelp).sort()).toEqual(
-      ["apps", "cleanup", "dashboard", "gaming", "history", "monitor", "network", "optimize", "privacy", "repair", "settings"],
+      ["apps", "cleanup", "dashboard", "gaming", "history", "monitor", "network", "optimize", "privacy", "repair", "settings", "testers"],
     );
     render(<PageHelp page="repair" />);
 

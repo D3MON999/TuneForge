@@ -29,8 +29,8 @@ public sealed class EngineClient : IDisposable
     public Task<UndoResult> UndoAllAsync() =>
         RunAsync<UndoResult>(RpcMethods.UndoAll, null, TimeSpan.FromMinutes(5));
 
-    public Task<IReadOnlyList<BootRecord>> BootTimesAsync() =>
-        RunAsync<IReadOnlyList<BootRecord>>(RpcMethods.BootTimes, null, TimeSpan.FromMinutes(1));
+    public Task<BootDiagnostics> BootTimesAsync() =>
+        RunAsync<BootDiagnostics>(RpcMethods.BootTimes, null, TimeSpan.FromMinutes(1));
 
     public Task<UndoResult> UndoAsync(long changeSetId) =>
         RunAsync<UndoResult>(RpcMethods.Undo, new UndoRequest(changeSetId), TimeSpan.FromMinutes(2));
@@ -70,6 +70,15 @@ public sealed class EngineClient : IDisposable
 
     public Task<OperationResult> RemoveBandwidthAsync(BandwidthRule rule) =>
         RunAsync<OperationResult>(RpcMethods.BandwidthRemove, rule, TimeSpan.FromMinutes(2));
+
+    public Task<OperationResult> RemoveDriverAsync(string vendor) =>
+        RunAsync<OperationResult>(RpcMethods.DriverRemove, new DriverPageRequest(vendor), TimeSpan.FromMinutes(30));
+
+    public Task<OperationResult> RestoreDriverAsync(string vendor) =>
+        RunAsync<OperationResult>(RpcMethods.DriverRestore, new DriverPageRequest(vendor), TimeSpan.FromMinutes(15));
+
+    public Task<OperationResult> DeleteDriverBackupAsync(string vendor) =>
+        RunAsync<OperationResult>(RpcMethods.DriverBackupDelete, new DriverPageRequest(vendor), TimeSpan.FromMinutes(2));
 
     public Task<OperationResult> RestartToBiosAsync() =>
         RunAsync<OperationResult>(RpcMethods.BiosRestart, null, TimeSpan.FromMinutes(1));

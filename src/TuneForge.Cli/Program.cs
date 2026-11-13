@@ -87,6 +87,7 @@ try
         "unlock" when args.Length >= 2 => Admin(() => Unlock(args[1..])),
         "space" when args.Length == 2 => Show(SpaceFinder.Scan(args[1])),
         "drivers" => Show(GraphicsDrivers.Read()),
+        "driver-packages" => Show(DisplayDriverRemover.Scan(DisplayDriverRemover.DefaultInfFolder)),
         "boot" => Admin(() => Show(BootHistory.Read())),
         "cleanup" => Cleanup(args[1..]),
         "features" => Features(),

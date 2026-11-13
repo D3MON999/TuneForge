@@ -70,9 +70,59 @@ export interface BootRecord {
   afterSignInMs: number;
 }
 
+export interface DriverPackage {
+  inf: string;
+  vendor: string;
+  version: string;
+  date?: string | null;
+}
+
+export interface DriverCleanState {
+  packages: DriverPackage[];
+  backups: { vendor: string; bytes: number }[];
+}
+
+export interface SlowStartupApp {
+  name: string;
+  file: string;
+  times: number;
+  addedMs: number;
+}
+
 export interface BootReport {
   boots: BootRecord[];
   firstChangeUtc?: string | null;
+  slowApps?: SlowStartupApp[];
+}
+
+export interface BatteryInfo {
+  name?: string | null;
+  maker?: string | null;
+  designMwh: number;
+  fullMwh: number;
+  cycles: number | null;
+}
+
+export interface BatteryReport {
+  batteries: BatteryInfo[];
+}
+
+export interface OldDownload {
+  name: string;
+  path: string;
+  bytes: number;
+  lastUsedUtc: string;
+  ageDays: number;
+}
+
+export interface OldDownloadsReport {
+  folder: string;
+  files: OldDownload[];
+}
+
+export interface RecycleResult {
+  moved: number;
+  failed: number;
 }
 
 export interface UndoResult {
@@ -543,6 +593,13 @@ export class Bridge {
   driverRead = () => this.call<GraphicsDriver[]>("driver.read");
   driverPage = (vendor: string) => this.call<boolean>("driver.page", { vendor });
   bootTimes = () => this.call<BootReport>("boot.times");
+  driverPackages = () => this.call<DriverCleanState>("driver.packages");
+  driverRemove = (vendor: string) => this.call<OperationResult>("driver.remove", { vendor });
+  driverRestore = (vendor: string) => this.call<OperationResult>("driver.restore", { vendor });
+  driverDeleteBackup = (vendor: string) => this.call<OperationResult>("driver.deleteBackup", { vendor });
+  batteryRead = () => this.call<BatteryReport>("battery.read");
+  oldDownloads = () => this.call<OldDownloadsReport>("downloads.old");
+  recycleDownloads = (paths: string[]) => this.call<RecycleResult>("downloads.recycle", { paths });
   removeLocks = (ids: string[]) => this.call<OperationResult>("tweaks.removeLocks", { ids });
   cleanupScan = () => this.call<CleanupCategory[]>("cleanup.scan");
   cleanupRun = (ids: string[]) => this.call<CleanupResult>("cleanup.run", { ids });

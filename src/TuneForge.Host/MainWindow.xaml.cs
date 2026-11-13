@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text.Json;
 using System.Windows;
@@ -327,7 +328,16 @@ public partial class MainWindow : Window
         "space.show" => ShowInExplorer(Read<SpaceRequest>(payload).Path),
         "driver.read" => await Task.Run(GraphicsDrivers.Read),
         "driver.page" => OpenDriverPage(Read<DriverPageRequest>(payload).Vendor),
+        "driver.packages" => await Task.Run(() => new DriverCleanState(
+            DisplayDriverRemover.Scan(DisplayDriverRemover.DefaultInfFolder),
+            DisplayDriverRemover.Backups(DisplayDriverRemover.DefaultBackupRoot))),
+        "driver.remove" => await _engine.RemoveDriverAsync(Read<DriverPageRequest>(payload).Vendor),
+        "driver.restore" => await _engine.RestoreDriverAsync(Read<DriverPageRequest>(payload).Vendor),
+        "driver.deleteBackup" => await _engine.DeleteDriverBackupAsync(Read<DriverPageRequest>(payload).Vendor),
         "boot.times" => await ReadBootTimesAsync(),
+        "battery.read" => await Task.Run(() => BatteryHealth.Read(_runner)),
+        "downloads.old" => await Task.Run(() => OldDownloads.Scan(DownloadsFolder(), DateTime.UtcNow)),
+        "downloads.recycle" => await Task.Run(() => RecycleDownloads(Read<RecycleRequest>(payload).Paths)),
         "cleanup.scan" => await Task.Run(_cleanup.Scan),
         "cleanup.run" => await CleanAsync(Read<CleanupRequest>(payload).Ids),
         "startup.list" => await Task.Run(_startup.List),
@@ -490,9 +500,68 @@ public partial class MainWindow : Window
 
     private async Task<BootReport> ReadBootTimesAsync()
     {
-        var boots = await _engine.BootTimesAsync();
+        var diagnostics = await _engine.BootTimesAsync();
         var first = ReadHistory().Select(set => set.CreatedUtc).OrderBy(when => when, StringComparer.Ordinal).FirstOrDefault();
-        return new BootReport(boots, first);
+        return new BootReport(diagnostics.Boots, first, diagnostics.SlowApps);
+    }
+
+    private static string DownloadsFolder()
+    {
+        var downloads = new Guid("374DE290-123F-4565-9164-39C4925E467B");
+        if (SHGetKnownFolderPath(downloads, 0, IntPtr.Zero, out var pointer) == 0)
+        {
+            try
+            {
+                return Marshal.PtrToStringUni(pointer) ?? string.Empty;
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pointer);
+            }
+        }
+
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+    }
+
+    [DllImport("shell32.dll")]
+    private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid id, uint flags, IntPtr token, out IntPtr path);
+
+    /// <summary>Recycle Bin only, never a permanent delete, and only for files inside Downloads.</summary>
+    private static RecycleResult RecycleDownloads(IReadOnlyList<string> paths)
+    {
+        var folder = DownloadsFolder();
+        int moved = 0, failed = 0;
+        foreach (var path in paths)
+        {
+            if (!OldDownloads.IsInside(folder, path) || !File.Exists(path) || File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint))
+            {
+                failed++;
+                continue;
+            }
+
+            try
+            {
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                    path,
+                    Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                    Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                    Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                if (File.Exists(path))
+                {
+                    failed++;
+                }
+                else
+                {
+                    moved++;
+                }
+            }
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            {
+                failed++;
+            }
+        }
+
+        return new RecycleResult(moved, failed);
     }
 
     private bool SetTurbo(bool on)

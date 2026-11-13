@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { bridge } from "./bridge";
@@ -14,6 +14,7 @@ vi.mock("./bridge", () => ({
     healthCheck: vi.fn(),
     healthIgnore: vi.fn(),
     driverRead: vi.fn(),
+    driverPackages: vi.fn(),
     bootTimes: vi.fn(),
     storageRead: vi.fn(),
     eventErrors: vi.fn(),
@@ -83,6 +84,7 @@ beforeEach(() => {
   api.gpuHealth.mockResolvedValue(null);
   api.bandwidthList.mockResolvedValue([]);
   api.driverRead.mockResolvedValue([]);
+  api.driverPackages.mockResolvedValue({ packages: [], backups: [] });
 });
 
 afterEach(cleanup);
@@ -252,30 +254,9 @@ describe("MonitorPage", () => {
     expect(api.eventRead).toHaveBeenLastCalledWith("Application", "warnings");
   });
 
-  it("tracks tested keys without typing into the page", async () => {
-    const user = userEvent.setup();
+  it("leaves the hardware tests to the Testers page", () => {
     render(<MonitorPage />);
-    await user.click(screen.getByRole("tab", { name: "Hardware tests" }));
-
-    const area = screen.getByRole("application", { name: "Keyboard test area" });
-    fireEvent.keyDown(area, { code: "KeyA" });
-    fireEvent.keyUp(area, { code: "KeyA" });
-
-    expect(screen.getByTestId("key-KeyA").getAttribute("data-tested")).toBe("true");
-    expect(screen.getByText(/1 of \d+ keys work/)).toBeTruthy();
-
-    await user.click(screen.getByRole("button", { name: "Reset" }));
-    expect(screen.getByText(/0 of \d+ keys work/)).toBeTruthy();
-  });
-
-  it("counts mouse buttons", async () => {
-    const user = userEvent.setup();
-    render(<MonitorPage />);
-    await user.click(screen.getByRole("tab", { name: "Hardware tests" }));
-
-    fireEvent.pointerDown(screen.getByTestId("mouse-pad"), { button: 2 });
-
-    expect(screen.getByText("1 clicks")).toBeTruthy();
+    expect(screen.queryByRole("tab", { name: "Hardware tests" })).toBeNull();
   });
 });
 

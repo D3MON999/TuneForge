@@ -1093,7 +1093,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": 22621,
    "maxBuild": null,
    "source": "Win11Debloat",
@@ -3363,7 +3365,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "WinUtil",
@@ -3506,7 +3510,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -3529,7 +3535,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -3612,7 +3620,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4031,7 +4041,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4084,7 +4096,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4107,7 +4121,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4130,7 +4146,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4153,7 +4171,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4176,7 +4196,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4199,7 +4221,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4222,7 +4246,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4314,7 +4340,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4390,7 +4418,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4526,7 +4556,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4563,7 +4595,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4616,7 +4650,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4653,7 +4689,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -4697,7 +4735,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -5205,7 +5245,9 @@
    "risk": "low",
    "impact": null,
    "restart": "signout",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -5366,7 +5408,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",
@@ -5458,7 +5502,9 @@
    "risk": "low",
    "impact": null,
    "restart": "reboot",
-   "presets": [],
+   "presets": [
+    "advanced"
+   ],
    "minBuild": null,
    "maxBuild": null,
    "source": "Windows",

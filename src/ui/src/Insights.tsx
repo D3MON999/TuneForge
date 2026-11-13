@@ -1,6 +1,6 @@
 import { ArrowLeft, File as FileIcon, Folder, FolderOpen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { bridge, type BootRecord, type BootReport, type GraphicsDriver, type SpaceReport, type VolumeInfo } from "./bridge";
+import { bridge, type BootRecord, type BootReport, type DriverCleanState, type GraphicsDriver, type OldDownloadsReport, type SpaceReport, type VolumeInfo } from "./bridge";
 import { formatBytes } from "./format";
 
 const buttonClass =
@@ -171,6 +171,132 @@ export function SpaceFinder() {
   );
 }
 
+/** Big, untouched files in Downloads. Removing sends them to the Recycle Bin, after a confirmation. */
+export function OldDownloads() {
+  const [report, setReport] = useState<OldDownloadsReport | null>(null);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function scan() {
+    setBusy(true);
+    setError(null);
+    setConfirming(false);
+    try {
+      setReport(await bridge.oldDownloads());
+      setPicked(new Set());
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function recycle() {
+    setBusy(true);
+    setError(null);
+    setConfirming(false);
+    try {
+      const result = await bridge.recycleDownloads([...picked]);
+      setMessage(
+        `${result.moved} ${result.moved === 1 ? "file" : "files"} moved to the Recycle Bin.${result.failed > 0 ? ` ${result.failed} couldn't be moved, maybe because they're open.` : ""}`,
+      );
+      setReport(await bridge.oldDownloads());
+      setPicked(new Set());
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function toggle(path: string) {
+    setMessage(null);
+    setPicked((current) => {
+      const next = new Set(current);
+      if (!next.delete(path)) {
+        next.add(path);
+      }
+      return next;
+    });
+  }
+
+  const files = report?.files ?? [];
+  const pickedBytes = files.filter((file) => picked.has(file.path)).reduce((sum, file) => sum + file.bytes, 0);
+  const show = (path: string) => bridge.spaceShow(path).catch((reason: Error) => setError(reason.message));
+
+  return (
+    <section aria-labelledby="downloads-title" className={`${cardClass} mt-5`}>
+      <h2 id="downloads-title" className="font-semibold">
+        Old downloads
+      </h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Big files in your Downloads folder that haven't been touched in 3 months. Nothing is removed unless you pick it, and removed files go to the Recycle Bin.
+      </p>
+      <button type="button" disabled={busy} aria-busy={busy} onClick={scan} className={`${buttonClass} mt-3`}>
+        {busy && !report ? "Looking" : report ? "Look again" : "Find old downloads"}
+      </button>
+      <div role="status">
+        {error && <p className="mt-3 font-medium text-destructive">{error}</p>}
+        {message && <p className="mt-3 font-medium">{message}</p>}
+        {report && files.length === 0 && <p className="mt-3 text-muted-foreground">No big, old files in {report.folder}.</p>}
+      </div>
+      {files.length > 0 && (
+        <>
+          <ul aria-label="Old downloads" className="mt-3 flex flex-col gap-1.5">
+            {files.map((file) => (
+              <li key={file.path} className="flex items-center gap-3 rounded-md border border-border bg-background px-3 py-1.5">
+                <input
+                  type="checkbox"
+                  aria-label={`Pick ${file.name}`}
+                  checked={picked.has(file.path)}
+                  onChange={() => toggle(file.path)}
+                  className="cursor-pointer"
+                />
+                <span className="min-w-0 flex-1 truncate" title={file.path}>
+                  {file.name}
+                </span>
+                <span className="hidden shrink-0 text-sm text-muted-foreground sm:inline">{Math.round(file.ageDays / 30)} months untouched</span>
+                <span className="w-20 shrink-0 text-right text-sm tabular-nums">{formatBytes(file.bytes)}</span>
+                <button
+                  type="button"
+                  aria-label={`Show ${file.name} in File Explorer`}
+                  title="Show in File Explorer"
+                  onClick={() => show(file.path)}
+                  className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-md hover:bg-muted"
+                >
+                  <FolderOpen aria-hidden="true" className="size-4" />
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {confirming ? (
+              <>
+                <p className="font-medium">
+                  Move {picked.size} {picked.size === 1 ? "file" : "files"} ({formatBytes(pickedBytes)}) to the Recycle Bin?
+                </p>
+                <button type="button" disabled={busy} onClick={recycle} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
+                  Move to Recycle Bin
+                </button>
+                <button type="button" onClick={() => setConfirming(false)} className={buttonClass}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button type="button" disabled={busy || picked.size === 0} onClick={() => setConfirming(true)} className={buttonClass}>
+                {picked.size === 0 ? "Pick files to remove" : `Remove ${picked.size} picked (${formatBytes(pickedBytes)})`}
+              </button>
+            )}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 const seconds = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
 const average = (boots: BootRecord[]) => boots.reduce((sum, boot) => sum + boot.totalMs, 0) / boots.length;
 
@@ -218,6 +344,27 @@ export function StartupCard() {
               </p>
             )}
           </>
+        )}
+        {report && (report.slowApps?.length ?? 0) > 0 && (
+          <div className="mt-4">
+            <h3 className="text-sm font-semibold">Slowing your starts</h3>
+            <p className="text-sm text-muted-foreground">Apps Windows caught delaying startup in the last 3 months. You can stop them starting with Windows on the Apps page.</p>
+            <ul aria-label="Apps slowing startup" className="mt-2 flex flex-col gap-1">
+              {report.slowApps!.map((app) => (
+                <li key={app.file} className="flex items-baseline justify-between gap-3 text-sm">
+                  <span className="min-w-0 truncate" title={app.file}>
+                    {app.name}
+                  </span>
+                  <span className="shrink-0 tabular-nums text-muted-foreground">
+                    +{seconds(app.addedMs)}, {app.times} {app.times === 1 ? "time" : "times"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {report && last && report.slowApps?.length === 0 && (
+          <p className="mt-3 text-sm text-muted-foreground">Windows hasn't caught any app slowing your starts lately.</p>
         )}
       </div>
       <button type="button" disabled={busy} aria-busy={busy} onClick={check} className={`${buttonClass} mt-3`}>
@@ -267,6 +414,142 @@ export function DriverCard() {
           )}
         </div>
       ))}
+      <DriverCleanup />
     </section>
+  );
+}
+
+type Pending = { kind: "remove" | "delete"; vendor: string } | null;
+
+/** Clean reinstall: back the driver up, remove it with Windows' own tool, and keep a way back. */
+function DriverCleanup() {
+  const [state, setState] = useState<DriverCleanState | null>(null);
+  const [pending, setPending] = useState<Pending>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [result, setResult] = useState<{ ok: boolean; message: string; vendor: string; removed: boolean } | null>(null);
+
+  const load = () => bridge.driverPackages().then(setState, () => setState({ packages: [], backups: [] }));
+
+  useEffect(() => {
+    void load();
+  }, []);
+
+  async function run(kind: "remove" | "restore" | "delete", vendor: string) {
+    setPending(null);
+    setResult(null);
+    setBusy(`${kind}${vendor}`);
+    try {
+      const action = kind === "remove" ? bridge.driverRemove : kind === "restore" ? bridge.driverRestore : bridge.driverDeleteBackup;
+      const outcome = await action(vendor);
+      setResult({ ok: outcome.ok, message: outcome.message, vendor, removed: kind === "remove" && outcome.ok });
+    } catch (reason) {
+      setResult({ ok: false, message: (reason as Error).message, vendor, removed: false });
+    } finally {
+      setBusy(null);
+      void load();
+    }
+  }
+
+  if (!state || (state.packages.length === 0 && state.backups.length === 0 && !result)) {
+    return null;
+  }
+
+  const vendors = [...new Set(state.packages.map((item) => item.vendor))];
+  return (
+    <div className="mt-5 border-t border-border pt-4">
+      <h3 className="font-semibold">Clean reinstall</h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Removes the graphics driver completely, so a fresh one installs cleanly. Useful when a driver update causes crashes or glitches.
+        TuneForge makes a restore point and a backup first, using Windows' own driver tool.
+      </p>
+
+      {vendors.map((vendor) => {
+        const count = state.packages.filter((item) => item.vendor === vendor).length;
+        const confirming = pending?.kind === "remove" && pending.vendor === vendor;
+        return (
+          <div key={vendor} className="mt-3">
+            {confirming ? (
+              <div role="alertdialog" aria-labelledby={`remove-${vendor}`} className="rounded-md border border-warning p-4">
+                <p id={`remove-${vendor}`} className="font-semibold">
+                  Remove the {vendor} driver?
+                </p>
+                <ul className="mt-2 ml-5 list-disc text-sm">
+                  <li>Close your games first. The screen flickers and drops to a low resolution until a new driver is installed.</li>
+                  <li>Download the new driver from {vendor} before you start.</li>
+                  <li>
+                    Removes {count} driver {count === 1 ? "package" : "packages"}, including older leftovers. A backup of {count === 1 ? "it" : "them"} is kept, so you can put it back.
+                  </li>
+                </ul>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button type="button" onClick={() => run("remove", vendor)} className="min-h-11 cursor-pointer rounded-md bg-primary px-4 font-medium text-on-primary">
+                    Yes, remove it
+                  </button>
+                  <button type="button" onClick={() => setPending(null)} className={buttonClass}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                disabled={busy !== null}
+                aria-busy={busy === `remove${vendor}`}
+                onClick={() => setPending({ kind: "remove", vendor })}
+                className={buttonClass}
+              >
+                {busy === `remove${vendor}` ? "Backing up and removing" : `Remove ${vendor} driver`}
+              </button>
+            )}
+          </div>
+        );
+      })}
+
+      <div role="status">
+        {busy?.startsWith("remove") && <p className="mt-2 text-sm text-muted-foreground">This takes a few minutes. Your screen will flicker.</p>}
+        {result && (
+          <div className="mt-3">
+            <p className={`font-medium ${result.ok ? "" : "text-destructive"}`}>{result.message}</p>
+            {result.removed && (
+              <button type="button" onClick={() => bridge.driverPage(result.vendor).catch(() => undefined)} className={`${buttonClass} mt-2`}>
+                Get the new {result.vendor} driver
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {state.backups.map((backup) => {
+        const deleting = pending?.kind === "delete" && pending.vendor === backup.vendor;
+        return (
+          <div key={backup.vendor} className="mt-4 rounded-md border border-border p-3">
+            <p className="text-sm">
+              A backup of your old {backup.vendor} driver is kept ({formatBytes(backup.bytes)}). Put it back if the new one gives you trouble.
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {deleting ? (
+                <>
+                  <p className="text-sm font-medium">Delete the backup? You won't be able to put this driver back.</p>
+                  <button type="button" onClick={() => run("delete", backup.vendor)} className={buttonClass}>
+                    Yes, delete it
+                  </button>
+                  <button type="button" onClick={() => setPending(null)} className={buttonClass}>
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button type="button" disabled={busy !== null} aria-busy={busy === `restore${backup.vendor}`} onClick={() => run("restore", backup.vendor)} className={buttonClass}>
+                    {busy === `restore${backup.vendor}` ? "Putting it back" : "Put it back"}
+                  </button>
+                  <button type="button" disabled={busy !== null} onClick={() => setPending({ kind: "delete", vendor: backup.vendor })} className={buttonClass}>
+                    Delete backup
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }

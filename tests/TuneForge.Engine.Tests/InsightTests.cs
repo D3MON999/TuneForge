@@ -192,6 +192,144 @@ public class BootHistoryTests
     }
 }
 
+public class SlowStartupAppTests
+{
+    private static string Record(string name, string friendly, int added) => $"""
+        <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+          <EventData>
+            <Data Name="Name">{name}</Data>
+            <Data Name="FriendlyName">{friendly}</Data>
+            <Data Name="TotalTime">{added + 900}</Data>
+            <Data Name="DegradationTime">{added}</Data>
+          </EventData>
+        </Event>
+        """;
+
+    [Fact]
+    public void ReadsTheAppAndItsDelay()
+    {
+        var app = BootHistory.ParseSlowApp(Record("OneDrive.exe", "Microsoft OneDrive", 1800))!.Value;
+
+        Assert.Equal("Microsoft OneDrive", app.Name);
+        Assert.Equal("OneDrive.exe", app.File);
+        Assert.Equal(1800, app.AddedMs);
+    }
+
+    [Fact]
+    public void SkipsRecordsWithoutADelay()
+    {
+        Assert.Null(BootHistory.ParseSlowApp(Record("app.exe", "App", 0)));
+        Assert.Null(BootHistory.ParseSlowApp("<Event><EventData /></Event>"));
+    }
+
+    [Fact]
+    public void PutsTheWorstOffenderFirst()
+    {
+        var apps = BootHistory.Summarize([("Chat", "chat.exe", 1000), ("Chat", "CHAT.EXE", 3000), ("Sync", "sync.exe", 2500)]);
+
+        Assert.Equal(["chat.exe", "sync.exe"], apps.Select(app => app.File));
+        Assert.Equal(2, apps[0].Times);
+        Assert.Equal(2000, apps[0].AddedMs);
+    }
+}
+
+public class BatteryHealthTests
+{
+    [Fact]
+    public void ReadsCapacitiesFromWindowsReport()
+    {
+        const string report = """
+            <?xml version="1.0" encoding="utf-8"?>
+            <BatteryReport xmlns="http://schemas.microsoft.com/battery/2012">
+              <Batteries>
+                <Battery>
+                  <Id>DELL 1234</Id>
+                  <Manufacturer>SMP</Manufacturer>
+                  <DesignCapacity>54000</DesignCapacity>
+                  <FullChargeCapacity>43200</FullChargeCapacity>
+                  <CycleCount>287</CycleCount>
+                </Battery>
+              </Batteries>
+            </BatteryReport>
+            """;
+
+        var battery = Assert.Single(BatteryHealth.Parse(report).Batteries);
+        Assert.Equal("DELL 1234", battery.Name);
+        Assert.Equal(54000, battery.DesignMwh);
+        Assert.Equal(43200, battery.FullMwh);
+        Assert.Equal(287, battery.Cycles);
+    }
+
+    [Fact]
+    public void ADesktopHasNoBatteries()
+    {
+        Assert.Empty(BatteryHealth.Parse("<BatteryReport><Batteries /></BatteryReport>").Batteries);
+    }
+
+    [Fact]
+    public void AMissingCycleCountIsUnknown()
+    {
+        var report = BatteryHealth.Parse("<BatteryReport><Batteries><Battery><DesignCapacity>40000</DesignCapacity><FullChargeCapacity>39000</FullChargeCapacity><CycleCount>0</CycleCount></Battery></Batteries></BatteryReport>");
+        Assert.Null(Assert.Single(report.Batteries).Cycles);
+    }
+}
+
+public sealed class OldDownloadsTests : IDisposable
+{
+    private readonly string _root = Directory.CreateTempSubdirectory("tf-downloads").FullName;
+
+    public void Dispose() => Directory.Delete(_root, recursive: true);
+
+    private string MakeFile(string name, long bytes, DateTime touchedUtc)
+    {
+        var path = Path.Combine(_root, name);
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        using (var stream = File.Create(path))
+        {
+            stream.SetLength(bytes);
+        }
+
+        File.SetCreationTimeUtc(path, touchedUtc);
+        File.SetLastWriteTimeUtc(path, touchedUtc);
+        return path;
+    }
+
+    [Fact]
+    public void ListsOnlyBigFilesLeftAlone()
+    {
+        var now = new DateTime(2026, 11, 14, 0, 0, 0, DateTimeKind.Utc);
+        MakeFile("old-big.iso", OldDownloads.MinBytes * 2, now.AddDays(-200));
+        MakeFile(Path.Combine("setups", "old-installer.exe"), OldDownloads.MinBytes, now.AddDays(-120));
+        MakeFile("new-big.zip", OldDownloads.MinBytes * 3, now.AddDays(-10));
+        MakeFile("old-small.pdf", 1024, now.AddDays(-400));
+
+        var report = OldDownloads.Scan(_root, now);
+
+        Assert.Equal(["old-big.iso", "old-installer.exe"], report.Files.Select(file => file.Name));
+        Assert.Equal(200, report.Files[0].AgeDays);
+    }
+
+    [Fact]
+    public void AMissingFolderListsNothing()
+    {
+        Assert.Empty(OldDownloads.Scan(Path.Combine(_root, "missing"), DateTime.UtcNow).Files);
+    }
+
+    [Theory]
+    [InlineData(@"C:\Users\me\Downloads\movie.mkv", true)]
+    [InlineData(@"C:\Users\me\Downloads\sub\a..b.zip", true)]
+    [InlineData(@"C:\Users\me\Downloads", false)]
+    [InlineData(@"C:\Users\me\Downloads\..\Documents\taxes.pdf", false)]
+    [InlineData(@"C:\Users\me\DownloadsOther\file.zip", false)]
+    [InlineData(@"C:\Windows\System32\kernel32.dll", false)]
+    [InlineData(@"movie.mkv", false)]
+    [InlineData("", false)]
+    public void OnlyFilesInsideDownloadsCanBeRemoved(string path, bool allowed)
+    {
+        Assert.Equal(allowed, OldDownloads.IsInside(@"C:\Users\me\Downloads", path));
+    }
+}
+
 public class TrayMessageTests
 {
     [Fact]

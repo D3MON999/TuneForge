@@ -10,13 +10,14 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  TestTubeDiagonal,
   Wrench,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AppsPage } from "./AppsPage";
 import { AutomationSettings, MemoryCard } from "./AutomationPanels";
 import { CleanupPage } from "./CleanupPage";
-import { SpaceFinder } from "./Insights";
+import { OldDownloads, SpaceFinder } from "./Insights";
 import { DashboardPage } from "./DashboardPage";
 import { EngineCard } from "./EngineCard";
 import { RegistryBackupCard } from "./ExtraPanels";
@@ -31,6 +32,7 @@ import { Logo } from "./Logo";
 import { UpdatePromptPage, useUpdatePrompt } from "./UpdatePrompt";
 import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, titleBarColors, type ThemeChoice } from "./theme";
+import { TestersPage } from "./TestersPage";
 import { TweaksPage } from "./TweaksPage";
 import { UpdateCard } from "./UpdateCard";
 
@@ -50,7 +52,8 @@ const pages: Page[] = [
   { id: "apps", label: "Apps", icon: Package, subtitle: "Control what's installed and what starts with Windows." },
   { id: "privacy", label: "Privacy", icon: ShieldCheck, subtitle: "Choose what Windows collects and shows you." },
   { id: "repair", label: "Repair", icon: Wrench, subtitle: "Run Windows' own repair tools." },
-  { id: "monitor", label: "Monitor", icon: Activity, subtitle: "Check disks, errors and hardware." },
+  { id: "monitor", label: "Monitor", icon: Activity, subtitle: "Check disks, errors and drivers." },
+  { id: "testers", label: "Testers", icon: TestTubeDiagonal, subtitle: "Check that your keyboard, mouse, screen, controller and battery work properly." },
   { id: "history", label: "History", icon: History, subtitle: "See what changed, and undo it." },
   { id: "settings", label: "Settings", icon: Settings, subtitle: "Make TuneForge your own." },
 ];
@@ -207,6 +210,7 @@ export function App() {
               <CleanupPage />
               <MemoryCard />
               <SpaceFinder />
+              <OldDownloads />
             </>
           )}
           {page.id === "apps" && <AppsPage key={target?.tab} initialTab={target?.tab} />}
@@ -220,6 +224,7 @@ export function App() {
           {page.id === "gaming" && <GamingPage key={target?.tab} initialTab={target?.tab} initialQuery={target?.query} />}
           {page.id === "network" && <NetworkPage key={target?.tab} initialTab={target?.tab} />}
           {page.id === "monitor" && <MonitorPage key={target?.tab} initialTab={target?.tab} />}
+          {page.id === "testers" && <TestersPage key={target?.tab} initialTab={target?.tab} />}
         </div>
       </main>
       {guide && <SetupGuide onDone={() => setGuide(false)} />}

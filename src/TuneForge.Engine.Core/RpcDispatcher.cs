@@ -39,7 +39,7 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                 RpcMethods.UndoAll when tweaks is not null =>
                     Success(request.Id, tweaks.UndoAll()),
                 RpcMethods.BootTimes =>
-                    Success(request.Id, BootHistory.Read()),
+                    Success(request.Id, BootHistory.Diagnose()),
                 RpcMethods.RemoveLocks when tweaks is not null =>
                     Success(request.Id, tweaks.RemoveLocks(Parameters<RemoveLocksRequest>(request).Ids)),
                 RpcMethods.Cleanup when system is not null =>
@@ -66,6 +66,12 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, system.Bandwidth.Remove(Parameters<BandwidthRule>(request).Program)),
                 RpcMethods.BiosRestart when system is not null => Success(request.Id, system.Bios.Restart()),
                 RpcMethods.BiosCancel when system is not null => Success(request.Id, system.Bios.Cancel()),
+                RpcMethods.DriverRemove when system?.DisplayDrivers is not null =>
+                    Success(request.Id, system.DisplayDrivers.Remove(Parameters<DriverPageRequest>(request).Vendor)),
+                RpcMethods.DriverRestore when system?.DisplayDrivers is not null =>
+                    Success(request.Id, system.DisplayDrivers.Restore(Parameters<DriverPageRequest>(request).Vendor)),
+                RpcMethods.DriverBackupDelete when system?.DisplayDrivers is not null =>
+                    Success(request.Id, system.DisplayDrivers.DeleteBackup(Parameters<DriverPageRequest>(request).Vendor)),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),
             };
         }

@@ -55,7 +55,13 @@ var system = new SystemOperations(
     new AdvancedService(runner, new FileAdvancedState(JournalLocation.AdvancedStatePath), new WindowsAdapterSettings()),
     new SecurityService(runner),
     new BandwidthLimits(runner),
-    new BiosRestart(runner));
+    new BiosRestart(runner),
+    new DisplayDriverRemover(
+        runner,
+        new SystemRestorePointService(),
+        DisplayDriverRemover.DefaultInfFolder,
+        DisplayDriverRemover.DefaultBackupRoot,
+        Environment.OSVersion.Version.Build));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

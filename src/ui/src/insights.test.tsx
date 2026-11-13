@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { bridge, type SpaceReport } from "./bridge";
 import { HistoryPage } from "./HistoryPage";
-import { DriverCard, SpaceFinder, StartupCard } from "./Insights";
+import { DriverCard, OldDownloads, SpaceFinder, StartupCard } from "./Insights";
 
 vi.mock("./bridge", () => ({
   bridge: {
@@ -13,10 +13,16 @@ vi.mock("./bridge", () => ({
     spaceShow: vi.fn(),
     driverRead: vi.fn(),
     driverPage: vi.fn(),
+    driverPackages: vi.fn(),
+    driverRemove: vi.fn(),
+    driverRestore: vi.fn(),
+    driverDeleteBackup: vi.fn(),
     bootTimes: vi.fn(),
     history: vi.fn(),
     undo: vi.fn(),
     undoAll: vi.fn(),
+    oldDownloads: vi.fn(),
+    recycleDownloads: vi.fn(),
   },
 }));
 
@@ -42,6 +48,7 @@ const games: SpaceReport = {
 
 beforeEach(() => {
   vi.resetAllMocks();
+  api.driverPackages.mockResolvedValue({ packages: [], backups: [] });
   api.storageRead.mockResolvedValue({ disks: [], volumes: [{ name: "C:\\", label: "Windows", totalBytes: 500 * gb, freeBytes: 100 * gb }] });
 });
 
@@ -135,6 +142,65 @@ describe("Startup time", () => {
   });
 });
 
+describe("Slow startup apps", () => {
+  it("lists the apps Windows caught slowing startup", async () => {
+    const user = userEvent.setup();
+    api.bootTimes.mockResolvedValue({
+      boots: [{ whenUtc: "2026-11-07T10:00:00Z", totalMs: 30000, mainPathMs: 12000, afterSignInMs: 18000 }],
+      firstChangeUtc: null,
+      slowApps: [{ name: "Chat app", file: "chat.exe", times: 4, addedMs: 3200 }],
+    });
+    render(<StartupCard />);
+
+    await user.click(screen.getByRole("button", { name: "Check startup time" }));
+
+    expect(await screen.findByText("Chat app")).toBeTruthy();
+    expect(screen.getByText("+3.2 s, 4 times")).toBeTruthy();
+  });
+});
+
+describe("Old downloads", () => {
+  const report = {
+    folder: "C:\\Users\\me\\Downloads",
+    files: [
+      { name: "big.iso", path: "C:\\Users\\me\\Downloads\\big.iso", bytes: 5 * gb, lastUsedUtc: "2026-01-01T00:00:00Z", ageDays: 300 },
+      { name: "setup.exe", path: "C:\\Users\\me\\Downloads\\setup.exe", bytes: gb, lastUsedUtc: "2026-05-01T00:00:00Z", ageDays: 190 },
+    ],
+  };
+
+  it("removes only what you picked, after asking", async () => {
+    const user = userEvent.setup();
+    api.oldDownloads.mockResolvedValueOnce(report).mockResolvedValueOnce({ ...report, files: report.files.slice(1) });
+    api.recycleDownloads.mockResolvedValue({ moved: 1, failed: 0 });
+    render(<OldDownloads />);
+
+    await user.click(screen.getByRole("button", { name: "Find old downloads" }));
+    const pick = await screen.findByRole("checkbox", { name: "Pick big.iso" });
+    await user.click(pick);
+    expect((pick as HTMLInputElement).checked).toBe(true);
+
+    await user.click(screen.getByRole("button", { name: /Remove 1 picked/ }));
+    expect(api.recycleDownloads).not.toHaveBeenCalled();
+    expect(screen.getByText(/Move 1 file \(5\.0 GB\) to the Recycle Bin\?/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Move to Recycle Bin" }));
+
+    expect(api.recycleDownloads).toHaveBeenCalledWith(["C:\\Users\\me\\Downloads\\big.iso"]);
+    expect(await screen.findByText("1 file moved to the Recycle Bin.")).toBeTruthy();
+    expect(screen.queryByText("big.iso")).toBeNull();
+  });
+
+  it("says when there's nothing old", async () => {
+    const user = userEvent.setup();
+    api.oldDownloads.mockResolvedValue({ folder: "C:\\Users\\me\\Downloads", files: [] });
+    render(<OldDownloads />);
+
+    await user.click(screen.getByRole("button", { name: "Find old downloads" }));
+
+    expect(await screen.findByText(/No big, old files/)).toBeTruthy();
+  });
+});
+
 describe("Graphics driver", () => {
   it("shows the version and age, and opens the maker's page", async () => {
     const user = userEvent.setup();
@@ -148,6 +214,47 @@ describe("Graphics driver", () => {
     expect(screen.getByText(/51 days old/)).toBeTruthy();
     await user.click(screen.getByRole("button", { name: "Check NVIDIA for a newer one" }));
     expect(api.driverPage).toHaveBeenCalledWith("NVIDIA");
+  });
+
+  it("removes a driver only after you confirm, then offers the maker's page", async () => {
+    const user = userEvent.setup();
+    api.driverRead.mockResolvedValue([]);
+    api.driverPackages
+      .mockResolvedValueOnce({ packages: [{ inf: "oem52.inf", vendor: "NVIDIA", version: "32.0.16.2114" }, { inf: "oem54.inf", vendor: "NVIDIA", version: "32.0.16.2124" }], backups: [] })
+      .mockResolvedValue({ packages: [], backups: [{ vendor: "NVIDIA", bytes: 1.4 * gb }] });
+    api.driverRemove.mockResolvedValue({ ok: true, message: "Removed 2 driver packages for NVIDIA.", restartNeeded: true });
+    api.driverPage.mockResolvedValue(true);
+    render(<DriverCard />);
+
+    await user.click(await screen.findByRole("button", { name: "Remove NVIDIA driver" }));
+    expect(api.driverRemove).not.toHaveBeenCalled();
+    expect(screen.getByText(/Removes 2 driver packages, including older leftovers/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Yes, remove it" }));
+
+    expect(api.driverRemove).toHaveBeenCalledWith("NVIDIA");
+    expect(await screen.findByText("Removed 2 driver packages for NVIDIA.")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Get the new NVIDIA driver" }));
+    expect(api.driverPage).toHaveBeenCalledWith("NVIDIA");
+    expect(await screen.findByRole("button", { name: "Put it back" })).toBeTruthy();
+  });
+
+  it("puts a backup back, and asks before deleting it", async () => {
+    const user = userEvent.setup();
+    api.driverRead.mockResolvedValue([]);
+    api.driverPackages.mockResolvedValue({ packages: [], backups: [{ vendor: "AMD", bytes: gb }] });
+    api.driverRestore.mockResolvedValue({ ok: true, message: "The backed-up AMD driver is back. Restart to finish.", restartNeeded: true });
+    api.driverDeleteBackup.mockResolvedValue({ ok: true, message: "The AMD driver backup was deleted.", restartNeeded: false });
+    render(<DriverCard />);
+
+    await user.click(await screen.findByRole("button", { name: "Put it back" }));
+    expect(api.driverRestore).toHaveBeenCalledWith("AMD");
+    expect(await screen.findByText(/AMD driver is back/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: "Delete backup" }));
+    expect(api.driverDeleteBackup).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Yes, delete it" }));
+    expect(api.driverDeleteBackup).toHaveBeenCalledWith("AMD");
   });
 
   it("warns when a driver is old", async () => {

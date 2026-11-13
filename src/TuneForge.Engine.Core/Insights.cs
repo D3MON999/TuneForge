@@ -145,9 +145,7 @@ public static class BootHistory
 
     public static BootRecord? Parse(string eventXml, DateTime when)
     {
-        var data = XDocument.Parse(eventXml).Descendants()
-            .Where(element => element.Name.LocalName == "Data")
-            .ToDictionary(element => (string?)element.Attribute("Name") ?? string.Empty, element => element.Value);
+        var data = DataOf(eventXml);
 
         static int Number(Dictionary<string, string> values, string name) =>
             values.TryGetValue(name, out var text) && int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) ? value : 0;
@@ -160,22 +158,74 @@ public static class BootHistory
             Number(data, "BootPostBootTime"));
     }
 
+    private static Dictionary<string, string> DataOf(string eventXml) =>
+        XDocument.Parse(eventXml).Descendants()
+            .Where(element => element.Name.LocalName == "Data")
+            .GroupBy(element => (string?)element.Attribute("Name") ?? string.Empty)
+            .ToDictionary(group => group.Key, group => group.First().Value);
+
+    /// <summary>One "this app took longer than usual to start" record: the app and how much it slowed the start.</summary>
+    public static (string Name, string File, int AddedMs)? ParseSlowApp(string eventXml)
+    {
+        var data = DataOf(eventXml);
+        var file = data.GetValueOrDefault("Name") is { Length: > 0 } name ? name : data.GetValueOrDefault("FileName") ?? string.Empty;
+        if (file.Length == 0 || !int.TryParse(data.GetValueOrDefault("DegradationTime"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var added) || added <= 0)
+        {
+            return null;
+        }
+
+        var friendly = data.GetValueOrDefault("FriendlyName");
+        return (string.IsNullOrWhiteSpace(friendly) ? file : friendly.Trim(), file.Trim(), added);
+    }
+
+    /// <summary>Worst first: the apps that slowed starts most often and by the most.</summary>
+    public static IReadOnlyList<SlowStartupApp> Summarize(IEnumerable<(string Name, string File, int AddedMs)> records, int limit = 8) =>
+        records
+            .GroupBy(record => record.File, StringComparer.OrdinalIgnoreCase)
+            .Select(group => new SlowStartupApp(group.First().Name, group.First().File, group.Count(), (int)group.Average(record => record.AddedMs)))
+            .OrderByDescending(app => (long)app.Times * app.AddedMs)
+            .Take(limit)
+            .ToList();
+
     /// <summary>Newest first. Empty if Windows isn't keeping these records.</summary>
     public static IReadOnlyList<BootRecord> Read(int limit = 20)
     {
         var boots = new List<BootRecord>();
+        foreach (var (xml, when) in Records(100, limit))
+        {
+            if (Parse(xml, when) is { } boot)
+            {
+                boots.Add(boot);
+            }
+        }
+
+        return boots;
+    }
+
+    /// <summary>Apps Windows saw slowing its start in the last 90 days.</summary>
+    public static IReadOnlyList<SlowStartupApp> ReadSlowApps()
+    {
+        var since = DateTime.Now.AddDays(-90);
+        return Summarize(Records(101, 300)
+            .Where(record => record.When >= since)
+            .Select(record => ParseSlowApp(record.Xml))
+            .OfType<(string, string, int)>());
+    }
+
+    public static BootDiagnostics Diagnose() => new(Read(), ReadSlowApps());
+
+    private static List<(string Xml, DateTime When)> Records(int eventId, int limit)
+    {
+        var found = new List<(string, DateTime)>();
         try
         {
-            var query = new EventLogQuery(Log, PathType.LogName, "*[System[EventID=100]]") { ReverseDirection = true };
+            var query = new EventLogQuery(Log, PathType.LogName, $"*[System[EventID={eventId}]]") { ReverseDirection = true };
             using var reader = new EventLogReader(query);
-            while (boots.Count < limit && reader.ReadEvent() is { } record)
+            while (found.Count < limit && reader.ReadEvent() is { } record)
             {
                 using (record)
                 {
-                    if (Parse(record.ToXml(), record.TimeCreated ?? DateTime.MinValue) is { } boot)
-                    {
-                        boots.Add(boot);
-                    }
+                    found.Add((record.ToXml(), record.TimeCreated ?? DateTime.MinValue));
                 }
             }
         }
@@ -184,6 +234,90 @@ public static class BootHistory
             // This log is missing on some editions of Windows.
         }
 
-        return boots;
+        return found;
+    }
+}
+
+/// <summary>Reads Windows' own battery report. It runs without admin rights and only reads.</summary>
+public static class BatteryHealth
+{
+    public static BatteryReport Parse(string reportXml)
+    {
+        var batteries = XDocument.Parse(reportXml).Descendants()
+            .Where(element => element.Name.LocalName == "Battery")
+            .Select(battery =>
+            {
+                string? Text(string name) => battery.Elements().FirstOrDefault(child => child.Name.LocalName == name)?.Value.Trim() is { Length: > 0 } value ? value : null;
+                long Number(string name) => long.TryParse(Text(name), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) ? value : 0;
+                int? cycles = int.TryParse(Text("CycleCount"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var count) && count > 0 ? count : null;
+                return new BatteryInfo(Text("Id"), Text("Manufacturer"), Number("DesignCapacity"), Number("FullChargeCapacity"), cycles);
+            })
+            .Where(battery => battery.DesignMwh > 0 || battery.FullMwh > 0)
+            .ToList();
+        return new BatteryReport(batteries);
+    }
+
+    public static BatteryReport Read(IProcessRunner runner)
+    {
+        var file = Path.Combine(Path.GetTempPath(), $"tuneforge-battery-{Guid.NewGuid():N}.xml");
+        try
+        {
+            if (runner.Run("powercfg.exe", ["/batteryreport", "/xml", "/output", file, "/duration", "1"], TimeSpan.FromSeconds(30)) != 0 || !File.Exists(file))
+            {
+                // Desktops have no battery, and powercfg says so by failing.
+                return new BatteryReport([]);
+            }
+
+            return Parse(File.ReadAllText(file));
+        }
+        finally
+        {
+            File.Delete(file);
+        }
+    }
+}
+
+/// <summary>Big files in Downloads that haven't been touched for months. It lists them; removing is up to the user.</summary>
+public static class OldDownloads
+{
+    public const int MinAgeDays = 90;
+    public const long MinBytes = 20L * 1024 * 1024;
+    private const int MaxFiles = 100;
+
+    public static OldDownloadsReport Scan(string folder, DateTime nowUtc)
+    {
+        if (!Directory.Exists(folder))
+        {
+            return new OldDownloadsReport(folder, []);
+        }
+
+        var options = new System.IO.EnumerationOptions { IgnoreInaccessible = true, AttributesToSkip = FileAttributes.ReparsePoint | FileAttributes.System, RecurseSubdirectories = true };
+        var files = new DirectoryInfo(folder).EnumerateFiles("*", options)
+            .Where(file => file.Length >= MinBytes)
+            .Select(file => (File: file, Used: file.LastWriteTimeUtc > file.CreationTimeUtc ? file.LastWriteTimeUtc : file.CreationTimeUtc))
+            .Where(item => (nowUtc - item.Used).TotalDays >= MinAgeDays)
+            .OrderByDescending(item => item.File.Length)
+            .Take(MaxFiles)
+            .Select(item => new OldDownload(
+                item.File.Name,
+                item.File.FullName,
+                item.File.Length,
+                item.Used.ToString("O", CultureInfo.InvariantCulture),
+                (int)(nowUtc - item.Used).TotalDays))
+            .ToList();
+        return new OldDownloadsReport(folder, files);
+    }
+
+    /// <summary>Only files really inside the Downloads folder may be removed, whatever the page asks for.</summary>
+    public static bool IsInside(string folder, string path)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !Path.IsPathFullyQualified(path))
+        {
+            return false;
+        }
+
+        var root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(folder)) + Path.DirectorySeparatorChar;
+        var full = Path.GetFullPath(path);
+        return full.StartsWith(root, StringComparison.OrdinalIgnoreCase) && full.Length > root.Length;
     }
 }
