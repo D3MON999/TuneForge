@@ -86,13 +86,17 @@ public partial class MainWindow : Window
         _gameScanner = new GameScanner(GameSources.Detect());
         _tray = new TrayAgent(
             _settings,
-            new AutomationActions(_cleanup, _startup, probe, _trimmer, new RegistryBackup(_runner, RegistryBackup.DefaultFolder)),
+            new AutomationActions(_cleanup, _startup, probe, _trimmer, new RegistryBackup(_runner, RegistryBackup.DefaultFolder), CheckHealth),
             new WindowsGameSettings(),
             _plans,
             _apps,
             ShowFromTray,
             ExitApp);
         _tray.Apply(ReadSettings().Choices);
+        if (ReadSettings().Choices.ConnectionLog)
+        {
+            _connectionLog.Start(LinkSpeed.Router());
+        }
 
         InitializeComponent();
         Web.DefaultBackgroundColor = System.Drawing.Color.Black;
@@ -192,6 +196,7 @@ public partial class MainWindow : Window
         }
 
         _exiting = true;
+        _connectionLog.Stop();
         Close();
         _tray.Dispose();
         _engine.Dispose();
@@ -211,6 +216,7 @@ public partial class MainWindow : Window
         _settings.SaveChoices(choices);
         var saved = ReadSettings();
         _tray.Apply(saved.Choices);
+        SyncConnectionLog(saved.Choices.ConnectionLog);
         return saved;
     }
 
@@ -358,7 +364,7 @@ public partial class MainWindow : Window
         "programs.uninstall" => await Task.Run(() => _winget.Uninstall(Read<AppIdRequest>(payload).Id)),
         "system.summary" => await Task.Run(SystemInfoReader.Read),
         "monitor.live" => await Task.Run(_live.Sample),
-        "health.check" => await Task.Run(_health.Check),
+        "health.check" => await Task.Run(CheckHealth),
         "health.ignore" => await Task.Run(() => _health.SetIgnored(Read<HealthIgnoreRequest>(payload))),
         "window.theme" => SetTitleBar(Read<WindowThemeRequest>(payload)),
         "storage.read" => await Task.Run(_storage.Read),
@@ -414,7 +420,7 @@ public partial class MainWindow : Window
         "update.check" => await Task.Run(_updates.Check),
         "update.pending" => _pendingUpdate is { } pending ? new UpdatePrompt(pending, _updateNudge) : null,
         "update.install" => await InstallUpdateAsync(),
-        _ => throw new EngineException("Unknown operation."),
+        _ => await RunToolboxAsync(op, payload),
     };
 
     /// <summary>
@@ -539,29 +545,45 @@ public partial class MainWindow : Window
                 continue;
             }
 
-            try
+            if (RecycleOne(path))
             {
-                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                    path,
-                    Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                    Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
-                    Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
-                if (File.Exists(path))
-                {
-                    failed++;
-                }
-                else
-                {
-                    moved++;
-                }
+                moved++;
             }
-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            else
             {
                 failed++;
             }
         }
 
         return new RecycleResult(moved, failed);
+    }
+
+    /// <summary>Sends a file or folder to the Recycle Bin, never a permanent delete.</summary>
+    private static bool RecycleOne(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+            {
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
+                    path,
+                    Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                    Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                    Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+                return !Directory.Exists(path);
+            }
+
+            Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                path,
+                Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin,
+                Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing);
+            return !File.Exists(path);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            return false;
+        }
     }
 
     private bool SetTurbo(bool on)

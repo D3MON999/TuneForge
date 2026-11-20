@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { bridge, type BuiltInApp, type InstalledProgram, type OperationResult, type SoftwareEntry } from "./bridge";
 import { matchesText } from "./selection";
+import { LeftoversPanel } from "./Toolbox";
 
 type Outcome = OperationResult | string | null;
 
@@ -348,6 +349,7 @@ export function InstalledAppsTab() {
   const [confirm, setConfirm] = useState<string | null>(null);
   const [progress, setProgress] = useState<string | null>(null);
   const [results, setResults] = useState<OperationResult[]>([]);
+  const [removed, setRemoved] = useState<string | null>(null);
 
   const reload = useCallback(() => {
     bridge.programsList().then((list) => {
@@ -368,8 +370,13 @@ export function InstalledAppsTab() {
     setBusy(program.id);
     setConfirm(null);
     setResults([]);
+    setRemoved(null);
     try {
-      setResults([await action(program.id)]);
+      const result = await action(program.id);
+      setResults([result]);
+      if (result.ok && action === bridge.programsUninstall) {
+        setRemoved(program.name);
+      }
       reload();
     } catch (reason) {
       setResults([{ ok: false, message: messageOf(reason), restartNeeded: false }]);
@@ -407,6 +414,7 @@ export function InstalledAppsTab() {
       {results.map((result, index) => (
         <Notice key={index} result={result} />
       ))}
+      {removed && <LeftoversPanel key={removed} name={removed} />}
       <div className="mb-3 flex flex-wrap gap-2">
         <input
           type="search"

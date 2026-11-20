@@ -15,4 +15,6 @@ public sealed record SystemOperations(
     SecurityService Security,
     BandwidthLimits Bandwidth,
     BiosRestart Bios,
-    DisplayDriverRemover? DisplayDrivers = null);
+    DisplayDriverRemover? DisplayDrivers = null,
+    RestorePointManager? RestorePoints = null,
+    HostsFile? Hosts = null);

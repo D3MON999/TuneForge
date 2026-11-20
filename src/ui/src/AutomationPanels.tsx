@@ -100,7 +100,7 @@ export function AutomationSettings() {
   const { choices } = settings;
   const toggle = (key: BooleanKey) => (value: boolean) => save({ [key]: value });
   const running = choices.closeToTray || choices.startWithWindows;
-  const automatic = choices.memoryAuto || choices.cleanAuto || choices.startupWatch || choices.registryBackup;
+  const automatic = choices.memoryAuto || choices.cleanAuto || choices.startupWatch || choices.registryBackup || choices.healthWeekly;
 
   return (
     <>
@@ -179,6 +179,12 @@ export function AutomationSettings() {
             note="Tells you when something adds itself to Windows startup."
             checked={choices.startupWatch}
             onChange={toggle("startupWatch")}
+          />
+          <Toggle
+            label="Check my PC's health every week"
+            note="Runs the dashboard's health check once a week and only tells you if something needs attention."
+            checked={choices.healthWeekly}
+            onChange={toggle("healthWeekly")}
           />
           <Toggle
             label="Back up the registry every week"

@@ -80,6 +80,18 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> DeleteDriverBackupAsync(string vendor) =>
         RunAsync<OperationResult>(RpcMethods.DriverBackupDelete, new DriverPageRequest(vendor), TimeSpan.FromMinutes(2));
 
+    public Task<RestorePointReport> ListRestorePointsAsync() =>
+        RunAsync<RestorePointReport>(RpcMethods.RestorePointsList, null, TimeSpan.FromMinutes(2));
+
+    public Task<OperationResult> DeleteRestorePointAsync(long sequence) =>
+        RunAsync<OperationResult>(RpcMethods.RestorePointDelete, new RestorePointRequest(sequence), TimeSpan.FromMinutes(5));
+
+    public Task<OperationResult> RemoveHostsLinesAsync(IReadOnlyList<string> lines) =>
+        RunAsync<OperationResult>(RpcMethods.HostsRemove, new HostsRemoveRequest(lines), TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> RestoreHostsAsync() =>
+        RunAsync<OperationResult>(RpcMethods.HostsRestore, null, TimeSpan.FromMinutes(1));
+
     public Task<OperationResult> RestartToBiosAsync() =>
         RunAsync<OperationResult>(RpcMethods.BiosRestart, null, TimeSpan.FromMinutes(1));
 

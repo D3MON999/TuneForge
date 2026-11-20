@@ -70,6 +70,14 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, system.DisplayDrivers.Remove(Parameters<DriverPageRequest>(request).Vendor)),
                 RpcMethods.DriverRestore when system?.DisplayDrivers is not null =>
                     Success(request.Id, system.DisplayDrivers.Restore(Parameters<DriverPageRequest>(request).Vendor)),
+                RpcMethods.RestorePointsList when system?.RestorePoints is not null =>
+                    Success(request.Id, system.RestorePoints.List()),
+                RpcMethods.RestorePointDelete when system?.RestorePoints is not null =>
+                    Success(request.Id, system.RestorePoints.Delete(Parameters<RestorePointRequest>(request).Sequence)),
+                RpcMethods.HostsRemove when system?.Hosts is not null =>
+                    Success(request.Id, system.Hosts.Remove(Parameters<HostsRemoveRequest>(request).Lines)),
+                RpcMethods.HostsRestore when system?.Hosts is not null =>
+                    Success(request.Id, system.Hosts.Restore()),
                 RpcMethods.DriverBackupDelete when system?.DisplayDrivers is not null =>
                     Success(request.Id, system.DisplayDrivers.DeleteBackup(Parameters<DriverPageRequest>(request).Vendor)),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),

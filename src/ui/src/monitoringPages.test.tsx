@@ -15,6 +15,13 @@ vi.mock("./bridge", () => ({
     healthIgnore: vi.fn(),
     driverRead: vi.fn(),
     driverPackages: vi.fn(),
+    changesRead: vi.fn(),
+    healthHistory: vi.fn(),
+    linkRead: vi.fn(),
+    connectionLog: vi.fn(),
+    connectionLogSet: vi.fn(),
+    hostsRead: vi.fn(),
+    wifiScan: vi.fn(),
     bootTimes: vi.fn(),
     storageRead: vi.fn(),
     eventErrors: vi.fn(),
@@ -85,6 +92,11 @@ beforeEach(() => {
   api.bandwidthList.mockResolvedValue([]);
   api.driverRead.mockResolvedValue([]);
   api.driverPackages.mockResolvedValue({ packages: [], backups: [] });
+  api.changesRead.mockResolvedValue({ sinceDate: null, changes: [] });
+  api.healthHistory.mockResolvedValue([]);
+  api.linkRead.mockResolvedValue([]);
+  api.connectionLog.mockResolvedValue({ running: false, pings: 0, events: [], logPath: "log.csv" });
+  api.hostsRead.mockResolvedValue({ entries: [], hasBackup: false });
 });
 
 afterEach(cleanup);

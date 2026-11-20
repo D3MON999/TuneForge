@@ -22,6 +22,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { bridge, type HealthCheck, type HealthReport, type LiveStats, type SystemSummary } from "./bridge";
 import { formatBytes } from "./format";
+import { ChangesCard, HealthTrend } from "./Toolbox";
 
 const LIVE_INTERVAL_MS = 2000;
 
@@ -434,6 +435,8 @@ export function DashboardPage({ onNavigate = () => undefined }: { onNavigate?: (
       <LiveTiles />
       <QuickActions onNavigate={onNavigate} />
       {report && <HealthChecks report={report} busy={busy} onIgnore={setIgnored} />}
+      {report && <HealthTrend key={report.score} />}
+      <ChangesCard />
       <HardwareCard />
     </div>
   );

@@ -70,6 +70,10 @@ public partial class App : Application
         {
             window.Show();
         }
+        else
+        {
+            window.StartDelayedPrograms();
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)

@@ -104,6 +104,9 @@ public interface IAutomationActions
     IReadOnlyList<string> StartupNames();
 
     OperationResult BackupRegistry();
+
+    /// <summary>A full health check, recorded in the history. Null when health checks aren't available.</summary>
+    HealthReport? Health() => null;
 }
 
 /// <summary>
@@ -119,6 +122,7 @@ public sealed class AutomationRunner(
     private const double Megabyte = 1024d * 1024;
     private static readonly TimeSpan MemoryRest = TimeSpan.FromMinutes(30);
     private static readonly TimeSpan BackupRest = TimeSpan.FromDays(7);
+    private static readonly TimeSpan HealthRest = TimeSpan.FromDays(7);
 
     public void Tick()
     {
@@ -138,6 +142,11 @@ public sealed class AutomationRunner(
             Startup(settings);
         }
 
+        if (settings.Choices.HealthWeekly && Elapsed(settings.LastHealthUtc, HealthRest))
+        {
+            WeeklyHealth(settings);
+        }
+
         if (settings.Choices.RegistryBackup && Elapsed(settings.LastBackupUtc, BackupRest))
         {
             var result = actions.BackupRegistry();
@@ -146,6 +155,22 @@ public sealed class AutomationRunner(
             {
                 Tell(settings, "Registry backup failed", result.Message);
             }
+        }
+    }
+
+    /// <summary>Quiet unless something needs attention. Ignored checks stay quiet too, unless they got worse.</summary>
+    private void WeeklyHealth(AppSettings settings)
+    {
+        var report = actions.Health();
+        store.Update(current => current with { LastHealthUtc = Stamp() });
+        var problems = report?.Checks.Where(check => check.Status is "warn" or "bad" && !check.Ignored).Select(check => check.Title).ToList() ?? [];
+        if (problems.Count == 1)
+        {
+            Tell(settings, "Weekly health check", $"{problems[0]} needs attention. Open TuneForge to see why.");
+        }
+        else if (problems.Count > 1)
+        {
+            Tell(settings, "Weekly health check", $"{problems.Count} things need attention: {string.Join(", ", problems)}.");
         }
     }
 
@@ -226,8 +251,10 @@ public sealed class AutomationRunner(
 }
 
 /// <summary>Host actions, using the same services as the Cleanup and Startup pages.</summary>
-public sealed class AutomationActions(CleanupService cleanup, StartupService startup, ILiveProbe live, IMemoryTrimmer trimmer, RegistryBackup backup) : IAutomationActions
+public sealed class AutomationActions(CleanupService cleanup, StartupService startup, ILiveProbe live, IMemoryTrimmer trimmer, RegistryBackup backup, Func<HealthReport>? health = null) : IAutomationActions
 {
+    public HealthReport? Health() => health?.Invoke();
+
     public OperationResult BackupRegistry() => backup.Run(DateTime.Now);
 
     public double MemoryPercent()

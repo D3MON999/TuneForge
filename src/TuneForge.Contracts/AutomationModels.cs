@@ -11,7 +11,9 @@ public sealed record SettingsUpdate(
     int CleanDays = 7,
     bool StartupWatch = false,
     bool RegistryBackup = false,
-    bool CrashLogs = false);
+    bool CrashLogs = false,
+    bool HealthWeekly = false,
+    bool ConnectionLog = false);
 
 /// <summary>The choices plus what the app remembers between runs.</summary>
 public sealed record AppSettings(
@@ -24,7 +26,9 @@ public sealed record AppSettings(
     ActiveBoost? Boost = null,
     string? LastBackupUtc = null,
     IReadOnlyList<string>? IgnoredChecks = null,
-    IReadOnlyDictionary<string, string>? IgnoredLevels = null);
+    IReadOnlyDictionary<string, string>? IgnoredLevels = null,
+    IReadOnlyList<DelayedStartup>? Delayed = null,
+    string? LastHealthUtc = null);
 
 public sealed record UpdateStatus(string Current, string? Latest, bool Available, string Message, bool Important = false, string? Notes = null);
 

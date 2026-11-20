@@ -10,6 +10,7 @@ import {
   type TraceResult,
 } from "./bridge";
 import { BandwidthCard, PingMonitor, SpeedCard } from "./ExtraPanels";
+import { ConnectionLogCard, HostsCard, LinkSpeedCard, WifiCard } from "./Toolbox";
 
 type Tab = "tests" | "dns" | "connections";
 type Tool = "ping" | "tcping" | "trace";
@@ -137,11 +138,19 @@ export function NetworkPage({ initialTab }: { initialTab?: string }) {
           <div className="flex flex-col gap-5">
             <ConnectionTests />
             <SpeedCard />
+            <LinkSpeedCard />
+            <ConnectionLogCard />
             <PingMonitor />
+            <WifiCard />
             <BandwidthCard />
           </div>
         )}
-        {tab === "dns" && <DnsTab />}
+        {tab === "dns" && (
+          <div className="flex flex-col gap-5">
+            <DnsTab />
+            <HostsCard />
+          </div>
+        )}
         {tab === "connections" && <ConnectionsTab />}
       </div>
     </div>

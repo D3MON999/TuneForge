@@ -14,6 +14,11 @@ vi.mock("./bridge", () => ({
     cleanupRun: vi.fn(),
     startupList: vi.fn(),
     startupSet: vi.fn(),
+    startupDelayed: vi.fn(),
+    startupDelay: vi.fn(),
+    backgroundRead: vi.fn(),
+    backgroundSet: vi.fn(),
+    leftoversFind: vi.fn(),
     serviceList: vi.fn(),
     serviceSet: vi.fn(),
     featureList: vi.fn(),
@@ -36,6 +41,9 @@ const api = vi.mocked(bridge);
 beforeEach(() => {
   vi.resetAllMocks();
   api.startupList.mockResolvedValue([]);
+  api.startupDelayed.mockResolvedValue([]);
+  api.backgroundRead.mockResolvedValue({ allBlocked: false, apps: [] });
+  api.leftoversFind.mockResolvedValue([]);
 });
 
 afterEach(cleanup);
@@ -132,11 +140,38 @@ describe("AppsPage", () => {
     api.startupSet.mockResolvedValue({ ok: true, message: "Saved. You can undo this from History.", restartNeeded: false });
     render(<AppsPage />);
 
-    await user.click(await screen.findByLabelText(/Discord/));
+    await user.click(await screen.findByLabelText("Start Discord with Windows"));
 
     expect(api.startupSet).toHaveBeenCalledWith("hkcu-run", "Discord", false);
     expect(await screen.findByText(/You can undo this/)).toBeTruthy();
     await waitFor(() => expect(api.startupList).toHaveBeenCalledTimes(2));
+  });
+
+  it("delays a startup program and can start it right away again", async () => {
+    const user = userEvent.setup();
+    api.startupList.mockResolvedValue([
+      { source: "hkcu-run", name: "Discord", command: "discord.exe", enabled: true, needsAdmin: false },
+    ]);
+    api.startupDelay.mockResolvedValue({ ok: true, message: "Discord now starts a minute after you sign in.", restartNeeded: false });
+    render(<AppsPage />);
+
+    await user.click(await screen.findByRole("button", { name: "Delay Discord" }));
+    expect(api.startupDelay).toHaveBeenCalledWith("hkcu-run", "Discord", true);
+    expect(await screen.findByText("Discord now starts a minute after you sign in.")).toBeTruthy();
+
+    api.startupList.mockResolvedValue([{ source: "hkcu-run", name: "Discord", command: "discord.exe", enabled: false, needsAdmin: false }]);
+    api.startupDelayed.mockResolvedValue([{ source: "hkcu-run", name: "Discord", command: "discord.exe", delaySeconds: 60 }]);
+    await user.click(screen.getByRole("button", { name: "Delay Discord" }));
+    expect(await screen.findByText("Starts 1 minute after sign-in")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Start Discord right away again" })).toBeTruthy();
+  });
+
+  it("says when every background app is already off", async () => {
+    api.backgroundRead.mockResolvedValue({ allBlocked: true, apps: [{ id: "a_1", name: "Photos", allowed: true }] });
+    render(<AppsPage />);
+
+    expect(await screen.findByText(/already off for every app/)).toBeTruthy();
+    expect(screen.queryByText("Photos")).toBeNull();
   });
 
   it("locks protected services and searches the rest", async () => {

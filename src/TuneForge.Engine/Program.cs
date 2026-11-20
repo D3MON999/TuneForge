@@ -61,7 +61,9 @@ var system = new SystemOperations(
         new SystemRestorePointService(),
         DisplayDriverRemover.DefaultInfFolder,
         DisplayDriverRemover.DefaultBackupRoot,
-        Environment.OSVersion.Version.Build));
+        Environment.OSVersion.Version.Build),
+    new RestorePointManager(),
+    new HostsFile(HostsFile.DefaultPath, Path.Combine(JournalLocation.Folder, "hosts-backup")));
 var tweaks = new TweakEngine(
     TweakCatalog.LoadEmbedded(),
     registry,

@@ -56,6 +56,46 @@ public sealed class AutomationTests : IDisposable
             Backups++;
             return new OperationResult(true, "Saved.");
         }
+
+        public HealthReport? Report { get; set; }
+
+        public int HealthChecks { get; private set; }
+
+        public HealthReport? Health()
+        {
+            HealthChecks++;
+            return Report;
+        }
+    }
+
+    [Fact]
+    public void WeeklyHealth_SpeaksOnlyAboutRealProblemsAndWaitsAWeek()
+    {
+        var actions = new FakeActions
+        {
+            Report = new HealthReport(80,
+            [
+                new HealthCheck("space", "Free space", "warn", "Low."),
+                new HealthCheck("crashes", "Crashes", "bad", "3 crashes."),
+                new HealthCheck("uptime", "Restart", "warn", "Long.", Ignored: true),
+                new HealthCheck("memory", "Memory", "good", "Fine."),
+            ]),
+        };
+        Choose(new SettingsUpdate(HealthWeekly: true));
+
+        Runner(actions).Tick();
+        Assert.Equal(1, actions.HealthChecks);
+        Assert.Equal(("Weekly health check", "2 things need attention: Free space, Crashes."), Assert.Single(_notes));
+
+        _now = _now.AddDays(3);
+        Runner(actions).Tick();
+        Assert.Equal(1, actions.HealthChecks);
+
+        _now = _now.AddDays(5);
+        actions.Report = new HealthReport(100, [new HealthCheck("memory", "Memory", "good", "Fine.")]);
+        Runner(actions).Tick();
+        Assert.Equal(2, actions.HealthChecks);
+        Assert.Single(_notes);
     }
 
     private AutomationRunner Runner(FakeActions actions) =>

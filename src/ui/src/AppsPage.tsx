@@ -3,6 +3,7 @@ import { BuiltInAppsTab, InstallAppsTab, InstalledAppsTab } from "./AppInstallTa
 import { bridge, type FeatureEntry, type OperationResult, type ServiceEntry, type StartupEntry } from "./bridge";
 import { matchesText } from "./selection";
 import { ProcessesTab } from "./SystemTools";
+import { BackgroundAppsCard, useDelayedStartup } from "./Toolbox";
 
 type Tab = "startup" | "services" | "features" | "built-in" | "install" | "installed" | "processes";
 
@@ -76,12 +77,26 @@ function StartupTab() {
   const { items, error, reload } = useLoader(bridge.startupList);
   const [busy, setBusy] = useState<string | null>(null);
   const [result, setResult] = useState<OperationResult | string | null>(error);
+  const delays = useDelayedStartup();
 
   async function change(entry: StartupEntry) {
     setBusy(entry.source + entry.name);
     try {
       setResult(await bridge.startupSet(entry.source, entry.name, !entry.enabled));
       reload();
+    } catch (reason) {
+      setResult((reason as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function delay(entry: StartupEntry, delayed: boolean) {
+    setBusy(entry.source + entry.name);
+    try {
+      setResult(await bridge.startupDelay(entry.source, entry.name, delayed));
+      reload();
+      void delays.reload();
     } catch (reason) {
       setResult((reason as Error).message);
     } finally {
@@ -98,26 +113,47 @@ function StartupTab() {
       <Notice result={result} />
       {!items && <p className="text-muted-foreground">Reading startup programs.</p>}
       {items?.length === 0 && <p className="text-muted-foreground">No startup programs were found.</p>}
+      {items && items.length > 0 && (
+        <p className="mb-3 text-sm text-muted-foreground">
+          Delay starts a program a minute after you sign in, so your desktop is ready sooner. TuneForge starts it for you, so it needs Start with Windows on in Settings.
+        </p>
+      )}
       <div className="flex flex-col gap-2">
-        {items?.map((entry) => (
-          <label
-            key={entry.source + entry.name}
-            className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-border bg-card p-3"
-          >
-            <input
-              type="checkbox"
-              checked={entry.enabled}
-              disabled={busy !== null}
-              onChange={() => change(entry)}
-              className="size-5 shrink-0"
-            />
-            <span className="min-w-0">
-              <span className="font-medium">{entry.name}</span>
-              <span className="block truncate text-sm text-muted-foreground">{entry.command}</span>
-            </span>
-          </label>
-        ))}
+        {items?.map((entry) => {
+          const delayed = delays.isDelayed(entry.source, entry.name);
+          return (
+            <div key={entry.source + entry.name} className="flex min-h-11 items-center gap-3 rounded-md border border-border bg-card p-3">
+              <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                <input
+                  type="checkbox"
+                  aria-label={`Start ${entry.name} with Windows`}
+                  checked={entry.enabled || delayed}
+                  disabled={busy !== null || delayed}
+                  onChange={() => change(entry)}
+                  className="size-5 shrink-0"
+                />
+                <span className="min-w-0">
+                  <span className="font-medium">{entry.name}</span>
+                  {delayed && <span className="ml-2 text-sm text-primary">Starts 1 minute after sign-in</span>}
+                  <span className="block truncate text-sm text-muted-foreground">{entry.command}</span>
+                </span>
+              </label>
+              {(entry.enabled || delayed) && (
+                <button
+                  type="button"
+                  disabled={busy !== null}
+                  aria-label={delayed ? `Start ${entry.name} right away again` : `Delay ${entry.name}`}
+                  onClick={() => delay(entry, !delayed)}
+                  className="min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-3 text-sm font-medium disabled:opacity-60"
+                >
+                  {delayed ? "Start right away" : "Delay"}
+                </button>
+              )}
+            </div>
+          );
+        })}
       </div>
+      <BackgroundAppsCard />
     </div>
   );
 }

@@ -5,6 +5,7 @@ export const pageHelp: Record<string, string[]> = {
     "Ignore a problem you already know about and it stops lowering your score. It moves to the Ignored list with its real result, and the top of the page still shows what the score would be with everything counted. If it gets more serious later, it counts again until you ignore it again.",
     "Live numbers update every two seconds while this page is open.",
     "Save report writes a text file you can keep or send to someone helping you. It stays on this PC unless you send it.",
+    "Health over time records one score a day while you use TuneForge. What changed compares today with about a week ago: programs, startup programs, services and drivers.",
   ],
   optimize: [
     "Turn on the changes you want. Nothing happens yet, so feel free to explore.",
@@ -22,6 +23,9 @@ export const pageHelp: Record<string, string[]> = {
     "Connection tests measure latency, jitter and packet loss. Lower is better for all three.",
     "A route test shows each stop between you and a server, which helps find where a slowdown starts.",
     "The DNS speed test times real lookups from your connection. Pick the fastest with Use, and restore your earlier DNS at any time.",
+    "Link speed is what your cable or Wi-Fi agreed with the router. An Ethernet link under 1 Gbps usually means a bad cable.",
+    "The connection logger keeps running in the tray until you stop it, and saves every drop to a file you can send your internet provider.",
+    "The hosts file is on the DNS tab. Removing lines needs admin rights, and Undo puts the file back.",
   ],
   cleanup: [
     "Sizes are measured first, and only files older than a day are removed from temporary folders.",
@@ -29,21 +33,27 @@ export const pageHelp: Record<string, string[]> = {
     "Files are deleted for good, so TuneForge asks you to confirm first.",
     "Space finder shows what's using your drive. Click a folder to look inside it. It never deletes anything, and a whole drive can take a minute or two to scan.",
     "Old downloads lists big files in your Downloads folder that you haven't touched in 3 months. Anything you remove goes to the Recycle Bin, so you can still get it back.",
+    "Duplicate files compares content, not names. Game libraries and program folders are skipped, and one copy of each file always stays.",
   ],
   apps: [
     "Startup and Services control what runs in the background. Startup changes can be undone from History.",
+    "Delay starts a program a minute after you sign in. TuneForge starts it, so Start with Windows must be on. Start right away puts it back.",
+    "After you uninstall an app, TuneForge shows folders it left behind. Only folders in your own profile can be removed, and they go to the Recycle Bin.",
     "Built-in apps removes apps that came with Windows, for every account. Only some can be reinstalled.",
     "Install apps and Installed apps use winget, which comes with Windows.",
     "Processes shows what's running now. Ending a process loses any unsaved work.",
   ],
   privacy: [
     "Security status shows your protection. TuneForge can only turn protection on, never off.",
+    "Camera, microphone and location shows which apps used them, from Windows' own record. Use the buttons to block an app in Windows Settings.",
     "The list below works like Optimize: turn on what you want, then review. Remove lock clears a policy set by another tool.",
   ],
   repair: [
     "Start with Check system files if Windows is acting up. If it can't fix something, run Repair Windows image, then check again.",
     "Long repairs can take 15 minutes or more. Don't turn your PC off while they run.",
     "Windows tools opens Windows' own programs in a separate window.",
+    "Blue screens and crashes explains the stop code of each crash in the last 90 days.",
+    "Restore points needs admin rights to list. Deleting one can't be undone.",
   ],
   monitor: [
     "Startup time reads how long Windows took to start, as Windows measured it, and which apps Windows caught slowing it down. Reading it needs admin rights, so Windows asks each time.",
@@ -58,6 +68,7 @@ export const pageHelp: Record<string, string[]> = {
     "Controller: press any button so Windows shows the controller to TuneForge. Spin each stick around its edge for the circularity number.",
     "Display fills the whole screen. Esc always gets you back.",
     "Battery reads Windows' own battery report. Desktops have no battery to check.",
+    "Drives writes a 512 MB test file and deletes it afterwards. It won't run while a protected game is open.",
   ],
   history: [
     "Each entry is one set of changes. Undo puts those settings back.",
@@ -67,6 +78,7 @@ export const pageHelp: Record<string, string[]> = {
   settings: [
     "Theme changes how TuneForge looks.",
     "Automations only run while TuneForge is open or in the tray.",
+    "The weekly health check stays quiet unless something needs attention.",
     "Export saves your choices to a file, which you can import on another PC.",
   ],
 };

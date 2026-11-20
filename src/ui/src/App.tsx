@@ -33,6 +33,7 @@ import { UpdatePromptPage, useUpdatePrompt } from "./UpdatePrompt";
 import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, titleBarColors, type ThemeChoice } from "./theme";
 import { TestersPage } from "./TestersPage";
+import { CrashCard, DuplicatesCard, IconCacheCard, PermissionsCard, RestorePointsCard } from "./Toolbox";
 import { TweaksPage } from "./TweaksPage";
 import { UpdateCard } from "./UpdateCard";
 
@@ -199,7 +200,12 @@ export function App() {
               <EngineCard />
             </div>
           )}
-          {page.id === "privacy" && <SecurityCard />}
+          {page.id === "privacy" && (
+            <>
+              <SecurityCard />
+              <PermissionsCard />
+            </>
+          )}
           {tweakPages[page.id] && (
             <TweaksPage key={`${page.id}${target?.query}`} {...tweakPages[page.id]} initialQuery={target?.query} />
           )}
@@ -211,12 +217,18 @@ export function App() {
               <MemoryCard />
               <SpaceFinder />
               <OldDownloads />
+              <DuplicatesCard />
             </>
           )}
           {page.id === "apps" && <AppsPage key={target?.tab} initialTab={target?.tab} />}
           {page.id === "repair" && (
             <>
               <RepairPage />
+              <div className="mt-5 flex flex-col gap-5">
+                <CrashCard />
+                <RestorePointsCard />
+                <IconCacheCard />
+              </div>
               <RegistryBackupCard />
               <WindowsTools />
             </>

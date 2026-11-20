@@ -22,6 +22,8 @@ const defaults: SettingsChoices = {
   startupWatch: false,
   registryBackup: false,
   crashLogs: false,
+  healthWeekly: false,
+  connectionLog: false,
 };
 
 beforeEach(() => {

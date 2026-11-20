@@ -382,6 +382,119 @@ export interface SettingsChoices {
   startupWatch: boolean;
   registryBackup: boolean;
   crashLogs: boolean;
+  healthWeekly: boolean;
+  connectionLog: boolean;
+}
+
+export interface CrashRecord {
+  whenUtc: string;
+  kind: "bluescreen" | "power-loss";
+  code?: string | null;
+  name: string;
+  meaning: string;
+  dumpPath?: string | null;
+}
+
+export interface RestorePointReport {
+  points: { sequence: number; description: string; createdUtc: string }[];
+  usedBytes: number;
+  maxBytes: number;
+}
+
+export interface LinkInfo {
+  name: string;
+  kind: string;
+  speedBps: number;
+  network?: string | null;
+  signalPercent?: number | null;
+  channel?: number | null;
+  band?: string | null;
+}
+
+export interface WifiNetwork {
+  name: string;
+  channel: number;
+  band: string;
+  signalPercent: number;
+  connected: boolean;
+}
+
+export interface WifiScan {
+  hasWifi: boolean;
+  problem?: string | null;
+  networks: WifiNetwork[];
+}
+
+export interface ConnectionLogEvent {
+  whenUtc: string;
+  where: "router" | "internet";
+  kind: "drop" | "spike";
+  seconds: number;
+  ms?: number | null;
+}
+
+export interface ConnectionLogStatus {
+  running: boolean;
+  sinceUtc?: string | null;
+  pings: number;
+  router?: string | null;
+  events: ConnectionLogEvent[];
+  logPath: string;
+}
+
+export interface HostsEntry {
+  text: string;
+  address: string;
+  names: string[];
+  note?: string | null;
+  blocks: boolean;
+}
+
+export interface DiskSpeedResult {
+  drive: string;
+  writeMBps: number;
+  readMBps: number;
+  randomReadIops: number;
+}
+
+export interface DuplicateGroup {
+  bytes: number;
+  files: { path: string; name: string; modifiedUtc: string }[];
+}
+
+export interface DuplicateReport {
+  groups: DuplicateGroup[];
+  wastedBytes: number;
+}
+
+export interface LeftoverFolder {
+  path: string;
+  bytes: number;
+  canRemove: boolean;
+}
+
+export interface DelayedStartup {
+  source: string;
+  name: string;
+  command: string;
+  delaySeconds: number;
+}
+
+export interface BackgroundAppsReport {
+  allBlocked: boolean;
+  apps: { id: string; name: string; allowed: boolean }[];
+}
+
+export interface ChangesReport {
+  sinceDate?: string | null;
+  changes: { category: string; added: string[]; removed: string[] }[];
+}
+
+export interface PermissionUse {
+  capability: "camera" | "microphone" | "location";
+  app: string;
+  lastUsedUtc: string;
+  inUse: boolean;
 }
 
 export interface AppSettings {
@@ -598,6 +711,31 @@ export class Bridge {
   driverRestore = (vendor: string) => this.call<OperationResult>("driver.restore", { vendor });
   driverDeleteBackup = (vendor: string) => this.call<OperationResult>("driver.deleteBackup", { vendor });
   batteryRead = () => this.call<BatteryReport>("battery.read");
+  crashList = () => this.call<CrashRecord[]>("crash.list");
+  restorePoints = () => this.call<RestorePointReport>("restorepoints.list");
+  restorePointDelete = (sequence: number) => this.call<OperationResult>("restorepoints.delete", { sequence });
+  iconCacheRebuild = () => this.call<OperationResult>("iconcache.rebuild");
+  linkRead = () => this.call<LinkInfo[]>("link.read");
+  wifiScan = () => this.call<WifiScan>("wifi.scan");
+  connectionLog = () => this.call<ConnectionLogStatus>("connlog.status");
+  connectionLogSet = (running: boolean) => this.call<ConnectionLogStatus>("connlog.set", { running });
+  connectionLogOpen = () => this.call<boolean>("connlog.open");
+  hostsRead = () => this.call<{ entries: HostsEntry[]; hasBackup: boolean }>("hosts.read");
+  hostsRemove = (lines: string[]) => this.call<OperationResult>("hosts.remove", { lines });
+  hostsRestore = () => this.call<OperationResult>("hosts.restore");
+  diskSpeed = (drive: string) => this.call<DiskSpeedResult>("disk.speed", { drive });
+  duplicatesScan = (where: string) => this.call<DuplicateReport | null>("duplicates.scan", { where });
+  duplicatesRecycle = (picks: { path: string; keep: string }[]) => this.call<RecycleResult>("duplicates.recycle", { picks });
+  leftoversFind = (name: string) => this.call<LeftoverFolder[]>("leftovers.find", { name });
+  leftoversRecycle = (name: string, paths: string[]) => this.call<RecycleResult>("leftovers.recycle", { name, paths });
+  startupDelayed = () => this.call<DelayedStartup[]>("startup.delayed");
+  startupDelay = (source: string, name: string, delayed: boolean) => this.call<OperationResult>("startup.delay", { source, name, delayed });
+  backgroundRead = () => this.call<BackgroundAppsReport>("background.read");
+  backgroundSet = (id: string, allowed: boolean) => this.call<BackgroundAppsReport>("background.set", { id, allowed });
+  healthHistory = () => this.call<{ date: string; score: number }[]>("health.history");
+  changesRead = () => this.call<ChangesReport>("changes.read");
+  permissionsRead = () => this.call<PermissionUse[]>("permissions.read");
+  settingsPage = (page: string) => this.call<boolean>("settings.page", { page });
   oldDownloads = () => this.call<OldDownloadsReport>("downloads.old");
   recycleDownloads = (paths: string[]) => this.call<RecycleResult>("downloads.recycle", { paths });
   removeLocks = (ids: string[]) => this.call<OperationResult>("tweaks.removeLocks", { ids });

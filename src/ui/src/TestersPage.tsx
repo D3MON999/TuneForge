@@ -2,16 +2,18 @@ import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from
 import { bridge, type BatteryReport } from "./bridge";
 import { ControllerTest } from "./ControllerTest";
 import { HeadsetTest, WebcamTest } from "./ExtraPanels";
+import { DiskSpeedTest, SpeakerTest } from "./Toolbox";
 
-type Tab = "keyboard" | "mouse" | "display" | "controller" | "headset" | "webcam" | "battery";
+type Tab = "keyboard" | "mouse" | "display" | "controller" | "headset" | "webcam" | "disk" | "battery";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "keyboard", label: "Keyboard" },
   { id: "mouse", label: "Mouse" },
   { id: "display", label: "Display" },
   { id: "controller", label: "Controller" },
-  { id: "headset", label: "Headset" },
+  { id: "headset", label: "Audio" },
   { id: "webcam", label: "Webcam" },
+  { id: "disk", label: "Drives" },
   { id: "battery", label: "Battery" },
 ];
 
@@ -44,8 +46,14 @@ export function TestersPage({ initialTab }: { initialTab?: string }) {
         {tab === "mouse" && <MouseTest />}
         {tab === "display" && <DisplayTest />}
         {tab === "controller" && <ControllerTest />}
-        {tab === "headset" && <HeadsetTest />}
+        {tab === "headset" && (
+          <div className="flex flex-col gap-5">
+            <HeadsetTest />
+            <SpeakerTest />
+          </div>
+        )}
         {tab === "webcam" && <WebcamTest />}
+        {tab === "disk" && <DiskSpeedTest />}
         {tab === "battery" && <BatteryCard />}
       </div>
     </div>

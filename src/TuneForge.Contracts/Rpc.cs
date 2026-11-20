@@ -29,6 +29,10 @@ public static class RpcMethods
     public const string DriverRemove = "drivers.remove";
     public const string DriverRestore = "drivers.restore";
     public const string DriverBackupDelete = "drivers.deleteBackup";
+    public const string RestorePointsList = "restorepoints.list";
+    public const string RestorePointDelete = "restorepoints.delete";
+    public const string HostsRemove = "hosts.remove";
+    public const string HostsRestore = "hosts.restore";
 }
 
 public static class RpcErrorCodes
