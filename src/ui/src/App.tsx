@@ -34,6 +34,7 @@ import { AdvancedSwitches, SecurityCard, WindowsTools } from "./SystemTools";
 import { applyTheme, loadTheme, themeChoices, titleBarColors, type ThemeChoice } from "./theme";
 import { TestersPage } from "./TestersPage";
 import { CrashCard, DuplicatesCard, IconCacheCard, PermissionsCard, RestorePointsCard } from "./Toolbox";
+import { DriverBackupCard, PauseUpdatesCard } from "./SystemCards";
 import { TweaksPage } from "./TweaksPage";
 import { UpdateCard } from "./UpdateCard";
 
@@ -209,7 +210,12 @@ export function App() {
           {tweakPages[page.id] && (
             <TweaksPage key={`${page.id}${target?.query}`} {...tweakPages[page.id]} initialQuery={target?.query} />
           )}
-          {page.id === "optimize" && <AdvancedSwitches />}
+          {page.id === "optimize" && (
+            <>
+              <AdvancedSwitches />
+              <PauseUpdatesCard />
+            </>
+          )}
           {page.id === "history" && <HistoryPage />}
           {page.id === "cleanup" && (
             <>
@@ -228,6 +234,7 @@ export function App() {
                 <CrashCard />
                 <RestorePointsCard />
                 <IconCacheCard />
+                <DriverBackupCard />
               </div>
               <RegistryBackupCard />
               <WindowsTools />

@@ -92,6 +92,36 @@ public sealed class EngineClient : IDisposable
     public Task<OperationResult> RestoreHostsAsync() =>
         RunAsync<OperationResult>(RpcMethods.HostsRestore, null, TimeSpan.FromMinutes(1));
 
+    public Task<IReadOnlyList<DriveWear>> DriveWearAsync() =>
+        RunAsync<IReadOnlyList<DriveWear>>(RpcMethods.DriveWear, null, TimeSpan.FromMinutes(1));
+
+    public Task<IReadOnlyList<SleepBlocker>> SleepBlockersAsync() =>
+        RunAsync<IReadOnlyList<SleepBlocker>>(RpcMethods.SleepBlockers, null, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> SetWakeDeviceAsync(WakeDeviceRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.WakeDeviceSet, request, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> SetTaskAsync(TaskSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.TaskSet, request, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> SetMenuAsync(MenuSetRequest request) =>
+        RunAsync<OperationResult>(RpcMethods.MenuSet, request, TimeSpan.FromMinutes(1));
+
+    public Task<OperationResult> BlockProgramAsync(string program) =>
+        RunAsync<OperationResult>(RpcMethods.FirewallBlock, new FirewallRequest(program), TimeSpan.FromMinutes(2));
+
+    public Task<OperationResult> UnblockProgramAsync(string program) =>
+        RunAsync<OperationResult>(RpcMethods.FirewallUnblock, new FirewallRequest(program), TimeSpan.FromMinutes(2));
+
+    public Task<OperationResult> PauseUpdatesAsync(int weeks) =>
+        RunAsync<OperationResult>(RpcMethods.UpdatePause, new UpdatePauseRequest(weeks), TimeSpan.FromMinutes(1));
+
+    public Task<DriverExportResult> ExportDriversAsync() =>
+        RunAsync<DriverExportResult>(RpcMethods.DriverExport, null, TimeSpan.FromMinutes(25));
+
+    public Task<OperationResult> ImportDriversAsync(string folder) =>
+        RunAsync<OperationResult>(RpcMethods.DriverImport, new FolderRequest(folder), TimeSpan.FromMinutes(25));
+
     public Task<OperationResult> RestartToBiosAsync() =>
         RunAsync<OperationResult>(RpcMethods.BiosRestart, null, TimeSpan.FromMinutes(1));
 

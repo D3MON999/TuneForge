@@ -3,6 +3,7 @@ import { bridge, type ErrorGroup, type StorageReport, type WindowsEvent } from "
 import { GpuCard } from "./ExtraPanels";
 import { formatBytes } from "./format";
 import { DriverCard, StartupCard } from "./Insights";
+import { DriveWearCard, WakeCard } from "./SystemCards";
 
 type Tab = "storage" | "errors" | "logs";
 
@@ -20,6 +21,10 @@ export function MonitorPage({ initialTab }: { initialTab?: string }) {
       <div className="mb-5 grid gap-3 lg:grid-cols-2">
         <StartupCard />
         <DriverCard />
+      </div>
+      <div className="mb-5 grid gap-3 lg:grid-cols-2">
+        <DriveWearCard />
+        <WakeCard />
       </div>
       <div role="tablist" aria-label="Monitor sections" className="flex flex-wrap gap-2">
         {tabs.map((item) => (

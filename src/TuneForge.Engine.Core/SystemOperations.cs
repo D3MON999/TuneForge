@@ -17,4 +17,8 @@ public sealed record SystemOperations(
     BiosRestart Bios,
     DisplayDriverRemover? DisplayDrivers = null,
     RestorePointManager? RestorePoints = null,
-    HostsFile? Hosts = null);
+    HostsFile? Hosts = null,
+    AllDriversBackup? Drivers = null,
+    FirewallBlocks? Firewall = null,
+    IToolRunner? Tools = null,
+    IProcessRunner? Runner = null);

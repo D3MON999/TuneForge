@@ -22,6 +22,8 @@ vi.mock("./bridge", () => ({
     connectionLogSet: vi.fn(),
     hostsRead: vi.fn(),
     wifiScan: vi.fn(),
+    firewallList: vi.fn(),
+    wakeRead: vi.fn(),
     bootTimes: vi.fn(),
     storageRead: vi.fn(),
     eventErrors: vi.fn(),
@@ -97,6 +99,8 @@ beforeEach(() => {
   api.linkRead.mockResolvedValue([]);
   api.connectionLog.mockResolvedValue({ running: false, pings: 0, events: [], logPath: "log.csv" });
   api.hostsRead.mockResolvedValue({ entries: [], hasBackup: false });
+  api.firewallList.mockResolvedValue([]);
+  api.wakeRead.mockResolvedValue({ wakes: [], devices: [] });
 });
 
 afterEach(cleanup);

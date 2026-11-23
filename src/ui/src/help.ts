@@ -12,6 +12,7 @@ export const pageHelp: Record<string, string[]> = {
     "Presets and profiles pick a set of changes for you. Minimal is the safest start.",
     "Click Review changes to see exactly what will change, then Apply. Windows asks for permission once.",
     "Every change here can be undone from History. System switches at the bottom have their own off button.",
+    "Pause Windows Update stops updates for up to 5 weeks. They come back on by themselves.",
     "Locked by another app means a different tool set a Windows policy, which is why Windows says the setting is managed by your organization. Remove lock clears only that policy, and you can undo it from History.",
   ],
   gaming: [
@@ -25,6 +26,7 @@ export const pageHelp: Record<string, string[]> = {
     "The DNS speed test times real lookups from your connection. Pick the fastest with Use, and restore your earlier DNS at any time.",
     "Link speed is what your cable or Wi-Fi agreed with the router. An Ethernet link under 1 Gbps usually means a bad cable.",
     "The connection logger keeps running in the tray until you stop it, and saves every drop to a file you can send your internet provider.",
+    "Block a program adds a Windows Firewall rule. Unblock removes it.",
     "The hosts file is on the DNS tab. Removing lines needs admin rights, and Undo puts the file back.",
   ],
   cleanup: [
@@ -37,6 +39,7 @@ export const pageHelp: Record<string, string[]> = {
   ],
   apps: [
     "Startup and Services control what runs in the background. Startup changes can be undone from History.",
+    "Scheduled tasks and Right-click menu list what programs added. Windows' own entries aren't shown, and menu changes can be undone from History.",
     "Delay starts a program a minute after you sign in. TuneForge starts it, so Start with Windows must be on. Start right away puts it back.",
     "After you uninstall an app, TuneForge shows folders it left behind. Only folders in your own profile can be removed, and they go to the Recycle Bin.",
     "Built-in apps removes apps that came with Windows, for every account. Only some can be reinstalled.",
@@ -54,12 +57,14 @@ export const pageHelp: Record<string, string[]> = {
     "Windows tools opens Windows' own programs in a separate window.",
     "Blue screens and crashes explains the stop code of each crash in the last 90 days.",
     "Restore points needs admin rights to list. Deleting one can't be undone.",
+    "Back up all drivers saves them to Documents\\TuneForge Backups. Install from a backup puts them back after reinstalling Windows.",
   ],
   monitor: [
     "Startup time reads how long Windows took to start, as Windows measured it, and which apps Windows caught slowing it down. Reading it needs admin rights, so Windows asks each time.",
     "Graphics driver shows your driver's version and age. TuneForge can't tell if a newer one exists, so the button opens the maker's own download page.",
     "Clean reinstall removes the graphics driver with Windows' own tool, after making a restore point and a backup. Download the new driver first and close your games. Put it back reinstalls the backup.",
     "Disks shows the health Windows reports and how full each drive is.",
+    "Drive wear needs admin rights to read. Sleep and wake shows what woke the PC and lets you stop a device from waking it.",
     "Windows errors groups repeated problems. Many are harmless, so look for ones that match when something went wrong.",
   ],
   testers: [

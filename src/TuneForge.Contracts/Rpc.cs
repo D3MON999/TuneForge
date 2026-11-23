@@ -33,6 +33,16 @@ public static class RpcMethods
     public const string RestorePointDelete = "restorepoints.delete";
     public const string HostsRemove = "hosts.remove";
     public const string HostsRestore = "hosts.restore";
+    public const string DriveWear = "diagnostics.driveWear";
+    public const string SleepBlockers = "power.requests";
+    public const string WakeDeviceSet = "power.wakeDevice";
+    public const string TaskSet = "tasks.set";
+    public const string MenuSet = "menu.set";
+    public const string FirewallBlock = "firewall.block";
+    public const string FirewallUnblock = "firewall.unblock";
+    public const string UpdatePause = "update.pause";
+    public const string DriverExport = "drivers.export";
+    public const string DriverImport = "drivers.import";
 }
 
 public static class RpcErrorCodes

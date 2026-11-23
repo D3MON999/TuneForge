@@ -52,8 +52,45 @@ public partial class MainWindow
         "changes.read" => await Task.Run(ReadChanges),
         "permissions.read" => await Task.Run(PermissionReader.Read),
         "settings.page" => OpenSettingsPage(Read<SettingsPageRequest>(payload).Page),
+        "drivewear.read" => await _engine.DriveWearAsync(),
+        "wake.read" => await Task.Run(() => WakeTools.Read(_runner)),
+        "wake.blockers" => await _engine.SleepBlockersAsync(),
+        "wake.device" => await _engine.SetWakeDeviceAsync(Read<WakeDeviceRequest>(payload)),
+        "tasks.list" => await Task.Run(ScheduledTasks.List),
+        "tasks.set" => await _engine.SetTaskAsync(Read<TaskSetRequest>(payload)),
+        "menu.list" => await Task.Run(RightClickMenu.List),
+        "menu.set" => await _engine.SetMenuAsync(Read<MenuSetRequest>(payload)),
+        "process.signatures" => await Task.Run(SignatureCheck.Check),
+        "firewall.list" => await Task.Run(new FirewallBlocks(_runner).List),
+        "firewall.pick" => PickProgram(),
+        "firewall.block" => await _engine.BlockProgramAsync(Read<FirewallRequest>(payload).Program),
+        "firewall.unblock" => await _engine.UnblockProgramAsync(Read<FirewallRequest>(payload).Program),
+        "updates.pauseStatus" => UpdatePause.Read(DateTime.UtcNow),
+        "updates.pause" => await _engine.PauseUpdatesAsync(Read<UpdatePauseRequest>(payload).Weeks),
+        "drivers.export" => await _engine.ExportDriversAsync(),
+        "drivers.pickFolder" => PickFolder(),
+        "drivers.import" => await _engine.ImportDriversAsync(Read<FolderRequest>(payload).Folder),
         _ => throw new EngineException("Unknown operation."),
     };
+
+    /// <summary>Asks you to pick a program, so a path is only ever one you chose.</summary>
+    private string? PickProgram()
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog { Filter = "Programs|*.exe", Title = "Pick a program to block" };
+        if (dialog.ShowDialog(this) != true)
+        {
+            return null;
+        }
+
+        FirewallBlocks.Check(dialog.FileName);
+        return dialog.FileName;
+    }
+
+    private string? PickFolder()
+    {
+        var dialog = new Microsoft.Win32.OpenFolderDialog { Title = "Pick the folder with your saved drivers" };
+        return dialog.ShowDialog(this) == true ? dialog.FolderName : null;
+    }
 
     private static string HostsBackupFolder => Path.Combine(JournalLocation.Folder, "hosts-backup");
 

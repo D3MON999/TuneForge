@@ -78,6 +78,26 @@ public sealed class RpcDispatcher(Action requestShutdown, TweakEngine? tweaks = 
                     Success(request.Id, system.Hosts.Remove(Parameters<HostsRemoveRequest>(request).Lines)),
                 RpcMethods.HostsRestore when system?.Hosts is not null =>
                     Success(request.Id, system.Hosts.Restore()),
+                RpcMethods.DriveWear =>
+                    Success(request.Id, DriveHealth.Read()),
+                RpcMethods.SleepBlockers when system?.Tools is not null =>
+                    Success(request.Id, WakeTools.Blockers(system.Tools)),
+                RpcMethods.WakeDeviceSet when system?.Tools is not null =>
+                    Success(request.Id, WakeTools.SetDevice(system.Tools, Parameters<WakeDeviceRequest>(request))),
+                RpcMethods.TaskSet when system?.Runner is not null =>
+                    Success(request.Id, ScheduledTasks.Set(system.Runner, Parameters<TaskSetRequest>(request))),
+                RpcMethods.MenuSet when tweaks is not null =>
+                    Success(request.Id, tweaks.ApplyBuilt(RightClickMenu.BuildChange(Parameters<MenuSetRequest>(request)))),
+                RpcMethods.FirewallBlock when system?.Firewall is not null =>
+                    Success(request.Id, system.Firewall.Block(Parameters<FirewallRequest>(request).Program)),
+                RpcMethods.FirewallUnblock when system?.Firewall is not null =>
+                    Success(request.Id, system.Firewall.Unblock(Parameters<FirewallRequest>(request).Program)),
+                RpcMethods.UpdatePause =>
+                    Success(request.Id, UpdatePause.Set(Parameters<UpdatePauseRequest>(request).Weeks, DateTime.UtcNow)),
+                RpcMethods.DriverExport when system?.Drivers is not null =>
+                    Success(request.Id, system.Drivers.Export(DateTime.Now)),
+                RpcMethods.DriverImport when system?.Drivers is not null =>
+                    Success(request.Id, system.Drivers.Import(Parameters<FolderRequest>(request).Folder)),
                 RpcMethods.DriverBackupDelete when system?.DisplayDrivers is not null =>
                     Success(request.Id, system.DisplayDrivers.DeleteBackup(Parameters<DriverPageRequest>(request).Vendor)),
                 _ => Failure(request.Id, RpcErrorCodes.MethodNotFound, "Unknown method."),

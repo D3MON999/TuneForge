@@ -4,6 +4,7 @@ import { bridge, type AdvancedEntry, type OperationResult, type ProcessEntry, ty
 import { formatBytes } from "./format";
 import { HazardDialog, hazardLabel } from "./Hazard";
 import { matchesText } from "./selection";
+import { SignatureCard } from "./SystemCards";
 
 const buttonClass =
   "min-h-11 shrink-0 cursor-pointer rounded-md border border-border px-4 font-medium disabled:cursor-not-allowed disabled:opacity-60";
@@ -270,6 +271,7 @@ export function ProcessesTab() {
 
   return (
     <div>
+      <SignatureCard />
       <p className="mb-3 text-muted-foreground">
         Running programs, biggest memory use first. Ending one closes it straight away, so unsaved work is lost. Windows' own processes are locked.
       </p>

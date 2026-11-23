@@ -407,17 +407,17 @@ public static class StartupLaunch
 
     public static bool Start(string command)
     {
-        if (Split(command) is not var (file, arguments) || !File.Exists(file))
+        if (Split(command) is not { } split || !File.Exists(split.File))
         {
             return false;
         }
 
         try
         {
-            using var _ = Process.Start(new ProcessStartInfo(file, arguments)
+            using var _ = Process.Start(new ProcessStartInfo(split.File, split.Arguments)
             {
                 UseShellExecute = true,
-                WorkingDirectory = Path.GetDirectoryName(file) ?? string.Empty,
+                WorkingDirectory = Path.GetDirectoryName(split.File) ?? string.Empty,
             });
             return true;
         }

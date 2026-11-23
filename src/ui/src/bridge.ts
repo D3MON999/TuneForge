@@ -386,6 +386,56 @@ export interface SettingsChoices {
   connectionLog: boolean;
 }
 
+export interface DriveWear {
+  name: string;
+  media: string;
+  wearPercent?: number | null;
+  temperatureC?: number | null;
+  powerOnHours?: number | null;
+  readErrors?: number | null;
+}
+
+export interface WakeReport {
+  wakes: { whenUtc: string; source: string }[];
+  devices: { name: string; armed: boolean }[];
+}
+
+export interface SleepBlocker {
+  kind: "display" | "system" | "away";
+  who: string;
+  detail: string;
+}
+
+export interface ScheduledTaskInfo {
+  path: string;
+  name: string;
+  program: string;
+  author?: string | null;
+  enabled: boolean;
+  nextRunUtc?: string | null;
+  locked: boolean;
+}
+
+export interface MenuEntry {
+  id: string;
+  name: string;
+  where: "files" | "folders" | "background";
+  file?: string | null;
+  enabled: boolean;
+}
+
+export interface ProcessSignature {
+  name: string;
+  path: string;
+  status: "windows" | "signed" | "unsigned";
+  publisher?: string | null;
+}
+
+export interface UpdatePauseStatus {
+  paused: boolean;
+  untilUtc?: string | null;
+}
+
 export interface CrashRecord {
   whenUtc: string;
   kind: "bluescreen" | "power-loss";
@@ -736,6 +786,24 @@ export class Bridge {
   changesRead = () => this.call<ChangesReport>("changes.read");
   permissionsRead = () => this.call<PermissionUse[]>("permissions.read");
   settingsPage = (page: string) => this.call<boolean>("settings.page", { page });
+  driveWear = () => this.call<DriveWear[]>("drivewear.read");
+  wakeRead = () => this.call<WakeReport>("wake.read");
+  sleepBlockers = () => this.call<SleepBlocker[]>("wake.blockers");
+  wakeDevice = (name: string, armed: boolean) => this.call<OperationResult>("wake.device", { name, armed });
+  tasksList = () => this.call<ScheduledTaskInfo[]>("tasks.list");
+  taskSet = (path: string, enabled: boolean) => this.call<OperationResult>("tasks.set", { path, enabled });
+  menuList = () => this.call<MenuEntry[]>("menu.list");
+  menuSet = (id: string, enabled: boolean) => this.call<OperationResult>("menu.set", { id, enabled });
+  processSignatures = () => this.call<ProcessSignature[]>("process.signatures");
+  firewallList = () => this.call<{ program: string }[]>("firewall.list");
+  firewallPick = () => this.call<string | null>("firewall.pick");
+  firewallBlock = (program: string) => this.call<OperationResult>("firewall.block", { program });
+  firewallUnblock = (program: string) => this.call<OperationResult>("firewall.unblock", { program });
+  pauseStatus = () => this.call<UpdatePauseStatus>("updates.pauseStatus");
+  pauseUpdates = (weeks: number) => this.call<OperationResult>("updates.pause", { weeks });
+  driversExport = () => this.call<{ ok: boolean; message: string; folder?: string | null }>("drivers.export");
+  driversPickFolder = () => this.call<string | null>("drivers.pickFolder");
+  driversImport = (folder: string) => this.call<OperationResult>("drivers.import", { folder });
   oldDownloads = () => this.call<OldDownloadsReport>("downloads.old");
   recycleDownloads = (paths: string[]) => this.call<RecycleResult>("downloads.recycle", { paths });
   removeLocks = (ids: string[]) => this.call<OperationResult>("tweaks.removeLocks", { ids });

@@ -11,6 +11,7 @@ import {
 } from "./bridge";
 import { BandwidthCard, PingMonitor, SpeedCard } from "./ExtraPanels";
 import { ConnectionLogCard, HostsCard, LinkSpeedCard, WifiCard } from "./Toolbox";
+import { FirewallCard } from "./SystemCards";
 
 type Tab = "tests" | "dns" | "connections";
 type Tool = "ping" | "tcping" | "trace";
@@ -142,6 +143,7 @@ export function NetworkPage({ initialTab }: { initialTab?: string }) {
             <ConnectionLogCard />
             <PingMonitor />
             <WifiCard />
+            <FirewallCard />
             <BandwidthCard />
           </div>
         )}

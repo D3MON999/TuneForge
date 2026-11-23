@@ -4,11 +4,14 @@ import { bridge, type FeatureEntry, type OperationResult, type ServiceEntry, typ
 import { matchesText } from "./selection";
 import { ProcessesTab } from "./SystemTools";
 import { BackgroundAppsCard, useDelayedStartup } from "./Toolbox";
+import { MenuTab, TasksTab } from "./SystemCards";
 
-type Tab = "startup" | "services" | "features" | "built-in" | "install" | "installed" | "processes";
+type Tab = "startup" | "tasks" | "menu" | "services" | "features" | "built-in" | "install" | "installed" | "processes";
 
 const tabs: { id: Tab; label: string }[] = [
   { id: "startup", label: "Startup" },
+  { id: "tasks", label: "Scheduled tasks" },
+  { id: "menu", label: "Right-click menu" },
   { id: "services", label: "Services" },
   { id: "features", label: "Windows features" },
   { id: "built-in", label: "Built-in apps" },
@@ -40,6 +43,8 @@ export function AppsPage({ initialTab }: { initialTab?: string }) {
       </div>
       <div role="tabpanel" aria-label={tabs.find((item) => item.id === tab)?.label} className="mt-4">
         {tab === "startup" && <StartupTab />}
+        {tab === "tasks" && <TasksTab />}
+        {tab === "menu" && <MenuTab />}
         {tab === "services" && <ServicesTab />}
         {tab === "features" && <FeaturesTab />}
         {tab === "built-in" && <BuiltInAppsTab />}
